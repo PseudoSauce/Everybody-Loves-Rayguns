@@ -15,20 +15,20 @@ The steps below will take you through cloning your own private fork, then compil
 
 1. Launch the engine and click 'OPEN' button at the top right and navigate to the project folder. It will be the root folder most likely named 'Everybody-Loves-Rayguns'.
 
-### Contributors
+# Contributors
 **Original four**<br/>
 @aytona<br/>
 @CarloAlbino<br/>
 @demallory<br/>
 @wahidshafique<br/>
 
-### License
+# License
 Everybody Loves Rayguns source code is under the [MIT](https://opensource.org/licenses/MIT), meaning you can use it free of charge.
 
-### Additional Notes
+# Additional Notes
 
 [Trello](https://trello.com/b/54MH921x)<br/>
 [Slack](https://pseudosauce.slack.com)
 
-### Our Favourite Colours
+# Our Favourite Colours
 Chris - Blue

@@ -28,3 +28,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Unity Version
+/[Pp]rojectSettings/ProjectVersion.txt

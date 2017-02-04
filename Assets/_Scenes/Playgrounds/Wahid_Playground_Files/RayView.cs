@@ -2,10 +2,12 @@
 using System.Collections;
 
 public class RayView : MonoBehaviour {
-    public float weaponRange = 50f;                     
+    private float weaponRange;                     
     private Camera fpsCam;                               
 
     void Start() {
+        weaponRange = GetComponent<ShootCast>().weaponRange;
+        print("weapon range" + weaponRange);
         fpsCam = GetComponentInParent<Camera>();
     }
 

@@ -5,15 +5,14 @@ using UnityEngine;
 [RequireComponent (typeof(Rigidbody))]
 public class Beacon : MonoBehaviour {
 
-    [SerializeField]
+    [SerializeField, Tooltip("Speed the beacon will shoot at")]
     private float beaconSpeed = 10.0f;
-    [SerializeField]
+    [SerializeField, Tooltip("Object that will spawn to test the new area for a suitable teleport destination")]
     private BeaconTestObject m_testObject = null;
 
     private bool m_hasHit = false;
     private BeaconTestObject m_spawnedTestObject = null;
     private Rigidbody m_rb = null;
-
 
 	void Start ()
     {
@@ -46,30 +45,47 @@ public class Beacon : MonoBehaviour {
 
             GetComponent<LineRenderer>().SetPosition(1, Vector3.forward * 10);
             m_hasHit = true;
+            GetComponent<BoxCollider>().isTrigger = true;
         }
     }
 
-    public bool CanTeleport(float bounds)
+    public bool CanTeleport(Vector3 extent)
     {
+        bool result = false;
+
         if(m_hasHit)
         {
-            m_spawnedTestObject = Instantiate(m_testObject, transform.position, Quaternion.identity) as BeaconTestObject;
-            m_spawnedTestObject.transform.position = transform.position + (transform.forward * bounds);
-            m_spawnedTestObject.SetColliderSize(Vector3.one * Mathf.Ceil(bounds));
-            m_spawnedTestObject.transform.parent = transform;
-            if (m_spawnedTestObject != null)
+            if(m_spawnedTestObject != null)
             {
-                return true;
+                // Destroy old test object
+                Destroy(m_spawnedTestObject);
             }
-            else
+
+            // First Check if there isn't anything directly in front of the beacon like a wall, ceiling or floor
+            if(!Physics.Raycast(transform.position, transform.forward, (transform.forward * (extent.magnitude + extent.magnitude * 0.15f)).magnitude))
             {
-                return false;
+                // Then check more specifically using the volume of desired teleport location (beacon test object does this)
+                m_spawnedTestObject = Instantiate(m_testObject, transform.position, Quaternion.identity) as BeaconTestObject;
+                m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
+                m_spawnedTestObject.transform.parent = transform;
+
+                if (m_spawnedTestObject != null)
+                {
+                    if (m_spawnedTestObject.CanTeleport(extent))
+                    {
+                        result = true;
+                    }
+                }
             }
+
         }
-        else
-        {
-            return false;
-        }
+        
+        return result;
+    }
+
+    public Vector3 GetTeleportPosition(Vector3 extent)
+    {
+        return transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
     }
 
     private IEnumerator DestroyAfterTime()

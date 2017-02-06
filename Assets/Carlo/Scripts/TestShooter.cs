@@ -6,11 +6,6 @@ public class TestShooter : MonoBehaviour {
 
     public GameObject projectile;
     private GameObject lastProjectile = null;
-    
-    void Start()
-    {
-        Cursor.visible = true;
-    } 
 
     void Update()
     {
@@ -29,6 +24,7 @@ public class TestShooter : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
+            // How to teleport an object
             if (lastProjectile != null)
             { 
                 RaycastHit hitInfo;
@@ -37,9 +33,10 @@ public class TestShooter : MonoBehaviour {
                 {
                     if (hitInfo.collider.CompareTag("Teleportable"))
                     {
-                        if (lastProjectile.GetComponent<Beacon>().CanTeleport(hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents.magnitude))
+                        if (lastProjectile.GetComponent<Beacon>().CanTeleport(hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents))
                         {
-                            hitInfo.collider.gameObject.transform.position = lastProjectile.transform.position;
+                            hitInfo.collider.gameObject.transform.position = lastProjectile.GetComponent<Beacon>().GetTeleportPosition(hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents);
+                            hitInfo.collider.gameObject.transform.rotation = Quaternion.identity;
                             hitInfo.collider.GetComponent<Rigidbody>().velocity = Vector3.zero;
                         }
                     }

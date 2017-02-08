@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ShootCast : MonoBehaviour {
@@ -15,6 +15,8 @@ public class ShootCast : MonoBehaviour {
     private Color currentColor;
     private bool stuck = false;//see if raycast should be set to dir of obj
     private bool canFire = true;
+    [SerializeField]
+    private LayerMask mask1;
     private const int mask = 1 << 9;//this is the layer mask to ignore (ignores player)
 
     void Start() {
@@ -44,13 +46,21 @@ public class ShootCast : MonoBehaviour {
                     }
                 } else {
                     //if you have stuck, draw line to that object
-                    laserLine.SetPosition(1, currentHit.transform.position);
-                    if (Physics.Linecast(rayOrigin, currentHit.transform.position, out normalhit, mask)) {
+                    laserLine.SetPosition(1, new Vector3(currentHit.transform.position.x, currentHit.transform.position.y + 1, currentHit.transform.position.z));
+                    Debug.DrawLine(rayOrigin, currentHit.transform.position, Color.green);
+                    if (Physics.Linecast(rayOrigin, new Vector3(currentHit.transform.position.x, currentHit.transform.position.y + 1, currentHit.transform.position.z), out normalhit, mask1)) {
                         print(normalhit.collider.gameObject);
-                        Debug.DrawLine(rayOrigin, currentHit.transform.position, Color.green);
-                        //if (normalhit.transform.gameObject.CompareTag(currentHit.gameObject.tag)) {
-                        print("blocked");
-                        canFire = false;
+                        if (normalhit.collider.gameObject.name != currentHit.name)
+                        {
+                            print(normalhit.collider.gameObject);
+
+                            //if (normalhit.transform.gameObject.CompareTag(currentHit.gameObject.tag)) {
+                            if (normalhit.collider.gameObject != currentHit)
+                            {
+                                print("blocked");
+                                canFire = false;
+                            }
+                        }
                         //if there is something blocking between those points, exit
                         //}
                         //    float dist = Vector3.Distance(stuckHit.transform.position, currentHit.transform.position);
@@ -62,7 +72,9 @@ public class ShootCast : MonoBehaviour {
                     }
                 }
             }
-        } else if (Input.GetButtonUp("Fire1") || !canFire) {
+        }
+        if (Input.GetButtonUp("Fire1")/* || !canFire*/) {
+            Debug.Log("Up");
             laserLine.enabled = false;
             if (stuck) {
                 currentHit.GetComponent<Renderer>().material.color = currentColor;
@@ -70,7 +82,7 @@ public class ShootCast : MonoBehaviour {
                 currentHit = null;
             }
             if (!canFire) {
-                StartCoroutine(coolEffect());
+                //StartCoroutine(coolEffect());
             }
         }
     }

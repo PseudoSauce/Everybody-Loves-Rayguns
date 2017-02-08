@@ -35,6 +35,6 @@ Chris - Blue
 
 Derek - Emerald Green
 
-Carlo - Grey Blue
+Carlo - Red like anger
 
 Wahid - Caput Mortuum

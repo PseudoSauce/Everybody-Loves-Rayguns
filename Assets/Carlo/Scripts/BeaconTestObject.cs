@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BeaconTestObject : MonoBehaviour {
 
+    // Area/Volume Check
     [SerializeField]
     [Range(0, 1.0f)]
     [Tooltip("Percentage of the extent added to the extent when drawing rays. Padding to make sure the object will fit in the new space.")]
@@ -11,6 +12,20 @@ public class BeaconTestObject : MonoBehaviour {
     private bool m_canDrawRays = false;
     private float m_longestExtent;
     private Vector3 [] m_directions = new Vector3[] { Vector3.up, Vector3.left, Vector3.right, Vector3.forward, Vector3.back, Vector3.down };
+
+    // Hologram
+    [SerializeField]
+    private Color m_goodColour = new Color(0.15f, 0.1f, 0.9f, 0.15f);
+    [SerializeField]
+    private Color m_badColour = new Color(0.9f, 0.2f, 0.0f, 0.15f);
+    private MeshFilter m_mesh;
+    private MeshRenderer m_meshRenderer;
+
+    void Start()
+    {
+        m_mesh = GetComponent<MeshFilter>();
+        m_meshRenderer = GetComponent<MeshRenderer>();
+    }
 
     public bool CanTeleport(Vector3 extent)
     {
@@ -48,6 +63,28 @@ public class BeaconTestObject : MonoBehaviour {
         }
 
         return result;
+    }
+
+    public void ShowHologram(Mesh hologramMesh, Vector3 extent, Vector3 scale)
+    {
+        if(m_mesh != null)
+        {
+            if(CanTeleport(extent))
+            {
+                m_meshRenderer.material.color = m_goodColour;
+            }
+            else
+            {
+                m_meshRenderer.material.color = m_badColour;
+            }
+            m_mesh.mesh = hologramMesh;
+            transform.localScale = scale * 5.0f;
+        }
+    }
+
+    public void StopHologram()
+    {
+        transform.localScale = Vector3.zero;
     }
 
     void Update()

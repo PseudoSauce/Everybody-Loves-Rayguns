@@ -11,7 +11,7 @@ public class BeaconTestObject : MonoBehaviour {
     private float m_extentPercentage = 0.05f;
     private bool m_canDrawRays = false;
     private float m_longestExtent;
-    private Vector3 [] m_directions = new Vector3[] { Vector3.up, Vector3.left, Vector3.right, Vector3.forward, Vector3.back, Vector3.down };
+    private Vector3 [] m_directions = new Vector3[] { Vector3.up, Vector3.down,  Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
 
     // Hologram
     [SerializeField]
@@ -27,15 +27,22 @@ public class BeaconTestObject : MonoBehaviour {
         m_meshRenderer = GetComponent<MeshRenderer>();
     }
 
+    float[] extents;
     public bool CanTeleport(Vector3 extent)
     {
-        m_longestExtent = extent.x;
-        if (extent.y > m_longestExtent)
-            m_longestExtent = extent.y;
-        if (extent.z > m_longestExtent)
-            m_longestExtent = extent.z;
-        // Add extra percentage to the length of the bounds to have a little breathing room
-        m_longestExtent = m_longestExtent + m_longestExtent * m_extentPercentage;
+        //m_longestExtent = extent.x;
+        //if (extent.y > m_longestExtent)
+        //    m_longestExtent = extent.y;
+        //if (extent.z > m_longestExtent)
+        //    m_longestExtent = extent.z;
+        //// Add extra percentage to the length of the bounds to have a little breathing room
+        //m_longestExtent = m_longestExtent + m_longestExtent * m_extentPercentage;
+
+        float extentX = extent.y + extent.y * m_extentPercentage;
+        float extentY = extent.x + extent.x * m_extentPercentage;
+        float extentZ = extent.z + extent.z * m_extentPercentage;
+
+        extents = new float[]{ extentX, extentX, extentY, extentY, extentZ, extentZ };
 
         m_canDrawRays = true;
 
@@ -44,8 +51,8 @@ public class BeaconTestObject : MonoBehaviour {
         for (int i = 0; i < m_directions.Length; i++)
         {
             Ray ray = new Ray(transform.position, m_directions[i]);
-            Ray inverseRay = new Ray(transform.position + (m_directions[i] * m_longestExtent), -m_directions[i]);
-            if (Physics.Raycast(ray, m_longestExtent))
+            Ray inverseRay = new Ray(transform.position + (m_directions[i] * extents[i]), -m_directions[i]);
+            if (Physics.Raycast(ray, extents[i]))
             {
                 result = false;
                 break;
@@ -54,7 +61,7 @@ public class BeaconTestObject : MonoBehaviour {
             // Check inverse rays in case the test object is in a wall
             // Though the check in beacon should prevent the need of this check
             // Kept here just in case
-            if (Physics.Raycast(inverseRay, m_longestExtent))
+            if (Physics.Raycast(inverseRay, extents[i]))
             {
                 result = false;
                 break;
@@ -94,8 +101,8 @@ public class BeaconTestObject : MonoBehaviour {
         {
             for (int i = 0; i < m_directions.Length; i++)
             {
-                Debug.DrawRay(transform.position, m_directions[i] * m_longestExtent, Color.red);
-                Debug.DrawRay(transform.position + (m_directions[i] * m_longestExtent), -m_directions[i] * m_longestExtent, Color.blue);
+                Debug.DrawRay(transform.position, m_directions[i] * extents[i], Color.red);
+                //Debug.DrawRay(transform.position + (m_directions[i] * extents[i]), -m_directions[i] * extents[i], Color.blue);
             }
         }
     }

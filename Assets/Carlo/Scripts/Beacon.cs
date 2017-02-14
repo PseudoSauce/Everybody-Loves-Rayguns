@@ -10,9 +10,14 @@ public class Beacon : MonoBehaviour {
     [SerializeField, Tooltip("Object that will spawn to test the new area for a suitable teleport destination")]
     private BeaconTestObject m_testObject = null;
     private float m_rotationAngle = 0;
-
     private bool m_hasHit = false;
-    [SerializeField]
+
+    [SerializeField, Tooltip("Colour to show that the object can be telported")]
+    private Gradient m_goodColor;
+    [SerializeField, Tooltip("Colour to show that the object CANNOT be telported")]
+    private Gradient m_badColor;
+    private LineRenderer m_lineRenderer = null;
+
     private BeaconTestObject m_spawnedTestObject = null;
     private Rigidbody m_rb = null;
 
@@ -21,10 +26,28 @@ public class Beacon : MonoBehaviour {
         m_rb = GetComponent<Rigidbody>();
         m_rb.AddForce(transform.forward * beaconSpeed, ForceMode.Impulse);
         StartCoroutine(DestroyAfterTime());
+        m_lineRenderer = GetComponent<LineRenderer>();
+    }
+
+    void Update()
+    {
+        // Set the color of the beacon
+        if(m_spawnedTestObject != null && m_lineRenderer != null)
+        {
+            if(m_spawnedTestObject.CanTeleport())
+            {
+                m_lineRenderer.colorGradient = m_goodColor;
+            }
+            else
+            {
+                m_lineRenderer.colorGradient = m_badColor;
+            }
+        }
     }
 
     void OnCollisionEnter(Collision col)
     {
+        // Stick the beacon to a seurface and rotate it to the correct to face the correct direction
         if(col.collider.CompareTag("TeleportSurface"))
         {
             // Teleport the hologram to be identity
@@ -57,41 +80,18 @@ public class Beacon : MonoBehaviour {
         }
     }
 
-    public bool CanTeleport(Vector3 extent)
+    // Can the object be teleported?
+    public bool CanTeleport()
     {
-        bool result = false;
-
-        if (m_spawnedTestObject != null)
-        {
-            // Destroy old test object
-            Destroy(m_spawnedTestObject.gameObject);
-        }
-
-        if (m_hasHit)
-        {
-            // First Check if there isn't anything directly in front of the beacon like a wall, ceiling or floor
-            if (!Physics.Raycast(transform.position, transform.forward, (transform.forward * (extent.magnitude + extent.magnitude * 0.15f)).magnitude))
-            {
-                // Then check more specifically using the volume of desired teleport location (beacon test object does this)
-                m_spawnedTestObject = Instantiate(m_testObject, transform.position, Quaternion.identity) as BeaconTestObject;
-                //m_spawnedTestObject.transform.Rotate(Vector3.up, m_rotationAngle);
-                m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
-                m_spawnedTestObject.transform.parent = transform;
-
-                if (m_spawnedTestObject != null)
-                {
-                    if (m_spawnedTestObject.CanTeleport(extent))
-                    {
-                        result = true;
-                    }
-                }
-            }
-
-        }
-        
-        return result;
+        return m_spawnedTestObject.CanTeleport();
     }
 
+    /// <summary>
+    /// Show hologram of object to be teleported
+    /// </summary>
+    /// <param name="hologramMesh">Pass the mesh of the object to be teleported</param>
+    /// <param name="extent">Pass the extent of the object to be teleported</param>
+    /// <param name="scale">Pass the scale of the object to be teleported</param>
     public void SendMesh(Mesh hologramMesh, Vector3 extent, Vector3 scale)
     {
         if(m_spawnedTestObject != null)
@@ -101,13 +101,13 @@ public class Beacon : MonoBehaviour {
         else
         {
             m_spawnedTestObject = Instantiate(m_testObject, transform.position, Quaternion.identity) as BeaconTestObject;
-            //m_spawnedTestObject.transform.Rotate(Vector3.up, m_rotationAngle);
             m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
             m_spawnedTestObject.transform.parent = transform;
             m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale);
         }
     }
 
+    // Stop showing the hologram
     public void StopHologram()
     {
         if (m_spawnedTestObject != null)
@@ -116,16 +116,44 @@ public class Beacon : MonoBehaviour {
         }
     }
 
+    // Returns the teleport position
     public Vector3 GetTeleportPosition(Vector3 extent)
     {
         return transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
     }
 
-    public float GetRotationAngle()
+    // Returns the rotation of the test object
+    public Quaternion GetRotation()
     {
-        return m_rotationAngle;
+        if (m_spawnedTestObject != null)
+        {
+            return m_spawnedTestObject.transform.rotation;
+        }
+        else
+        {
+            return Quaternion.identity;
+        }
     }
 
+    // Rotate the test object around the X axis by 90 degrees
+    public void RotateOnXAxis()
+    {
+        if (m_spawnedTestObject != null)
+        {
+            m_spawnedTestObject.transform.Rotate(Vector3.right, 90.0f);
+        }
+    }
+
+    // Rotate the test object around the Y axis by 90 degrees
+    public void RotateOnYAxis()
+    {
+        if (m_spawnedTestObject != null)
+        {
+            m_spawnedTestObject.transform.Rotate(Vector3.up, 90.0f);
+        }
+    }
+
+    // Destroy the beacon after a time if the beacon has not stuck to a wall
     private IEnumerator DestroyAfterTime()
     {
         yield return new WaitForSeconds(2);

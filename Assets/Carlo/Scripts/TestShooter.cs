@@ -42,6 +42,18 @@ public class TestShooter : MonoBehaviour {
             ray.SetPosition(0, transform.position);
             ray.SetPosition(1, transform.position);
         }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            lastProjectile.GetComponent<Beacon>().RotateOnXAxis();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            lastProjectile.GetComponent<Beacon>().RotateOnYAxis();
+        }
+
+        //Debug.Log(lastProjectile.GetComponent<Beacon>().GetRotation());
     }
 
     void FixedUpdate()
@@ -60,10 +72,10 @@ public class TestShooter : MonoBehaviour {
                                                                     hitInfo.transform.localScale);
                     if (Input.GetMouseButtonDown(0))
                     {
-                        if (lastProjectile.GetComponent<Beacon>().CanTeleport(hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents))
+                        if (lastProjectile.GetComponent<Beacon>().CanTeleport())
                         {
                             hitInfo.collider.gameObject.transform.position = lastProjectile.GetComponent<Beacon>().GetTeleportPosition(hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents);
-                            hitInfo.collider.gameObject.transform.rotation = Quaternion.identity;
+                            hitInfo.collider.gameObject.transform.rotation = lastProjectile.GetComponent<Beacon>().GetRotation();
                             //hitInfo.collider.gameObject.transform.Rotate(Vector3.up, lastProjectile.GetComponent<Beacon>().GetRotationAngle());
                             hitInfo.collider.GetComponent<Rigidbody>().velocity = Vector3.zero;
                         }

@@ -19,6 +19,7 @@ public class Beacon : MonoBehaviour {
     private LineRenderer m_lineRenderer = null;
 
     private BeaconTestObject m_spawnedTestObject = null;
+    private Mesh m_lastMesh = null;
     private Rigidbody m_rb = null;
 
 	void Start ()
@@ -94,8 +95,16 @@ public class Beacon : MonoBehaviour {
     /// <param name="scale">Pass the scale of the object to be teleported</param>
     public void SendMesh(Mesh hologramMesh, Vector3 extent, Vector3 scale)
     {
+        m_lastMesh = hologramMesh;
+
         if(m_spawnedTestObject != null)
         {
+            if (hologramMesh == m_lastMesh)
+            {
+                // Re-ajust position
+                m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
+            }
+
             m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale);
         }
         else

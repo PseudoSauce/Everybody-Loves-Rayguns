@@ -1,0 +1,30 @@
+TODO (p: 0-9)
+-------------
+
+[-----------------------------------------]
+// INTERACTION SYSTEM (PRIORITY | 0)
+
+1. what defines an object as interactable?
+
+[-----------------------------------------]
+// WEAPON SWAP SYSTEM (PRIORITY | 1)
+
+1. what weapons need to be swapped?
+	- teleport
+	- shrink
+	- grow
+
+2. how flexible does the weapon swap system need to be. should it be made reusable?
+
+[-----------------------------------------]
+// OBJECT ALIGN (PRIORITY | 2)
+
+1. create a script to visually see the grid of the level in the editor
+
+2. create a grid script
+
+3. create a script that snaps interactable objects to the grid (ie. grid snap)
+[-----------------------------------------]
+
+
+

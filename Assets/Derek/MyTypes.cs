@@ -7,7 +7,7 @@
 
     public enum Interaction
     {
-        GROWING, SHRINKING, TELEPORTING
+        SCALING, TELEPORTING
     }
 
     // send the interactable component this message.    

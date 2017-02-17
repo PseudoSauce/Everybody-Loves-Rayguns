@@ -31,7 +31,7 @@ public class TestInteractionScript : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        InteractMessage msg = new InteractMessage(Interaction.GROWING, "Hello, we are growing.");
+        InteractMessage msg = new InteractMessage(Interaction.SCALING, "Hello, we are growing.");
         gameObject.SendMessage("Interact", msg);
     }
 }

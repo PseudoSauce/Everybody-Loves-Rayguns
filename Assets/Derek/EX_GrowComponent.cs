@@ -8,12 +8,12 @@ using MyTypes;
 // Works as a toggle for growing. It receives
 // a message to start growing, and a message to stop.
 //[------------------------------------]
-public class GrowComponent : Interactable {
+public class EX_GrowComponent : Interactable {
     private bool m_Growing;
 
     protected override void Init()
     {
-        AssignInteractionType(Interaction.GROWING);
+        AssignInteractionType(Interaction.SCALING);
         AssignStart(MyStart);
         AssignUpdate(MyUpdate);
     }

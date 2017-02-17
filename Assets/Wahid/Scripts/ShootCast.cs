@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+using MyTypes;
 public class ShootCast : MonoBehaviour {
     [Tooltip("How far the weapon should shoot")]
     public float weaponShootRange = 25;
@@ -9,13 +10,6 @@ public class ShootCast : MonoBehaviour {
 
     private bool stuck = false;//check if you haved hooked to an object
     private bool canFire = true;
-
-    //volume check for object
-    private float extentPercentage = 0.05f;
-    private Vector3[] directions;
-    private float[] extents;
-    private float extentX, extentY, extentZ;
-
 
     private Camera fpsCam;
     private LineRenderer laserLine;
@@ -31,27 +25,30 @@ public class ShootCast : MonoBehaviour {
     [Tooltip("Layer to ignore for the fit checkers")]
     private LayerMask fitterMask;
 
-    public delegate void Scaler(GameObject param);
-
     void Start() {
         laserLine = GetComponent<LineRenderer>();
         fpsCam = GetComponentInParent<Camera>();
-        //for the raycast detector
-        //directions = new Vector3[5];
     }
 
     void Update() {
         if (canFire) {
             if (Input.GetButton("Fire1")) {
-                shootRay(growObject);
+                shootRay("growing");
             }
             if (Input.GetButton("Fire2")) {
-                shootRay(shrinkObject);
+                shootRay("shrinking");
             }
         }
         if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2") || !canFire) {
             laserLine.enabled = false;
             if (stuck || !canFire) {
+                InteractMessage sendMsg;
+                sendMsg.interaction = Interaction.SCALING;
+                sendMsg.msg = "STOPGROW";
+                currentHit.SendMessage("Interact", sendMsg);
+                sendMsg.msg = "STOPSHRINK";
+                currentHit.SendMessage("Interact", sendMsg);
+
                 currentHit.GetComponent<Renderer>().material.color = currentColor;
                 stuck = false;
                 currentHit = null;
@@ -60,7 +57,7 @@ public class ShootCast : MonoBehaviour {
         }
     }
 
-    void shootRay(Scaler scalerDel) {
+    void shootRay(string whatAmIDoing) {
         Vector3 camCenter = fpsCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
         Vector3 rayOrigin = camCenter;
         RaycastHit normalhit;
@@ -93,81 +90,18 @@ public class ShootCast : MonoBehaviour {
                     print("blocked");
                     canFire = false;
                 } else {
-                    scalerDel(currentHit);
+                    //send scale msg to obj
+                    InteractMessage sendMsg;
+                    sendMsg.interaction = Interaction.SCALING;
+                    if (whatAmIDoing == "growing") {
+                        sendMsg.msg = "GROW";
+                        currentHit.SendMessage("Interact", sendMsg);
+                    } else if (whatAmIDoing == "shrinking") {
+                        sendMsg.msg = "SHRINK";
+                        currentHit.SendMessage("Interact", sendMsg);
+                    }
                 }
             }
-        }
-    }
-
-    private bool canFit(Vector3 extent, GameObject otherObject) {
-        // Set the extent of the check
-        extentX = extent.y + extent.y * extentPercentage;
-        extentY = extent.x + extent.x * extentPercentage;
-        extentZ = extent.z + extent.z * extentPercentage;
-
-        extents = new float[]{ extentX, extentY, extentZ,
-                               extentX, extentY, extentZ };
-        //dont need -up since it is the floor
-        directions = new Vector3[] { otherObject.transform.up, otherObject.transform.right, otherObject.transform.forward,
-            -otherObject.transform.up, -otherObject.transform.right, -otherObject.transform.forward };
-        //initial you can fit
-        bool canIFit = true;
-        //each bool for the raycasts stored here
-        bool[] results = new bool[directions.Length];
-        // Cast rays from the centre of the test object
-        for (int i = 0; i < directions.Length; i++) {
-            Ray ray = new Ray(otherObject.transform.position, directions[i]);
-            Debug.DrawRay(otherObject.transform.position, directions[i] * extents[i], Color.red);
-            // Regular rayast check
-            RaycastHit hit;
-            //ignore layer 10: Floor
-            if (Physics.Raycast(ray, out hit, extents[i], beamMask)) {
-                print(hit.collider.gameObject.name);
-                //if you hit, we assume you cannot fit conditionally
-                canIFit = false;
-                results[i] = true;
-            } else {
-                print("hitting nothing");
-                results[i] = false;
-            }
-        }
-        if (!canIFit) {
-            //if you cannot fit, check to see if all of the values stored are of the same time, either all true or all false
-            canIFit = areTheseBooleansThisState(results, true, 2);//check all raycasts from before
-            //negated to reflect meaning of 'fitting'
-        }
-        return canIFit;
-    }
-
-    bool areTheseBooleansThisState(bool[] array, bool state, int howMany) {
-        bool answer = true;
-        int checkedNum = 0;
-        for (int i = 0; i < array.Length; i++) {
-            if (array[i] == state) {
-                checkedNum++;
-            } else if (checkedNum == howMany) {
-                answer = false;
-                break;
-            }
-        }
-        return answer;
-    }
-
-    void growObject(GameObject otherObject) {
-        Rigidbody oRb = otherObject.GetComponent<Rigidbody>();
-        if (oRb.mass < 100 && canFit(otherObject.GetComponent<MeshRenderer>().bounds.extents, otherObject)) {
-            otherObject.transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
-            otherObject.GetComponent<Rigidbody>().mass += 0.1f;
-        } else {
-            print("cant grow this object");
-        }
-    }
-
-    void shrinkObject(GameObject otherObject) {
-        otherObject.transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
-        Rigidbody oRb = otherObject.GetComponent<Rigidbody>();
-        if (oRb.mass > 1) {
-            oRb.mass -= 0.1f;
         }
     }
 }

@@ -2,118 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using MyTypes;
+
 public class TestShooter : MonoBehaviour {
 
     public GameObject projectile;
-    public LineRenderer ray;
     public Transform gun;
-    private GameObject lastProjectile = null;
-    private Coroutine lastLaser = null;
-    private bool isShooting = false;
-    private Vector3 firstPoint, secondPoint;
-
-    void Start()
-    {
-        ray.SetPosition(0, transform.position);
-        ray.SetPosition(1, transform.position);
-    }
+    private GameObject beacon = null;
 
     void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            if (lastProjectile != null)
+            if (beacon != null)
             {
-                Destroy(lastProjectile);    // Create cool destruction animation call that before destruction
+                Destroy(beacon);    // Create cool destruction animation call that before destruction
             }
 
-            lastProjectile = Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation) as GameObject;
-        }
-
-        if(isShooting)
-        {
-            firstPoint = Vector3.Lerp(firstPoint, secondPoint, Time.deltaTime);
-
-            ray.SetPosition(0, firstPoint);
-            ray.SetPosition(1, firstPoint + ((secondPoint - firstPoint).normalized * 25.0f));
-        }
-        else
-        {
-            ray.SetPosition(0, transform.position);
-            ray.SetPosition(1, transform.position);
+            beacon = Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation) as GameObject;
         }
 
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            lastProjectile.GetComponent<Beacon>().RotateOnXAxis();
+            beacon.GetComponent<Beacon>().RotateOnXAxis();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            lastProjectile.GetComponent<Beacon>().RotateOnYAxis();
+            beacon.GetComponent<Beacon>().RotateOnYAxis();
         }
-
-        //Debug.Log(lastProjectile.GetComponent<Beacon>().GetRotation());
     }
 
     void FixedUpdate()
     {
         // How to teleport an object
         RaycastHit hitInfo;
+        InteractMessage msg;
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 300.0f))
         {
-            if (lastProjectile != null)
+            if (hitInfo.collider.GetComponent<Interactable>())
             {
-                if (hitInfo.collider.CompareTag("Teleportable"))
+                if (beacon != null)
                 {
-                    lastProjectile.GetComponent<Beacon>().SendMesh(hitInfo.collider.GetComponent<MeshFilter>().mesh,
-                                                                    hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents,
-                                                                    hitInfo.transform.localScale);
+                    msg = new InteractMessage(Interaction.TELEPORTING, "HitBegin");
+                    hitInfo.collider.gameObject.SendMessage("Interact", msg);
+
                     if (Input.GetMouseButtonDown(0))
                     {
-                        if (lastProjectile.GetComponent<Beacon>().CanTeleport())
-                        {
-                            hitInfo.collider.gameObject.transform.position = lastProjectile.GetComponent<Beacon>().GetTeleportPosition(hitInfo.collider.GetComponent<MeshRenderer>().bounds.extents);
-                            hitInfo.collider.gameObject.transform.rotation = lastProjectile.GetComponent<Beacon>().GetRotation();
-                            //hitInfo.collider.gameObject.transform.Rotate(Vector3.up, lastProjectile.GetComponent<Beacon>().GetRotationAngle());
-                            hitInfo.collider.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        }
+                        msg = new InteractMessage(Interaction.TELEPORTING, "Teleport");
+                        hitInfo.collider.gameObject.SendMessage("Interact", msg);
                     }
                 }
-                else
+            }
+            else
+            {
+                if (beacon != null)
                 {
-                    lastProjectile.GetComponent<Beacon>().StopHologram();
+                    msg = new InteractMessage(Interaction.TELEPORTING, "HitEnd");
+                    hitInfo.collider.gameObject.SendMessage("Interact", msg);
                 }
             }
+        }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (lastLaser != null)
-                {
-                    StopCoroutine(lastLaser);
-                }
-                lastLaser = StartCoroutine(FireLaser(gun.position + (hitInfo.point - gun.position).normalized * 50.0f));
-            }
-        }
-        else
-        {
-            if (lastProjectile != null)
-            {
-                lastProjectile.GetComponent<Beacon>().StopHologram();
-            }
-        }
     }
 
-
-    private IEnumerator FireLaser(Vector3 _secondPoint)
-    {
-        firstPoint = gun.position;
-        secondPoint = _secondPoint;
-        isShooting = true;
-
-        yield return new WaitForSeconds(0.35f);
-
-        isShooting = false;
-    }
 }

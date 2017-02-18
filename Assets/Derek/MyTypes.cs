@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace MyTypes
 {
@@ -15,7 +16,7 @@ namespace MyTypes
     // send the interactable component this message.    
     public struct InteractMessage
     {
-        public InteractMessage(Interaction interaction, string msg, params object data)
+        public InteractMessage(Interaction interaction, string msg, params object[] data)
         {
             this.msg = msg;
             this.interaction = interaction;
@@ -23,8 +24,23 @@ namespace MyTypes
         }
 
         public string msg;
-        public ICollection msgData;
+        public ICollection<object> msgData;
         public Interaction interaction;
+
+        public override string ToString()
+        {            
+            return interaction.ToString();
+        }
+    }
+
+    public struct InteractObject
+    {
+        public InteractObject(int n)
+        {
+            data = n;
+        }
+
+        public int data;
     }
 }
     

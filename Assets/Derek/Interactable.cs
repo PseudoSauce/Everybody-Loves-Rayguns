@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using MyTypes;
 
@@ -109,7 +108,7 @@ public class Interactable : MonoBehaviour {
     public void Interact(InteractMessage message)
     {
         if (message.interaction == InteractionType)
-            Commit(message.msg);
+            Commit(message);
         else
             Debug.Log("Interactable: '" + message.interaction + "' is not a valid interaction for this component.");
     }
@@ -130,7 +129,7 @@ public class Interactable : MonoBehaviour {
 
     // override this function.
     // so do not worry about having to manually call this function.
-    protected virtual void Commit(string msg)
+    protected virtual void Commit(InteractMessage msg)
     {
         Debug.Log("Interactable: Commit: You do not need to call the base for this function.");
     }

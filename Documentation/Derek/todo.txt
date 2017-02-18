@@ -5,6 +5,8 @@ TODO (p: 0-9)
 // INTERACTION SYSTEM (PRIORITY | 0)
 
 1. what defines an object as interactable?
+	-> all share base monobehaviour (acts as abstract)
+	-> all are used by calling "interact" function
 
 [-----------------------------------------]
 // WEAPON SWAP SYSTEM (PRIORITY | 1)

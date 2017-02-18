@@ -32,15 +32,5 @@ namespace MyTypes
             return interaction.ToString();
         }
     }
-
-    public struct InteractObject
-    {
-        public InteractObject(int n)
-        {
-            data = n;
-        }
-
-        public int data;
-    }
 }
     

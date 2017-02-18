@@ -29,7 +29,7 @@ public class EX_GrowComponent : Interactable {
     }
 
     // place your custom logic here for interaction
-    protected override void Commit(string msg)
+    protected override void Commit(InteractMessage msg)
     {
         Debug.Log(this + ": " + msg);
     }

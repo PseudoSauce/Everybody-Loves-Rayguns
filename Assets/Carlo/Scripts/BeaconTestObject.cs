@@ -49,7 +49,7 @@ public class BeaconTestObject : MonoBehaviour {
     }
 
     // Pass in the extent of object ot teleport.  This will check if it is possible to teleport.
-    private bool CanTeleport(Vector3 extent)
+    private bool CanTeleport(Vector3 extent, GameObject objectToTeleport)
     {
         m_canDrawRays = true;   // For debug draw rays
         bool result = true;
@@ -63,6 +63,8 @@ public class BeaconTestObject : MonoBehaviour {
                                  m_extentX, m_extentY, m_extentZ };
         m_directions = new Vector3[] { transform.up, transform.right, transform.forward,
                                        -transform.up, -transform.right, -transform.forward };
+
+        RaycastHit hitInfo;
         
         // Cast rays and inverse rays from the centre of the test object
         for (int i = 0; i < m_directions.Length; i++)
@@ -71,18 +73,24 @@ public class BeaconTestObject : MonoBehaviour {
             Ray inverseRay = new Ray(transform.position + (m_directions[i] * m_extents[i]), -m_directions[i]);
 
             // Regular rayast check
-            if (Physics.Raycast(ray, m_extents[i]))
+            if (Physics.Raycast(ray, out hitInfo, m_extents[i]))    // This might cause issues
             {
-                result = false;
-                break;
+                if (hitInfo.collider.gameObject != objectToTeleport)
+                {
+                    result = false;
+                    break;
+                }
             }
             // Check inverse rays in case the test object is in a wall
             // Though the check in beacon should prevent the need of this check
             // Kept here just in case
-            if (Physics.Raycast(inverseRay, m_extents[i]))
+            if (Physics.Raycast(inverseRay, out hitInfo, m_extents[i]))
             {
-                result = false;
-                break;
+                if (hitInfo.collider.gameObject != objectToTeleport)    // This might cause issues
+                {
+                    result = false;
+                    break;
+                }
             }
         }
 
@@ -95,13 +103,13 @@ public class BeaconTestObject : MonoBehaviour {
     /// <param name="hologramMesh">Pass the mesh of the object to be teleported</param>
     /// <param name="extent">Pass the extent of the object to be teleported</param>
     /// <param name="scale">Pass the scale of the object to be teleported</param>
-    public void ShowHologram(Mesh hologramMesh, Vector3 extent, Vector3 scale)
+    public void ShowHologram(Mesh hologramMesh, Vector3 extent, Vector3 scale, GameObject objectToTeleport)
     {
         if(m_mesh != null)
         {
             // Changes the colour of the hologram based on if the object can be teleported or not
             // Also set m_canTeleport to true or false
-            if(CanTeleport(extent))
+            if(CanTeleport(extent, objectToTeleport))
             {
                 m_meshRenderer.material.color = m_goodColour;
                 m_canTeleport = true;

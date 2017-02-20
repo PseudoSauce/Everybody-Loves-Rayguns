@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -112,10 +112,10 @@ public class ScaleComponent : Interactable {
     }
 
     // place your custom logic here for interaction
-    protected override void Commit(string msg) {
+    protected override void Commit(InteractMessage msg) {
         Debug.Log(this + ": " + msg);
 
-        switch (msg) {
+        switch (msg.msg) {
             case "GROW":
                 growing = true;
                 break;

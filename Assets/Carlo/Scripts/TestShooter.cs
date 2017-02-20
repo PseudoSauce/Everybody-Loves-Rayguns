@@ -9,6 +9,7 @@ public class TestShooter : MonoBehaviour {
     public GameObject projectile;
     public Transform gun;
     private GameObject beacon = null;
+    private GameObject lastObject = null;
 
     void Update()
     {
@@ -45,13 +46,15 @@ public class TestShooter : MonoBehaviour {
             {
                 if (beacon != null)
                 {
-                    msg = new InteractMessage(Interaction.TELEPORTING, "HitBegin");
-                    hitInfo.collider.gameObject.SendMessage("Interact", msg);
+                    lastObject = hitInfo.collider.gameObject;
+                    msg = new InteractMessage(Interaction.TELEPORTING, "HitBegin", beacon.GetComponent<Beacon>());
+
+                    lastObject.SendMessage("Interact", msg);
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        msg = new InteractMessage(Interaction.TELEPORTING, "Teleport");
-                        hitInfo.collider.gameObject.SendMessage("Interact", msg);
+                        msg = new InteractMessage(Interaction.TELEPORTING, "Teleport", beacon.GetComponent<Beacon>());
+                        lastObject.SendMessage("Interact", msg);
                     }
                 }
             }
@@ -59,8 +62,12 @@ public class TestShooter : MonoBehaviour {
             {
                 if (beacon != null)
                 {
-                    msg = new InteractMessage(Interaction.TELEPORTING, "HitEnd");
-                    hitInfo.collider.gameObject.SendMessage("Interact", msg);
+                    if (lastObject != null)
+                    {
+                        msg = new InteractMessage(Interaction.TELEPORTING, "HitEnd");
+                        lastObject.SendMessage("Interact", msg);
+                        lastObject = null;
+                    }
                 }
             }
         }

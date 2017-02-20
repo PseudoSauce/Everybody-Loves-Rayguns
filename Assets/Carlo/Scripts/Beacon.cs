@@ -22,6 +22,8 @@ public class Beacon : MonoBehaviour {
     private Mesh m_lastMesh = null;
     private Rigidbody m_rb = null;
 
+    public Beacon GetBeacon { get { return this; } }
+
 	void Start ()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -93,7 +95,7 @@ public class Beacon : MonoBehaviour {
     /// <param name="hologramMesh">Pass the mesh of the object to be teleported</param>
     /// <param name="extent">Pass the extent of the object to be teleported</param>
     /// <param name="scale">Pass the scale of the object to be teleported</param>
-    public void SendMesh(Mesh hologramMesh, Vector3 extent, Vector3 scale)
+    public void SendMesh(Mesh hologramMesh, Vector3 extent, Vector3 scale, GameObject objectToTeleport)
     {
         m_lastMesh = hologramMesh;
 
@@ -105,14 +107,14 @@ public class Beacon : MonoBehaviour {
                 m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
             }
 
-            m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale);
+            m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale, objectToTeleport);
         }
         else
         {
             m_spawnedTestObject = Instantiate(m_testObject, transform.position, Quaternion.identity) as BeaconTestObject;
             m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
             m_spawnedTestObject.transform.parent = transform;
-            m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale);
+            m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale, objectToTeleport);
         }
     }
 

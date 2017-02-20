@@ -42,9 +42,7 @@ public class ShootCast : MonoBehaviour {
         if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2") || !canFire) {
             laserLine.enabled = false;
             if (stuck || !canFire) {
-                InteractMessage sendMsg;
-                sendMsg.interaction = Interaction.SCALING;
-                sendMsg.msg = "STOPGROW";
+                InteractMessage sendMsg = new InteractMessage(Interaction.SCALING, "STOPGROW");
                 currentHit.SendMessage("Interact", sendMsg);
                 sendMsg.msg = "STOPSHRINK";
                 currentHit.SendMessage("Interact", sendMsg);
@@ -91,8 +89,7 @@ public class ShootCast : MonoBehaviour {
                     canFire = false;
                 } else {
                     //send scale msg to obj
-                    InteractMessage sendMsg;
-                    sendMsg.interaction = Interaction.SCALING;
+                    InteractMessage sendMsg = new InteractMessage(Interaction.SCALING, "");
                     if (whatAmIDoing == "growing") {
                         sendMsg.msg = "GROW";
                         currentHit.SendMessage("Interact", sendMsg);

@@ -109,8 +109,6 @@ public class Interactable : MonoBehaviour {
     {
         if (message.interaction == InteractionType)
             Commit(message);
-        else
-            Debug.Log("Interactable: '" + message.interaction + "' is not a valid interaction for this component.");
     }
 
     // set whether this interactable will be updated each tick.    

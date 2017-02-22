@@ -10,7 +10,7 @@ namespace MyTypes
 
     public enum Interaction
     {
-        SCALING, TELEPORTING
+        SCALING, TELEPORTING, MESSENGER, TRIGGER
     }
 
     // send the interactable component this message.    
@@ -31,6 +31,27 @@ namespace MyTypes
         {            
             return interaction.ToString();
         }
+    }
+
+     [System.Serializable]
+     public struct ActionTarget {
+         public int ID;
+         public Interactable target;
+         public bool isBaseMessenger;
+     }
+
+    public struct MessengerResult
+    {
+        public MessengerResult(MessengerComponent messenger, bool isBase, bool result = false)
+        {
+            this.messenger = messenger;
+            this.result = result;
+            this.isBase = isBase;
+        }
+
+        public MessengerComponent messenger;
+        public bool result;
+        public bool isBase;
     }
 }
     

@@ -18,6 +18,8 @@ public class Beacon : MonoBehaviour {
     private Gradient m_badColor;
     private LineRenderer m_lineRenderer = null;
 
+    [SerializeField, Tooltip("Minimum distance from the beacon to spawn the object.")]
+    private float m_minDistToBeacon = 5.0f;
     private BeaconTestObject m_spawnedTestObject = null;
     private Mesh m_lastMesh = null;
     private Rigidbody m_rb = null;
@@ -104,7 +106,16 @@ public class Beacon : MonoBehaviour {
             if (hologramMesh == m_lastMesh)
             {
                 // Re-ajust position
-                m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
+                //m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
+
+                Vector3 newPos = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f)); ;
+
+                if (Vector3.Distance(transform.position, newPos) < m_minDistToBeacon)
+                {
+                    newPos += transform.forward * m_minDistToBeacon;
+                }
+
+                m_spawnedTestObject.transform.position = newPos;
             }
 
             m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale, objectToTeleport);
@@ -130,7 +141,14 @@ public class Beacon : MonoBehaviour {
     // Returns the teleport position
     public Vector3 GetTeleportPosition(Vector3 extent)
     {
-        return transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
+        Vector3 newPos = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f)); ;
+
+        if(Vector3.Distance(transform.position, newPos) <  m_minDistToBeacon)
+        {
+            newPos += transform.forward * m_minDistToBeacon;
+        }
+
+        return newPos;
     }
 
     // Returns the rotation of the test object

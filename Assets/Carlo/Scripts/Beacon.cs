@@ -88,7 +88,10 @@ public class Beacon : MonoBehaviour {
     // Can the object be teleported?
     public bool CanTeleport()
     {
-        return m_spawnedTestObject.CanTeleport();
+        if (m_hasHit)
+            return m_spawnedTestObject.CanTeleport();
+        else
+            return false;
     }
 
     /// <summary>

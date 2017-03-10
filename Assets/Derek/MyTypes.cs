@@ -10,7 +10,7 @@ namespace MyTypes
 
     public enum Interaction
     {
-        SCALING, TELEPORTING, MESSENGER, TRIGGER
+        SCALING, TELEPORTING, MESSENGER, TRIGGER, DEATH
     }
 
     // send the interactable component this message.    

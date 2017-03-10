@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4125866177712684}
   - component: {fileID: 33057058915155370}
   - component: {fileID: 23694509433658000}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IronSpike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4056319966317160}
   - component: {fileID: 33949741519971604}
   - component: {fileID: 23133105626223270}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,8 +53,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4804188359630930}
-  m_Layer: 0
-  m_Name: RayGun_EW1
+  m_Layer: 9
+  m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4941823533027450}
   - component: {fileID: 33121888410246614}
   - component: {fileID: 23752235233777626}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Clip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4118417483545356}
   - component: {fileID: 33600050232640592}
   - component: {fileID: 23856277324916982}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FeedBarrelRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 54932887644724624}
   - component: {fileID: 136449708097766476}
   - component: {fileID: 114601428713894300}
+  - component: {fileID: 114514161101450994}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -122,7 +123,7 @@ GameObject:
   - component: {fileID: 4582193870399868}
   - component: {fileID: 33117320801899026}
   - component: {fileID: 23507051853880820}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SlingRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +140,7 @@ GameObject:
   - component: {fileID: 4451463061374842}
   - component: {fileID: 33165289293301260}
   - component: {fileID: 23032124099666014}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +157,7 @@ GameObject:
   - component: {fileID: 4316220595758844}
   - component: {fileID: 33025702949801806}
   - component: {fileID: 23016322534040432}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +189,7 @@ GameObject:
   - component: {fileID: 4454447748962094}
   - component: {fileID: 33365718288272160}
   - component: {fileID: 23271052693916676}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +206,7 @@ GameObject:
   - component: {fileID: 4802771823600266}
   - component: {fileID: 33290162410016724}
   - component: {fileID: 23714494596084238}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +244,7 @@ GameObject:
   - component: {fileID: 4087568747648742}
   - component: {fileID: 33324087155970184}
   - component: {fileID: 23523885666683090}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FeedRingBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +261,7 @@ GameObject:
   - component: {fileID: 4546817344115078}
   - component: {fileID: 33350986819265600}
   - component: {fileID: 23549402941628730}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +278,7 @@ GameObject:
   - component: {fileID: 4797496595752728}
   - component: {fileID: 33179707842315714}
   - component: {fileID: 23639498432310480}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +295,7 @@ GameObject:
   - component: {fileID: 4974033168665076}
   - component: {fileID: 33522879261706962}
   - component: {fileID: 23505028780704782}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FeedBarrelRing_Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +312,7 @@ GameObject:
   - component: {fileID: 4276941232610126}
   - component: {fileID: 33523474393141336}
   - component: {fileID: 23917236138555666}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Grip_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +329,7 @@ GameObject:
   - component: {fileID: 4148077202900222}
   - component: {fileID: 33604241366434500}
   - component: {fileID: 23193079683241558}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +347,6 @@ GameObject:
   - component: {fileID: 33181578861901614}
   - component: {fileID: 65180811813171066}
   - component: {fileID: 23926257183919252}
-  - component: {fileID: 114274903562764712}
   - component: {fileID: 120528834126232572}
   - component: {fileID: 114875684811469298}
   m_Layer: 0
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 4437861092079540}
   - component: {fileID: 33246609977224792}
   - component: {fileID: 23086704191542386}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: StockBody_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 4433980137707824}
   - component: {fileID: 33323212594085622}
   - component: {fileID: 23613542959132982}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FeedCable_Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 4383665421542522}
   - component: {fileID: 33368685925905350}
   - component: {fileID: 23024648441158556}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 4354635159172770}
   - component: {fileID: 33157295264516890}
   - component: {fileID: 23779339855444792}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteriorFeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 4411546397226152}
   - component: {fileID: 33563309292807274}
   - component: {fileID: 23714154330392210}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 4568033026804004}
   - component: {fileID: 33063362226617004}
   - component: {fileID: 23870525370877546}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteriorBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,7 +469,6 @@ GameObject:
   - component: {fileID: 20317668081859066}
   - component: {fileID: 124515383972003656}
   - component: {fileID: 92685905679620512}
-  - component: {fileID: 81504579828792192}
   - component: {fileID: 114310933047664288}
   m_Layer: 0
   m_Name: PrePassCamera
@@ -488,7 +487,7 @@ GameObject:
   - component: {fileID: 4833299635342844}
   - component: {fileID: 33653661706333046}
   - component: {fileID: 23210723011727418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +504,7 @@ GameObject:
   - component: {fileID: 4360288372228732}
   - component: {fileID: 33796409106475296}
   - component: {fileID: 23562490753770484}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FeedRingBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +521,7 @@ GameObject:
   - component: {fileID: 4285280866906436}
   - component: {fileID: 33503265714305252}
   - component: {fileID: 23243751592906250}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteriorFeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +538,7 @@ GameObject:
   - component: {fileID: 4489033027076420}
   - component: {fileID: 33732567583349728}
   - component: {fileID: 23572958077146592}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BackPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,7 +555,7 @@ GameObject:
   - component: {fileID: 4354488651822366}
   - component: {fileID: 33387510738106382}
   - component: {fileID: 23814254585592942}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelBodyDeco_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +572,7 @@ GameObject:
   - component: {fileID: 4280526282634180}
   - component: {fileID: 33827614393184928}
   - component: {fileID: 23791076597732090}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FeedCable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -587,7 +586,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1243282446738786}
   m_LocalRotation: {x: -0, y: 0.7251078, z: -0, w: -0.68863535}
-  m_LocalPosition: {x: -1.36, y: 2, z: 7.26}
+  m_LocalPosition: {x: -6.82, y: 2, z: 6.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4394436701176210}
@@ -2207,13 +2206,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1474549327520414}
   m_Enabled: 1
---- !u!81 &81504579828792192
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1912580046520776}
-  m_Enabled: 1
 --- !u!92 &92685905679620512
 Behaviour:
   m_ObjectHideFlags: 1
@@ -2221,25 +2213,6 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1912580046520776}
   m_Enabled: 1
---- !u!114 &114274903562764712
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1785678672384460}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 758d94e32f9eb0b4d9e1a47f8e80c7d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponShootRange: 25
-  gunEnd: {fileID: 4470405817831784}
-  beamMask:
-    serializedVersion: 2
-    m_Bits: 1
-  fitterMask:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &114310933047664288
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2309,6 +2282,20 @@ MonoBehaviour:
   rigidbodyFirstPersonController: {fileID: 114601428713894300}
   StrideInterval: 4
   RunningStrideLengthen: 0.722
+--- !u!114 &114514161101450994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1243282446738786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c62d40dbee0d0c4484cc3ad8b154e62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateMinimumTick: 0.02
+  UseModifiedUpdate: 0
+  tempHitpoints: 100
 --- !u!114 &114601428713894300
 MonoBehaviour:
   m_ObjectHideFlags: 1

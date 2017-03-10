@@ -4,6 +4,8 @@ using UnityEngine;
 
 using MyTypes;
 
+[AddComponentMenu ("Custom Components/ScaleComponent")]
+[RequireComponent(typeof(Rigidbody))]
 public class ScaleComponent : Interactable {
     //volume check for object
     private float extentPercentage = 0.05f;

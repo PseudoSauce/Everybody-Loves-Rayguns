@@ -16,6 +16,10 @@ public class DeathComponent : Interactable {
     private bool quickDeath = false;
     private float nextFire = 0;
 
+    void OnGUI() {
+        GUI.Box(new Rect(0, Screen.height - 50, 50, 50), tempHitpoints.ToString());
+    }
+
     protected override void Init() {
         AssignInteractionType(Interaction.DEATH);
         AssignStart(MyStart);

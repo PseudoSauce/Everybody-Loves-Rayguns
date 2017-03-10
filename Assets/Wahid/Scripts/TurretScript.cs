@@ -4,6 +4,9 @@ using UnityEngine;
 using MyTypes;
 //[ExecuteInEditMode]
 public class TurretScript : MonoBehaviour {
+    [Tooltip("Layer to ignore for the beam")]
+    [SerializeField]
+    private LayerMask beamMask;
     [Range(0, 50)]
     public float turretRotSpeed = 2.0f;
     [Range(0, 360)]
@@ -56,13 +59,23 @@ public class TurretScript : MonoBehaviour {
 
     void FireBeam(bool inRange) {
         if (inRange) {
-            laserLine.SetPosition(0, gunEnd.position);
-            laserLine.SetPosition(1, player.position);
-            laserLine.enabled = true;
+            RaycastHit normalhit;
+            Vector3 rayOrigin = gunEnd.position;
+            if (Physics.Linecast(rayOrigin, player.position, out normalhit, beamMask)) {
+                if (normalhit.collider.gameObject != player.gameObject) {
+                    print(normalhit.collider.gameObject);
+                    print("blocked");
+                    FireBeam(false);
+                } else {
+                    laserLine.SetPosition(0, gunEnd.position);
+                    laserLine.SetPosition(1, player.position);
+                    laserLine.enabled = true;
 
-            InteractMessage msg;
-            msg = new InteractMessage(Interaction.DEATH, "SENDHITS");
-            player.SendMessage("Interact", msg);
+                    InteractMessage msg;
+                    msg = new InteractMessage(Interaction.DEATH, "SENDHITS");
+                    player.SendMessage("Interact", msg);
+                }
+            }
         } else {
             laserLine.SetPosition(0, gunEnd.position);
             laserLine.SetPosition(1, gunEnd.position);

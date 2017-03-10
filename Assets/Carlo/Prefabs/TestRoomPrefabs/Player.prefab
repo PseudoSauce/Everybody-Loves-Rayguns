@@ -2296,6 +2296,7 @@ MonoBehaviour:
   UpdateMinimumTick: 0.02
   UseModifiedUpdate: 0
   tempHitpoints: 100
+  drainTimeStep: 0.1
 --- !u!114 &114601428713894300
 MonoBehaviour:
   m_ObjectHideFlags: 1

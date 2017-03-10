@@ -91,10 +91,10 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.07
-    y: 0.07
-    width: 0.3
-    height: 0.3
+    x: 0.02
+    y: 0.02
+    width: 0.25
+    height: 0.25
   near clip plane: 0.01
   far clip plane: 100
   field of view: 100
@@ -299,13 +299,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e830177b20559418616f179a755eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noiseStrength: 4
-  linesStrength: 1
+  noiseStrength: 1
+  linesStrength: 0.5
   linesAmount: 20
-  amplification: 2.66
+  amplification: 0.5
   luminosityThreshold: 0
   noiseSaturation: 0
-  textureOffset: 1
+  textureOffset: 0.5
   nightVisionShader: {fileID: 4800000, guid: a9d34eeca94d90d48a1564283b37eec8, type: 3}
 --- !u!114 &114932226061021440
 MonoBehaviour:

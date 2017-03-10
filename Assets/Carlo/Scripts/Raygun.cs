@@ -15,7 +15,7 @@ public enum GunMode
 public class Raygun : MonoBehaviour {
     #region Variables
     // Raygun //
-    private GunMode m_currentGunMode = GunMode.Teleporter;
+    private GunMode m_currentGunMode = GunMode.Scaler;
 
     [Tooltip("How far the weapon should shoot")]
     public float weaponShootRange = 25;
@@ -51,6 +51,8 @@ public class Raygun : MonoBehaviour {
 
     // Debuging //
     public Text displayText = null;
+    public Text inst1 = null;
+    public Text inst2 = null;
     // Debuging //
     #endregion Variables
 
@@ -69,12 +71,16 @@ public class Raygun : MonoBehaviour {
         {
             case GunMode.Teleporter:
                 TeleportBeamInput();
-                displayText.text = "Currently in: Teleport Mode";
+                displayText.text = "Teleport-Beam";
+                inst1.text = "Teleport Object to Beacon";
+                inst2.text = "Shoot Teleport Beacon";
                 break;
             case GunMode.Scaler:
                 ScalerBeamInput();
                 StopDisplayingHologram();
-                displayText.text = "Currently in: Scaler Mode";
+                displayText.text = "Sizer-Beam";
+                inst1.text = "Grow Object";
+                inst2.text = "Shrink Object";
                 break;
             default:
                 Debug.LogWarning("Current Gun Mode not set properly.");
@@ -189,20 +195,28 @@ public class Raygun : MonoBehaviour {
     #endregion Teleport Beam
 
     #region Scaler Beam
+    bool scaling = false;
     private void ScalerBeamInput()
     {
         if (canFire)
         {
+            if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2"))
+                scaling = true;
+            if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2"))
+                scaling = false;
+
             if (Input.GetButton("Fire1"))
             {
-                shootRay("growing");
+                if(scaling)
+                    shootRay("growing");
             }
             if (Input.GetButton("Fire2"))
             {
-                shootRay("shrinking");
+                if (scaling)
+                    shootRay("shrinking");
             }
         }
-        if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2") || !canFire)
+        if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2") || !canFire || !scaling)
         {
             laserLine.enabled = false;
             if (stuck || !canFire)
@@ -289,6 +303,7 @@ public class Raygun : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             m_currentGunMode = GunMode.Teleporter;
+            scaling = false;
         }
 
         if(Input.GetKeyDown(KeyCode.Alpha2))
@@ -299,9 +314,16 @@ public class Raygun : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             m_currentGunMode++;
-            if(m_currentGunMode >= GunMode.ModeCount)
+
+            if (m_currentGunMode >= GunMode.ModeCount)
             {
                 m_currentGunMode = 0;
+            }
+
+            if (m_currentGunMode == GunMode.Teleporter)
+            {
+                if (canFire && currentHit != null)
+                    scaling = false;
             }
         }
     }

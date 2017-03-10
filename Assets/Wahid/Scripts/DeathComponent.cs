@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 using MyTypes;
@@ -16,9 +17,21 @@ public class DeathComponent : Interactable {
     private bool quickDeath = false;
     private float nextFire = 0;
 
-    void OnGUI() {
-        GUI.Box(new Rect(0, Screen.height - 50, 50, 50), tempHitpoints.ToString());
-    }
+    [SerializeField]
+    private Image m_healthBar;
+    [SerializeField]
+    private Text m_deathMessage;
+    [SerializeField]
+    private string m_bulletTag = "Bullet";
+    [SerializeField]
+    private string m_deathTag = "DeathZone";
+    [SerializeField]
+    private string m_spawnPointTag = "SpawnPoint";
+
+
+    private Transform m_lastSpawnPoint;
+    private bool m_respawning = false;
+    private bool isDead = false;
 
     protected override void Init() {
         AssignInteractionType(Interaction.DEATH);
@@ -27,30 +40,44 @@ public class DeathComponent : Interactable {
     }
 
     private void MyStart() {
+        m_lastSpawnPoint = null;
         Debug.Log("DeathComponent: Starting...");
         origHitpoints = tempHitpoints;
     }
 
     private void MyUpdate(float deltaTime) {
-        if (beingHit) {
-            StartDeath(true);
-        } else if (quickDeath) {
-            StartDeath(false);
-        } else {
-            Heal();
+        if (!isDead) {
+            if (beingHit) {
+                StartDeath(true);
+            } else if (quickDeath) {
+                StartDeath(false);
+            } else {
+                Heal();
+            }
+        }
+        if (!m_respawning) {
+            if (isDead) {
+                m_respawning = true;
+                StartCoroutine(Respawn());
+            }
         }
     }
-
     void StartDeath(bool normalDeath) {
         if (!normalDeath) {
-            Destroy(this.gameObject);
+            m_deathMessage.text = "You Died!";
+            isDead = true;
         }
         if (Time.time > nextFire) {
             nextFire = Time.time + drainTimeStep;
             tempHitpoints--;
+            m_healthBar.fillAmount = (float)tempHitpoints / (float)origHitpoints;
             print("health: " + tempHitpoints);
             if (tempHitpoints < 0) {
-                Destroy(this.gameObject);
+                //Destroy(this.gameObject);
+                m_deathMessage.text = "You Died!";
+                isDead = true;
+            } else {
+                m_deathMessage.text = "";
             }
         }
     }
@@ -61,9 +88,17 @@ public class DeathComponent : Interactable {
             if (Time.time > nextFire) {
                 nextFire = Time.time + drainTimeStep;
                 tempHitpoints++;
+                m_healthBar.fillAmount = (float)tempHitpoints / (float)origHitpoints;
                 print("health: " + tempHitpoints);
             }
         }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag(m_deathTag))
+            quickDeath = true;
+        if (other.CompareTag(m_spawnPointTag))
+            m_lastSpawnPoint = other.gameObject.transform;
     }
     // place your custom logic here for interaction
     protected override void Commit(InteractMessage msg) {
@@ -87,5 +122,18 @@ public class DeathComponent : Interactable {
                 quickDeath = true;
                 break;
         }
+    }
+    private IEnumerator Respawn() {
+        print("RESPAWNING");
+        yield return new WaitForSeconds(2);
+        if (m_lastSpawnPoint.position != null) {
+            transform.position = m_lastSpawnPoint.position;
+        } else {
+            print("no pos found so we destroy you");
+            Destroy(this.gameObject);
+        }
+        //transform.rotation = m_lastSpawnPoint.rotation;
+        m_respawning = false;
+        tempHitpoints = origHitpoints;
     }
 }

@@ -8,6 +8,8 @@ TagManager:
   - Teleportable
   - TeleportSurface
   - ActionManager
+  - DeathZone
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

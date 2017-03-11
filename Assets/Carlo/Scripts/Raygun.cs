@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using MyTypes;
+using System;
 
 public enum GunMode
 {
@@ -21,7 +22,7 @@ public class Raygun : MonoBehaviour {
     public float weaponShootRange = 25;
     [Tooltip("The end of the gun [Empty gameobject]")]
     public Transform gunEnd;
-    private Camera fpsCam;
+    private Camera fpsCam;      // There should be a better transform reference to use instead of camera, it makes it so if multiple guns are present, there won't be enough transform to instantiate the beacon
     // Raygun //
 
     // Teleport // 
@@ -59,27 +60,52 @@ public class Raygun : MonoBehaviour {
     {
         laserLine = GetComponent<LineRenderer>();
         fpsCam = GetComponentInParent<Camera>();
+        if (!fpsCam) {
+            fpsCam = FindObjectOfType<Camera>();
+        }
     }
 	
 	void Update ()
     {
         ChangeGunMode();
 
-        switch (m_currentGunMode)
-        {
-            case GunMode.Teleporter:
-                TeleportBeamInput();
-                displayText.text = "Currently in: Teleport Mode";
-                break;
-            case GunMode.Scaler:
-                ScalerBeamInput();
-                StopDisplayingHologram();
-                displayText.text = "Currently in: Scaler Mode";
-                break;
-            default:
-                Debug.LogWarning("Current Gun Mode not set properly.");
-                displayText.text = "Current Gun Mode not set properly.";
-                break;
+        if (displayText) {
+            switch (m_currentGunMode) {
+                case GunMode.Teleporter:
+                    TeleportBeamInput();
+                    displayText.text = "Currently in: Teleport Mode";
+                    break;
+                case GunMode.Scaler:
+                    ScalerBeamInput();
+                    StopDisplayingHologram();
+                    displayText.text = "Currently in: Scaler Mode";
+                    break;
+                default:
+                    Debug.LogWarning("Current Gun Mode not set properly.");
+                    displayText.text = "Current Gun Mode not set properly.";
+                    break;
+            }
+        } else {
+            var disText = new GameObject("DisplayText", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+            disText.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            disText.GetComponent<RectTransform>().anchoredPosition = Vector2.one;
+            displayText = disText.GetComponent<Text>();
+
+            switch (m_currentGunMode) {
+                case GunMode.Teleporter:
+                    TeleportBeamInput();
+                    displayText.text = "Currently in: Teleport Mode";
+                    break;
+                case GunMode.Scaler:
+                    ScalerBeamInput();
+                    StopDisplayingHologram();
+                    displayText.text = "Currently in: Scaler Mode";
+                    break;
+                default:
+                    Debug.LogWarning("Current Gun Mode not set properly.");
+                    displayText.text = "Current Gun Mode not set properly.";
+                    break;
+            }
         }
     }
 

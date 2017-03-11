@@ -71,7 +71,6 @@ public class Raygun : MonoBehaviour {
     {
         ChangeGunMode();
 
-<<<<<<< HEAD
         if (displayText) {
             switch (m_currentGunMode) {
                 case GunMode.Teleporter:
@@ -109,27 +108,6 @@ public class Raygun : MonoBehaviour {
                     displayText.text = "Current Gun Mode not set properly.";
                     break;
             }
-=======
-        switch (m_currentGunMode)
-        {
-            case GunMode.Teleporter:
-                TeleportBeamInput();
-                displayText.text = "Teleport-Beam";
-                inst1.text = "Teleport Object to Beacon";
-                inst2.text = "Shoot Teleport Beacon";
-                break;
-            case GunMode.Scaler:
-                ScalerBeamInput();
-                StopDisplayingHologram();
-                displayText.text = "Sizer-Beam";
-                inst1.text = "Grow Object";
-                inst2.text = "Shrink Object";
-                break;
-            default:
-                Debug.LogWarning("Current Gun Mode not set properly.");
-                displayText.text = "Current Gun Mode not set properly.";
-                break;
->>>>>>> b9cb42eb33c5ec300b28b3264618a68ef3869285
         }
     }
 

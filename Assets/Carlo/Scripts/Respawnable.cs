@@ -8,6 +8,15 @@ public class Respawnable : MonoBehaviour {
     private string m_respawnTag = "DeathZone";
     private bool m_canRespawn = false;
 
+    private Vector3 m_defaultScale;
+    private Quaternion m_defaultRotation;
+
+    void Start()
+    {
+        m_defaultScale = transform.localScale;
+        m_defaultRotation = transform.rotation;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.tag + " " + other.name);
@@ -26,5 +35,15 @@ public class Respawnable : MonoBehaviour {
     public void ResetCanRespawn()
     {
         m_canRespawn = false;
+    }
+
+    public Vector3 GetDefaultScale()
+    {
+        return m_defaultScale;
+    }
+
+    public Quaternion GetDefaultRotation()
+    {
+        return m_defaultRotation;
     }
 }

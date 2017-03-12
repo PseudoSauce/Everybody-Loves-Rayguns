@@ -25,5 +25,7 @@ public class ObjectSpawner : MonoBehaviour {
     {
         yield return new WaitForSeconds(2);
         r.transform.position = m_respawnLocation.position;
+        r.transform.localScale = r.GetDefaultScale();
+        r.transform.rotation = r.GetDefaultRotation();
     }
 }

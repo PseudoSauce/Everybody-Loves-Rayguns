@@ -26,9 +26,12 @@ public class Door : ActivatableObject {
 
     public override void DeactivateObject()
     {
-        base.DeactivateObject();
+        if (!m_isOneShot)
+        {
+            base.DeactivateObject();
 
-        Close();
+            Close();
+        }
     }
 
     public override void Call(string method, params object[] list)

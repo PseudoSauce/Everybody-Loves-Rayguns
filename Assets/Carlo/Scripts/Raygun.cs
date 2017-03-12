@@ -6,13 +6,6 @@ using UnityEngine.UI;
 using MyTypes;
 using System;
 
-public enum GunMode
-{
-    Teleporter = 0,
-    Scaler,
-    ModeCount
-}
-
 public class Raygun : MonoBehaviour {
     #region Variables
     // Raygun //

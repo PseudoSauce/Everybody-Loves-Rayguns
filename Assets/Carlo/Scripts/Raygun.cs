@@ -68,12 +68,12 @@ public class Raygun : MonoBehaviour {
             switch (m_currentGunMode) {
                 case GunMode.Teleporter:
                     TeleportBeamInput();
-                    displayText.text = "Currently in: Teleport Mode";
+                    displayText.text = "Teleport-Beam";
                     break;
                 case GunMode.Scaler:
                     ScalerBeamInput();
                     StopDisplayingHologram();
-                    displayText.text = "Currently in: Scaler Mode";
+                    displayText.text = "Sizer-beam";
                     break;
                 default:
                     Debug.LogWarning("Current Gun Mode not set properly.");

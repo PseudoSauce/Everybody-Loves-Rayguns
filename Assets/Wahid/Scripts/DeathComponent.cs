@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -27,7 +27,6 @@ public class DeathComponent : Interactable {
     private string m_deathTag = "DeathZone";
     [SerializeField]
     private string m_spawnPointTag = "SpawnPoint";
-
 
     private Transform m_lastSpawnPoint;
     private bool m_respawning = false;

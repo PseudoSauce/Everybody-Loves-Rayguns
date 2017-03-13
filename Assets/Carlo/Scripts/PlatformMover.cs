@@ -21,16 +21,33 @@ public class PlatformMover : ActivatableObject {
 
     public override void ActivateObject()
     {
-        base.ActivateObject();
-        m_moveToEnd = true;
-        m_moveToStart = false;
+        if(m_activateAfterTime)
+        {
+            if(!m_isActive)
+            {
+                if(m_timedCoroutine != null)
+                {
+                    StopCoroutine(m_timedCoroutine);
+                }
+                m_timedCoroutine = StartCoroutine(ActivateAfterTime());
+            }
+        }
+        else
+        {
+            base.ActivateObject();
+            m_moveToEnd = true;
+            m_moveToStart = false;
+        }
     }
 
     public override void DeactivateObject()
     {
-        base.DeactivateObject();
-        m_moveToEnd = false;
-        m_moveToStart = true;
+        if (!m_isOneShot)
+        {
+            base.DeactivateObject();
+            m_moveToEnd = false;
+            m_moveToStart = true;
+        }
     }
 
     private void Move()
@@ -53,5 +70,13 @@ public class PlatformMover : ActivatableObject {
                 m_moveToEnd = false;
             }
         }
+    }
+
+    private IEnumerator ActivateAfterTime()
+    {
+        yield return new WaitForSeconds(m_activateTime);
+        base.ActivateObject();
+        m_moveToEnd = true;
+        m_moveToStart = false;
     }
 }

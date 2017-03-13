@@ -43,7 +43,10 @@ public class ScaleComponent : Interactable {
 
     void shrinkObject() {
         Rigidbody oRb = GetComponent<Rigidbody>();
-        if (oRb.mass > 1) {
+        //extra check for different shapes
+        float smScale = smallestVecIndice(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        print("smallest scale side is " + smScale);
+        if (oRb.mass > 1 && smScale > 1) {
             transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
             oRb.mass -= 0.1f;
         }
@@ -59,6 +62,10 @@ public class ScaleComponent : Interactable {
         }
     }
 
+    float smallestVecIndice(float x, float y, float z) {
+        return (x < y) ? ((x < z) ? x : z) : ((y < z) ? y : z);
+    }
+
     private bool canFit(Vector3 extent) {
         // Set the extent of the check
         extentX = extent.y + extent.y * extentPercentage;
@@ -67,10 +74,10 @@ public class ScaleComponent : Interactable {
 
         extents = new float[]{ extentX, extentY, extentZ,
                                extentX, extentY, extentZ };
-        //dont need -up since it is the floor
+
         directions = new Vector3[] { transform.up, transform.right, transform.forward,
             -transform.up, -transform.right, -transform.forward };
-        //initial you can fit
+        //initially you can fit
         bool canIFit = true;
         //each bool for the raycasts stored here
         bool[] results = new bool[directions.Length];

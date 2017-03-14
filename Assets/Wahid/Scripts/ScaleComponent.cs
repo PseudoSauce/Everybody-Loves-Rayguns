@@ -4,9 +4,12 @@ using UnityEngine;
 
 using MyTypes;
 
-[AddComponentMenu ("Custom Components/ScaleComponent")]
+[AddComponentMenu("Custom Components/ScaleComponent")]
 [RequireComponent(typeof(Rigidbody))]
 public class ScaleComponent : Interactable {
+    private float origScaleFactor;
+    private float scaleFactor = 0.05f;
+    Vector3 localScaleOrig;
     //volume check for object
     private float extentPercentage = 0.05f;
     private Vector3[] directions;
@@ -19,6 +22,7 @@ public class ScaleComponent : Interactable {
     bool growing;
     bool shrinking;
 
+
     public delegate void Scaler(GameObject param);
 
     protected override void Init() {
@@ -28,16 +32,20 @@ public class ScaleComponent : Interactable {
     }
 
     private void MyStart() {
+        origScaleFactor = scaleFactor;
+        localScaleOrig = transform.localScale;
         Debug.Log("GrowComponent: Starting...");
     }
 
     private void MyUpdate(float deltaTime) {
         if (growing) {
             Debug.Log("growing...");
-            growObject();
+            growObject(3);
         } else if (shrinking) {
             Debug.Log("shrinking...");
             shrinkObject();
+        } else {
+            scaleFactor = origScaleFactor;
         }
     }
 
@@ -46,17 +54,26 @@ public class ScaleComponent : Interactable {
         //extra check for different shapes
         float smScale = smallestVecIndice(transform.localScale.x, transform.localScale.y, transform.localScale.z);
         print("smallest scale side is " + smScale);
-        if (oRb.mass > 1 && smScale > 1) {
-            transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
-            oRb.mass -= 0.1f;
+        if (smScale > 1) {
+            scaleFactor += 0.1f;
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(localScaleOrig.x, localScaleOrig.y,
+                localScaleOrig.z), scaleFactor * Time.deltaTime);
+            GetComponent<Rigidbody>().mass += scaleFactor;
+            oRb.mass -= scaleFactor;
         }
     }
 
-    void growObject() {
+    void growObject(float scaleTo) {
+        
+        // Vector3 scale = Vector3.Lerp(transform.localScale, 20, Mathf.SmoothStep(0.0, 1.0, Time.deltaTime));
+        //float scale = Mathf.sin(Time.time * (.5f * 2 * Mathf.PI) + 1f) / 2f;
         Rigidbody oRb = GetComponent<Rigidbody>();
-        if (oRb.mass < 100 && canFit(GetComponent<MeshRenderer>().bounds.extents)) {
-            transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
-            GetComponent<Rigidbody>().mass += 0.1f;
+        float lgScale = smallestVecIndice(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        if (canFit(GetComponent<MeshRenderer>().bounds.extents)) {
+            scaleFactor += 0.1f;
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(localScaleOrig.x + scaleTo, //
+                localScaleOrig.y + scaleTo, localScaleOrig.z + scaleTo), scaleFactor * Time.deltaTime);
+            GetComponent<Rigidbody>().mass += scaleFactor;
         } else {
             print("cant grow this object");
         }
@@ -64,6 +81,9 @@ public class ScaleComponent : Interactable {
 
     float smallestVecIndice(float x, float y, float z) {
         return (x < y) ? ((x < z) ? x : z) : ((y < z) ? y : z);
+    }
+    float largestVecIndice(float x, float y, float z) {
+        return (x > y) ? ((x > z) ? x : z) : ((y > z) ? y : z);
     }
 
     private bool canFit(Vector3 extent) {

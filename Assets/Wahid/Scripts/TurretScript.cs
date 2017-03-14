@@ -4,6 +4,7 @@ using UnityEngine;
 using MyTypes;
 //[ExecuteInEditMode]
 public class TurretScript : MonoBehaviour {
+    //NOTE: increase the FOV and camera frustums for increased effect
     [Tooltip("Layer to ignore for the beam")]
     [SerializeField]
     private LayerMask beamMask;
@@ -12,9 +13,9 @@ public class TurretScript : MonoBehaviour {
     [Range(0, 360)]
     public float maxRotation = 45.0f;
     public Transform player;
-    public Transform gunEnd;
     public float turretShootRange = 11.0f;
 
+    private Transform gunEnd;
     private Collider playerColl;
     private Camera cam;
     private Plane[] planes;
@@ -25,6 +26,7 @@ public class TurretScript : MonoBehaviour {
     private Plane[] startingPlanes;
 
     void Start() {
+        gunEnd = GetComponentInChildren<Transform>();
         laserLine = GetComponent<LineRenderer>();
         playerColl = player.GetComponent<Collider>();
         cam = GetComponent<Camera>();
@@ -38,6 +40,7 @@ public class TurretScript : MonoBehaviour {
     }
 
     void Scan() {
+        //recalc planes
         planes = GeometryUtility.CalculateFrustumPlanes(cam);
         if (GeometryUtility.TestPlanesAABB(planes, playerColl.bounds)) {
             Detected();
@@ -50,18 +53,20 @@ public class TurretScript : MonoBehaviour {
 
     void Detected() {
         if (GeometryUtility.TestPlanesAABB(startingPlanes, playerColl.bounds)) {
+            print("player detected");
+            GetComponentInParent<Renderer>().material.color = Color.red;
             transform.LookAt(player);
             FireBeam(true);
+        } else {
+            FireBeam(false);
         }
-        print("player detected");
-        GetComponentInParent<Renderer>().material.color = Color.red;
     }
 
     void FireBeam(bool inRange) {
         if (inRange) {
             RaycastHit normalhit;
             Vector3 rayOrigin = gunEnd.position;
-            if (Physics.Linecast(rayOrigin, player.position, out normalhit, beamMask)) {
+            if (Physics.Linecast(rayOrigin, player.position, out normalhit, beamMask.value)) {
                 if (normalhit.collider.gameObject != player.gameObject) {
                     print(normalhit.collider.gameObject);
                     print("blocked");

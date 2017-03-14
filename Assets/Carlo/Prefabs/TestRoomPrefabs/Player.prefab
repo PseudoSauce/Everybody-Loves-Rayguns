@@ -876,15 +876,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1243282446738786}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 6.0009823, y: 2, z: -6.125635}
+  m_LocalRotation: {x: -0, y: 0.88743645, z: -0, w: 0.46093008}
+  m_LocalPosition: {x: -11.646, y: 2, z: 6.731}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224024640798105434}
   - {fileID: 4394436701176210}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 125.106, z: 0}
 --- !u!4 &4052750683819400
 Transform:
   m_ObjectHideFlags: 1
@@ -2604,7 +2604,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: YOU DIED!
+  m_Text: 
 --- !u!114 &114066404602613674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2902,8 +2902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UpdateMinimumTick: 0.02
   UseModifiedUpdate: 0
-  tempHitpoints: 100
-  drainTimeStep: 0.1
+  tempHitpoints: 50
+  drainTimeStep: 0.27
   m_healthBar: {fileID: 114735237856363350}
   m_deathMessage: {fileID: 114064375814154378}
   m_bulletTag: Bullet
@@ -3124,8 +3124,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   displayText: {fileID: 0}
-  inst1: {fileID: 0}
-  inst2: {fileID: 0}
+  inst1: {fileID: 114425860293434076}
+  inst2: {fileID: 114005130697321676}
 --- !u!114 &114941849987792132
 MonoBehaviour:
   m_ObjectHideFlags: 1

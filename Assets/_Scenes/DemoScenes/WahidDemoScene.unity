@@ -1359,28 +1359,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e2f752d12394a104dbe9673941c4989c, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &323130134
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 726
-  m_Height: 467
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!43 &323876126
 Mesh:
   m_ObjectHideFlags: 0
@@ -1690,11 +1668,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 323130134}
-    - target: {fileID: 4042323394934310, guid: a61ef97ff165b074a986f551849b3a51, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 125.106
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1364917860}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a61ef97ff165b074a986f551849b3a51, type: 2}
   m_IsPrefabParent: 0
@@ -9651,7 +9625,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-257144
+  m_Name: pb_Mesh-993394
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -9959,7 +9933,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-289352
+  m_Name: pb_Mesh-993308
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -10119,28 +10093,6 @@ Transform:
   m_Father: {fileID: 794745117}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1226842319
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 726
-  m_Height: 466
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!1001 &1277926512
 Prefab:
   m_ObjectHideFlags: 0
@@ -15081,6 +15033,28 @@ Transform:
   m_PrefabParentObject: {fileID: 4042323394934310, guid: a61ef97ff165b074a986f551849b3a51,
     type: 2}
   m_PrefabInternal: {fileID: 363270387}
+--- !u!84 &1364917860
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 726
+  m_Height: 466
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!43 &1382114743
 Mesh:
   m_ObjectHideFlags: 0
@@ -22207,6 +22181,28 @@ Transform:
   m_Father: {fileID: 570437295}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &1785192143
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 726
+  m_Height: 466
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!43 &1789273496
 Mesh:
   m_ObjectHideFlags: 0
@@ -27776,11 +27772,6 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1089703892}
-    - target: {fileID: 114251039713028504, guid: 43f19ac804a3d774ab698c8be3aef04f,
-        type: 2}
-      propertyPath: maxRotation
-      value: 36
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 43f19ac804a3d774ab698c8be3aef04f, type: 2}
   m_IsPrefabParent: 0

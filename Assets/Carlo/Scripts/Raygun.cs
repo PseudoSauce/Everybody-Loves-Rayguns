@@ -35,11 +35,11 @@ public class Raygun : MonoBehaviour {
     //where the beam ends [it starts from the center of the screen] 
     private Vector3 endPos;
     [SerializeField]
-    [Tooltip("Layer to ignore for the beam")]
+    [Tooltip("Layer to consider for the beam")]
     private LayerMask beamMask;
 
     [SerializeField]
-    [Tooltip("Layer to ignore for the fit checkers")]
+    [Tooltip("Layer to consider for the fit checkers")]
     private LayerMask fitterMask;
     // Sizer //
 
@@ -284,7 +284,7 @@ public class Raygun : MonoBehaviour {
             laserLine.SetPosition(1, endPos);
             this.transform.Rotate(new Vector3(0, 0, 60 * Time.deltaTime));
             Debug.DrawLine(rayOrigin, endPos, Color.green);
-            if (Physics.Linecast(rayOrigin, endPos, out normalhit, beamMask))
+            if (Physics.Linecast(rayOrigin, endPos, out normalhit, beamMask.value))
             {
                 if (normalhit.collider.gameObject != currentHit)
                 {

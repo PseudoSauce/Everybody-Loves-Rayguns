@@ -67,11 +67,9 @@ public class ScaleComponent : Interactable {
 
 
     void growObject(float scaleTo) {
-
         // Vector3 scale = Vector3.Lerp(transform.localScale, 20, Mathf.SmoothStep(0.0, 1.0, Time.deltaTime));
         //float scale = Mathf.sin(Time.time * (.5f * 2 * Mathf.PI) + 1f) / 2f;
         Rigidbody oRb = GetComponent<Rigidbody>();
-        float lgScale = smallestVecIndice(transform.localScale.x, transform.localScale.y, transform.localScale.z);
         if (canFit(GetComponent<MeshRenderer>().bounds.extents)) {
             scaleFactor += 0.1f;
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(localScaleOrig.x + scaleTo, //

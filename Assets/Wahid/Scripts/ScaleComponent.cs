@@ -52,19 +52,22 @@ public class ScaleComponent : Interactable {
     void shrinkObject() {
         Rigidbody oRb = GetComponent<Rigidbody>();
         //extra check for different shapes
-        float smScale = smallestVecIndice(transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        print("smallest scale side is " + smScale);
-        if (smScale > 1) {
+        Vector3 desiredScale = new Vector3((localScaleOrig.x % localScaleOrig.x) + 1f
+                , (localScaleOrig.y % localScaleOrig.y) + 1f);
+        if (transform.localScale != desiredScale) {
             scaleFactor += 0.1f;
-            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(localScaleOrig.x, localScaleOrig.y,
-                localScaleOrig.z), scaleFactor * Time.deltaTime);
-            GetComponent<Rigidbody>().mass += scaleFactor;
-            oRb.mass -= scaleFactor;
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3((localScaleOrig.x % localScaleOrig.x) + 1f
+                , (localScaleOrig.y % localScaleOrig.y) + 1f,
+                (localScaleOrig.z % localScaleOrig.z) + 1f), scaleFactor * Time.deltaTime);
+            if (oRb.mass > 2f) {
+                oRb.mass -= scaleFactor;
+            }
         }
     }
 
+
     void growObject(float scaleTo) {
-        
+
         // Vector3 scale = Vector3.Lerp(transform.localScale, 20, Mathf.SmoothStep(0.0, 1.0, Time.deltaTime));
         //float scale = Mathf.sin(Time.time * (.5f * 2 * Mathf.PI) + 1f) / 2f;
         Rigidbody oRb = GetComponent<Rigidbody>();
@@ -73,7 +76,9 @@ public class ScaleComponent : Interactable {
             scaleFactor += 0.1f;
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(localScaleOrig.x + scaleTo, //
                 localScaleOrig.y + scaleTo, localScaleOrig.z + scaleTo), scaleFactor * Time.deltaTime);
-            GetComponent<Rigidbody>().mass += scaleFactor;
+            if (oRb.mass < 100f) {//arbirary clamp
+                oRb.mass += scaleFactor;
+            }
         } else {
             print("cant grow this object");
         }

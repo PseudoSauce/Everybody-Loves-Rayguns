@@ -32,6 +32,8 @@ public class DeathComponent : Interactable {
     private bool m_respawning = false;
     private bool isDead = false;
 
+    private Coroutine m_deathCoroutine;
+
     protected override void Init() {
         AssignInteractionType(Interaction.DEATH);
         AssignStart(MyStart);
@@ -54,12 +56,13 @@ public class DeathComponent : Interactable {
                 Heal();
             }
         }
-        if (!m_respawning) {
+       /* if (!m_respawning) {
             if (isDead) {
                 m_respawning = true;
-                StartCoroutine(Respawn());
+                if(m_deathCoroutine == null)
+                    m_deathCoroutine = StartCoroutine(Respawn());
             }
-        }
+        }*/
     }
     void StartDeath(bool normalDeath) {
         if (!normalDeath) {
@@ -133,6 +136,8 @@ public class DeathComponent : Interactable {
         }
         //transform.rotation = m_lastSpawnPoint.rotation;
         m_respawning = false;
+        quickDeath = false;
         tempHitpoints = origHitpoints;
+        m_deathCoroutine = null;
     }
 }

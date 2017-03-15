@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class HealthComponent : MonoBehaviour {
 
-    [SerializeField]
+    //[SerializeField]
     private int m_maxHealth = 3;
     private int m_health;
-    [SerializeField]
-    private Image m_healthBar;
+    //[SerializeField]
+    //private Image m_healthBar;
     [SerializeField]
     private Text m_deathMessage;
-    [SerializeField]
-    private string m_bulletTag = "Bullet";
+    //[SerializeField]
+    //private string m_bulletTag = "Bullet";
     [SerializeField]
     private string m_deathTag = "DeathZone";
     [SerializeField]
@@ -38,7 +38,7 @@ public class HealthComponent : MonoBehaviour {
             }
         }
 
-        m_healthBar.fillAmount = (float)m_health / (float)m_maxHealth;
+        //m_healthBar.fillAmount = (float)m_health / (float)m_maxHealth;
 	}
 
     //void OnCollisionEnter(Collision col)

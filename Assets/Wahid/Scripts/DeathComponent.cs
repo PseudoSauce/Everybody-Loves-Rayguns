@@ -40,7 +40,7 @@ public class DeathComponent : Interactable {
 
     private void MyStart() {
         m_lastSpawnPoint = null;
-        //Debug.Log("DeathComponent: Starting...");
+        Debug.Log("DeathComponent: Starting...");
         origHitpoints = tempHitpoints;
     }
 
@@ -49,6 +49,7 @@ public class DeathComponent : Interactable {
             if (beingHit) {
                 StartDeath(true);
             } else if (quickDeath) {
+                quickDeath = false;
                 StartDeath(false);
             } else {
                 Heal();
@@ -56,6 +57,7 @@ public class DeathComponent : Interactable {
         }
         if (!m_respawning) {
             if (isDead) {
+                //print("respawning");
                 m_respawning = true;
                 StartCoroutine(Respawn());
             }
@@ -95,7 +97,11 @@ public class DeathComponent : Interactable {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag(m_deathTag))
+        {
+            print(this + ": NEED A FLAG HERE TO PREVENT THESE FROM CALLING TWICE (OR MORE)");
             quickDeath = true;
+        }
+            
         if (other.CompareTag(m_spawnPointTag))
             m_lastSpawnPoint = other.gameObject.transform;
     }
@@ -108,7 +114,8 @@ public class DeathComponent : Interactable {
         //    if (objects[0].GetType() == typeof(float)) {
         //        drainTimeStep = (int)objects[0];
         //    }
-        //Debug.Log(this + ": " + msg);
+        if (msg.msg != "STOPHITS")
+            Debug.Log(this + ": " + msg.msg);
         switch (msg.msg) {
             case "SENDHITS":
                 beingHit = true;
@@ -123,16 +130,20 @@ public class DeathComponent : Interactable {
         }
     }
     private IEnumerator Respawn() {
-        print("RESPAWNING");
-        yield return new WaitForSeconds(2);
+       // print("RESPAWNING");
+        
+        yield return new WaitForSeconds(2);        
         if (m_lastSpawnPoint.position != null) {
             transform.position = m_lastSpawnPoint.position;
         } else {
             print("no pos found so we destroy you");
             Destroy(this.gameObject);
         }
+
+        isDead = false;
         //transform.rotation = m_lastSpawnPoint.rotation;
         m_respawning = false;
         tempHitpoints = origHitpoints;
+
     }
 }

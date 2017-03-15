@@ -40,7 +40,7 @@ public class DeathComponent : Interactable {
 
     private void MyStart() {
         m_lastSpawnPoint = null;
-        Debug.Log("DeathComponent: Starting...");
+        //Debug.Log("DeathComponent: Starting...");
         origHitpoints = tempHitpoints;
     }
 
@@ -108,7 +108,7 @@ public class DeathComponent : Interactable {
         //    if (objects[0].GetType() == typeof(float)) {
         //        drainTimeStep = (int)objects[0];
         //    }
-        Debug.Log(this + ": " + msg);
+        //Debug.Log(this + ": " + msg);
         switch (msg.msg) {
             case "SENDHITS":
                 beingHit = true;

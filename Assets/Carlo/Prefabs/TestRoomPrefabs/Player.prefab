@@ -3119,7 +3119,7 @@ MonoBehaviour:
     type: 2}
   beamMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 3073
   fitterMask:
     serializedVersion: 2
     m_Bits: 1024

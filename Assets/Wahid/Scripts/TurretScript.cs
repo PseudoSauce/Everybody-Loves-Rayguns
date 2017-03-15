@@ -15,17 +15,25 @@ public class TurretScript : MonoBehaviour {
     public Transform player;
     public float turretShootRange = 11.0f;
 
+    private Renderer turretBodyColor;
     private Transform gunEnd;
     private Collider playerColl;
     private Camera cam;
     private Plane[] planes;
     private LineRenderer laserLine;
+    private Transform playerHeadPosition;
+    private Vector3 playerHeadCorrected;
+
+    private bool locked = false;//when you are locked to player
+    private Quaternion lockRotation;//the rotation of the turret at point of lock
 
     private bool stuck = false;//check if you haved hooked to an object
 
     private Plane[] startingPlanes;
 
     void Start() {
+        playerHeadPosition = player.GetComponentInChildren<Camera>().transform;
+        turretBodyColor = GetComponentInParent<Renderer>();
         gunEnd = GetComponentInChildren<Transform>();
         laserLine = GetComponent<LineRenderer>();
         playerColl = player.GetComponent<Collider>();
@@ -45,35 +53,55 @@ public class TurretScript : MonoBehaviour {
         if (GeometryUtility.TestPlanesAABB(planes, playerColl.bounds)) {
             Detected();
         } else {
+            locked = false;
             FireBeam(false);
             transform.rotation = Quaternion.Euler(0f, maxRotation * Mathf.Sin(Time.time * turretRotSpeed), 0f);
-            GetComponentInParent<Renderer>().material.color = Color.green;
+            turretBodyColor.material.color = Color.green;
         }
     }
 
     void Detected() {
-        if (GeometryUtility.TestPlanesAABB(startingPlanes, playerColl.bounds)) {
-            print("player detected");
-            GetComponentInParent<Renderer>().material.color = Color.red;
+        //transform.rotation = Quaternion.Euler(0f, maxRotation * Mathf.Sin(Time.time * turretRotSpeed), 0f);
+        if (!locked) {
+            //first store init pos from whence you entered 
+            lockRotation = transform.rotation;
+            locked = true;
+        }
+        Quaternion lowLim = lockRotation * Quaternion.Euler(0, lockRotation.y - 90, 0);
+        Quaternion highLim = lockRotation * Quaternion.Euler(0, lockRotation.y + 90, 0);
+        //float deltAng = Mathf.DeltaAngle(lockRotation, lockRotation);
+        if (!(transform.rotation.y > lowLim.y && transform.rotation.y < highLim.y)) {
+            FireBeam(false);
+        } else {
+            turretBodyColor.material.color = Color.red;
             transform.LookAt(player);
             FireBeam(true);
-        } else {
-            FireBeam(false);
         }
+        //first check if you are in the "true" plane
+        //if (GeometryUtility.TestPlanesAABB(startingPlanes, playerColl.bounds)) {
+        //print("player detected");
+        //turretBodyColor.material.color = Color.red;
+
+        //FireBeam(true);
+        //} else {
+        //     FireBeam(false);
+        // }
     }
 
     void FireBeam(bool inRange) {
         if (inRange) {
             RaycastHit normalhit;
             Vector3 rayOrigin = gunEnd.position;
-            if (Physics.Linecast(rayOrigin, player.position, out normalhit, beamMask.value)) {
+            if (Physics.Linecast(rayOrigin, playerHeadPosition.position, out normalhit, beamMask.value)) {
                 if (normalhit.collider.gameObject != player.gameObject) {
                     print(normalhit.collider.gameObject);
+                    turretBodyColor.material.color = Color.yellow;
                     print("blocked");
                     FireBeam(false);
                 } else {
                     laserLine.SetPosition(0, gunEnd.position);
-                    laserLine.SetPosition(1, player.position);
+                    playerHeadCorrected = playerHeadPosition.position - new Vector3(0, 0.2f, 0);
+                    laserLine.SetPosition(1, playerHeadCorrected);
                     laserLine.enabled = true;
 
                     InteractMessage msg;
@@ -82,6 +110,7 @@ public class TurretScript : MonoBehaviour {
                 }
             }
         } else {
+            transform.rotation = Quaternion.Euler(0f, maxRotation * Mathf.Sin(Time.time * turretRotSpeed), 0f);
             laserLine.SetPosition(0, gunEnd.position);
             laserLine.SetPosition(1, gunEnd.position);
             laserLine.enabled = false;

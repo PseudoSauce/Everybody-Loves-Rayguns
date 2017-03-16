@@ -29,7 +29,9 @@ struct InvokerNamedEventHandler : ICustomEventHandler
     public uint EventID { get { return eventID; } }    
 }
 
-public class InvokerScript : MonoBehaviour {
+// implements the invoker interface to be able to send messages to
+// event listeners
+public class TestInvokerScript : MonoBehaviour, ICustomEventInvoker {
     [SerializeField] private CustomEventManager m_manager;
     [SerializeField] private uint m_eventID, m_eventID2;
 	
@@ -42,7 +44,7 @@ public class InvokerScript : MonoBehaviour {
             if (m_manager.IsEventRegistered(m_eventID))       // --> if statement not really necessary...
             {
                 // notify all observers of an event with this particular handle
-                m_manager.NotifyObservers(new InvokerNamedEventHandler(m_eventID, name));
+                m_manager.NotifyObservers(this, new InvokerNamedEventHandler(m_eventID, name));
             }
             else
             {
@@ -56,11 +58,11 @@ public class InvokerScript : MonoBehaviour {
             if (m_manager.IsEventRegistered(m_eventID2))       // --> if statement not really necessary...
             {
                 // notify all observers of an event with this particular handle
-                m_manager.NotifyObservers(new InvokerNamedEventHandler(m_eventID2, name));
+                m_manager.NotifyObservers(this, new InvokerNamedEventHandler(m_eventID2, name));
             }
             else
             {
-                print(this + ": EventID(" + m_eventID + ") is not currently registered.");
+                print(this + ": EventID(" + m_eventID2 + ") is not currently registered.");
             }
         }
 	}

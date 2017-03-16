@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObserverScript : MonoBehaviour, ICustomEventObserver {
+public class TestObserverScript : MonoBehaviour, ICustomEventObserver {
     [SerializeField] private CustomEventManager m_manager;
     [SerializeField] private uint m_eventID;
 
@@ -26,8 +26,10 @@ public class ObserverScript : MonoBehaviour, ICustomEventObserver {
     }
     
     // requirement of an event observer... respond to an event with this
-    public void Notify(ICustomEventHandler handler)
+    public void Notify(CustomEventPacket customEventTrigger)
     {
+        ICustomEventHandler handler = customEventTrigger.Handler;
+        
         // we should know the type so...
         if (handler is InvokerNamedEventHandler)
         {

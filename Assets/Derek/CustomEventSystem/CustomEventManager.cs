@@ -1,25 +1,58 @@
 ﻿using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 // each event is associated with a unique id that is manually set
 // through the editor
 using EventID = System.UInt32;
+using InvokerID = System.UInt32;
 
 // weak references to prevent memory leaks
 using ObserverList = System.Collections.Generic.LinkedList<System.WeakReference>;
+using InvokerRef = System.WeakReference;
+using ObserverRef = System.WeakReference;
+
+// used to be able to associate an id with the handler, without putting
+// the responsibility on the invoker.
+public struct CustomEventPacket
+{
+    public CustomEventPacket(ICustomEventHandler handler, InvokerID invokerID)
+    {
+        this.handler = handler;
+        this.invokerID = invokerID;
+    }
+
+    private ICustomEventHandler handler;
+    private InvokerID invokerID;
+
+    public InvokerID Invoker
+    {
+        get
+        {
+            return invokerID;
+        }
+    }
+
+    public ICustomEventHandler Handler
+    {
+        get
+        {
+            return handler;
+        }
+    }
+}
 
 /*
  * Manages all the events observers register to. When an invoker calls "notify observers",
  * every observer listening to that event is invoked
  */
 public sealed class CustomEventManager : MonoBehaviour {
-
     private Dictionary<EventID, ObserverList> m_customEvents;
-
+    private Dictionary<InvokerRef, InvokerID> m_invokerIDList;
+    
     private void Awake()
     {
         m_customEvents = new Dictionary<EventID, ObserverList>();
+        m_invokerIDList = new Dictionary<InvokerRef, EventID>();
     }
 
     #region properties
@@ -37,7 +70,7 @@ public sealed class CustomEventManager : MonoBehaviour {
 
             return count;
         }
-    }
+    } 
     #endregion
 
     #region sanitychecks
@@ -79,15 +112,39 @@ public sealed class CustomEventManager : MonoBehaviour {
     #endregion
 
     #region registration
-    // register an observer to an event specified by the event id
-    public void RegisterEvent(ICustomEventObserver observer, EventID id)
-    {
+    // register an observer to an event specified by the event id.
+    public void RegisterEvent(ICustomEventObserver observer, EventID id, bool clearEventIfPreviouslyOccupied = false)
+    { 
+        // create the event list if it does not already exist for this eventID.
+        // this event ID may still be left over from before.
         if (!m_customEvents.ContainsKey(id))
         {
             m_customEvents.Add(id, new ObserverList());
         }
 
-        m_customEvents[id].AddLast(new WeakReference(observer));
+        // clear the event before registering if specified. defaults to true.
+        if (clearEventIfPreviouslyOccupied && m_customEvents[id].Count>0)
+        {
+            print(name + ": Clearing the EventID, " + id + " before registering.");
+            m_customEvents[id].Clear();
+        }
+
+        // add the observer to the event if it's not currently included
+        bool wontBeDuplicate = true;
+        foreach (var o in m_customEvents[id])
+        {
+            if (o.Target == observer)
+            {
+                wontBeDuplicate = false;
+                break;
+            }
+        }
+
+        // add the observer to the event if it is not currently included
+        if (wontBeDuplicate)
+        {
+            m_customEvents[id].AddLast(new ObserverRef(observer));
+        }
     }
 
     // deregister a specific observer from an event specified by id.
@@ -127,7 +184,8 @@ public sealed class CustomEventManager : MonoBehaviour {
 
     // called by "invoker" to trigger an event.
     // returns true if at least one observer was notified.
-    public bool NotifyObservers(ICustomEventHandler handle)
+    // the invoker is stored with a unique ID that is attached to sent with handlers.
+    public bool NotifyObservers(ICustomEventInvoker invoker, ICustomEventHandler handle)
     {
         bool observersWereNotified = false;
 
@@ -146,7 +204,9 @@ public sealed class CustomEventManager : MonoBehaviour {
 
                     if (observer != null)
                     {
-                        observer.Notify(handle);
+                        InvokerID id = AssignInvokerID(invoker);
+
+                        observer.Notify(new CustomEventPacket(handle, id));
                     }
                 }
             }
@@ -158,6 +218,38 @@ public sealed class CustomEventManager : MonoBehaviour {
     }
 
     #region internal
+    // once an invoker is added, it will continue in the list, even
+    // if the original event was discarded. ultimately this allows
+    // faster event invocation, if an event is triggered later
+    // by the same invoker
+    private InvokerID AssignInvokerID(ICustomEventInvoker invoker)
+    {
+        bool containsInvoker = false;
+        InvokerID invokerID = 0;
+
+        // make sure the invoker id does not currently exist already
+        foreach (var o in m_invokerIDList)
+        {
+            var key = o.Key;
+
+            if (key.Target != null && key.Target == invoker)
+            {
+                invokerID = m_invokerIDList[key];
+                containsInvoker = true;
+            }
+        }   
+        // if the invoker is not currently registered, add them to the
+        // "list"
+        if (!containsInvoker)
+        {
+            int invokerCount = m_invokerIDList.Count;      
+            invokerID = (InvokerID)invokerCount;
+            m_invokerIDList.Add(new InvokerRef(invoker), invokerID);
+        }
+
+        return invokerID;
+    }
+    
     // perhaps of its destruction, or of an event deregistration
     private void NotifyAllObservers(ICustomEventHandler handle)
     {

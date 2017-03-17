@@ -7,9 +7,10 @@ TagManager:
   - Sizeable
   - Teleportable
   - TeleportSurface
+  - ActionManager
   - DeathZone
   - SpawnPoint
-  - GameManager
+  - CutScene
   layers:
   - Default
   - TransparentFX

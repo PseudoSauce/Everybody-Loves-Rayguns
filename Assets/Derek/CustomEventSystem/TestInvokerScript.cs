@@ -33,37 +33,9 @@ struct InvokerNamedEventHandler : ICustomEventHandler
 // event listeners
 public class TestInvokerScript : MonoBehaviour, ICustomEventInvoker {
     [SerializeField] private CustomEventManager m_manager;
-    [SerializeField] private uint m_eventID, m_eventID2;
+    [SerializeField] private uint m_eventID;
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            // you can check if an event is registered... 
-            // notifyobservers also returns whether it was successful, for convenience
-            if (m_manager.IsEventRegistered(m_eventID))       // --> if statement not really necessary...
-            {
-                // notify all observers of an event with this particular handle
-                m_manager.NotifyObservers(this, new InvokerNamedEventHandler(m_eventID, name));
-            }
-            else
-            {
-                print(this + ": EventID(" + m_eventID + ") is not currently registered.");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            // you can check if an event is registered... 
-            // notifyobservers also returns whether it was successful, for convenience
-            if (m_manager.IsEventRegistered(m_eventID2))       // --> if statement not really necessary...
-            {
-                // notify all observers of an event with this particular handle
-                m_manager.NotifyObservers(this, new InvokerNamedEventHandler(m_eventID2, name));
-            }
-            else
-            {
-                print(this + ": EventID(" + m_eventID2 + ") is not currently registered.");
-            }
-        }
 	}
 }

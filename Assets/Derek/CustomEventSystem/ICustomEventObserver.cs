@@ -17,5 +17,5 @@
  * when the receiving message is received through "Notify"
  */
 public interface ICustomEventObserver {
-    void Notify(CustomEventPacket handler);
+    void ReceiveNotify(CustomEventPacket handler);
 }

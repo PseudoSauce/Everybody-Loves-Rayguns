@@ -61,7 +61,6 @@ public class TurretScript : MonoBehaviour {
     }
 
     void Detected() {
-        //transform.rotation = Quaternion.Euler(0f, maxRotation * Mathf.Sin(Time.time * turretRotSpeed), 0f);
         if (!locked) {
             //first store init pos from whence you entered 
             lockRotation = transform.rotation;
@@ -69,7 +68,6 @@ public class TurretScript : MonoBehaviour {
         }
         Quaternion lowLim = lockRotation * Quaternion.Euler(0, lockRotation.y - 90, 0);
         Quaternion highLim = lockRotation * Quaternion.Euler(0, lockRotation.y + 90, 0);
-        //float deltAng = Mathf.DeltaAngle(lockRotation, lockRotation);
         if (!(transform.rotation.y > lowLim.y && transform.rotation.y < highLim.y)) {
             FireBeam(false);
         } else {
@@ -77,15 +75,6 @@ public class TurretScript : MonoBehaviour {
             transform.LookAt(player);
             FireBeam(true);
         }
-        //first check if you are in the "true" plane
-        //if (GeometryUtility.TestPlanesAABB(startingPlanes, playerColl.bounds)) {
-        //print("player detected");
-        //turretBodyColor.material.color = Color.red;
-
-        //FireBeam(true);
-        //} else {
-        //     FireBeam(false);
-        // }
     }
 
     void FireBeam(bool inRange) {
@@ -119,6 +108,8 @@ public class TurretScript : MonoBehaviour {
             player.SendMessage("Interact", msg);
         }
     }
+
+
 
     //TODO: try something later....
     T CopyComponent<T>(T original, GameObject destination) where T : Component {

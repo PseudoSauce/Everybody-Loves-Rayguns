@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/*
+﻿/*
  * An observer of a custom event must implement this interface in order to register to an event.
  * 
  * ie. Door : implements ICustomEventObserver {
@@ -21,5 +17,5 @@ using UnityEngine;
  * when the receiving message is received through "Notify"
  */
 public interface ICustomEventObserver {
-    void Notify(ICustomEventHandler handler);
+    void ReceiveNotify(CustomEventPacket handler);
 }

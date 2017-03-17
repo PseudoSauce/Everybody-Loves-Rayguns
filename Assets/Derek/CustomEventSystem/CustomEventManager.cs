@@ -18,7 +18,7 @@ using ObserverRef = System.WeakReference;
 enum ReservedEventID : EventID
 {
     // I'm lazy so using powers of 2 : P
-    ObserverRegistered = 1<<0x1B,
+    RegisteredObserver = 1<<0x1B,
     DeregisteredAll = 1<<0x1C,
     DeregisteredObserver = 1<<0x1D,
     DeregisteredEvent = 1<<0x1E    

@@ -15,9 +15,8 @@ using ObserverRef = System.WeakReference;
 ///////////////////////////////////////////////////////////
 // these are reserved event IDs custom handlers
 //////////////////////////////////////////////////////////
-enum ReservedEventID : EventID
+public enum ReservedEventID : EventID
 {
-    // I'm lazy so using powers of 2 : P
     RegisteredObserver = 1<<0x1B,
     DeregisteredAll = 1<<0x1C,
     DeregisteredObserver = 1<<0x1D,
@@ -87,7 +86,7 @@ struct ReservedEventObserverRegistered : ICustomEventManagerHandler
 
     public EventID EventID
     {
-        get { return (EventID)ReservedEventID.ObserverRegistered; }
+        get { return (EventID)ReservedEventID.RegisteredObserver; }
     }
 }
 
@@ -116,7 +115,7 @@ public struct CustomEventPacket
     private ICustomEventHandler handler;
     private InvokerID invokerID;
 
-    public InvokerID Invoker
+    public InvokerID InvokerID
     {
         get
         {
@@ -147,7 +146,7 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
         m_customEvents = new Dictionary<EventID, ObserverList>();
         m_invokerIDList = new Dictionary<InvokerRef, EventID>();
     }
-
+    
     #region properties
     public int Count { get { return m_customEvents.Count; } }
     public int TotalRegisteredObservers
@@ -310,7 +309,7 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
     // returns true if at least one observer was notified.
     // the invoker is stored with a unique ID that is attached to sent with handlers.
     public bool NotifyObservers(ICustomEventInvoker invoker, ICustomEventHandler handle)
-    {
+    {   
         bool observersWereNotified = false;
 
         ObserverList observers = null;
@@ -319,7 +318,7 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
         // for each observer associated with the event,
         // forward the handle event
         if (eventExists && observers.Count > 0)
-        {
+        {  
             foreach (var o in observers)
             {
                 if (o.IsAlive)
@@ -378,6 +377,8 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
             {
                 invokerID = m_invokerIDList[key];
                 containsInvoker = true;
+
+                return invokerID;
             }
         }   
         // if the invoker is not currently registered, add them to the
@@ -426,6 +427,11 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
     public static bool IsManagerHandler(ICustomEventHandler handler)
     {
         return handler.GetType() == typeof(ICustomEventManagerHandler);
+    }    
+
+    public static ReservedEventID GetManagerHandlerType(ICustomEventManagerHandler handler)
+    {
+        return (ReservedEventID)handler.EventID;
     }
 
     // whether a specific event id is reserved by this system

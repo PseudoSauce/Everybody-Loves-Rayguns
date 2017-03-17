@@ -10,7 +10,10 @@ namespace MyTypes
 
     public enum Interaction
     {
-        SCALING, TELEPORTING, MESSENGER, TRIGGER, DEATH
+        SCALING, TELEPORTING, MESSENGER, TRIGGER, DEATH,
+
+        // examples used for customeventmanager demo
+        EXAMPLEENEMYOBSERVER, EXAMPLEBOMB, EXAMPLEDOOR
     }
 
     // send the interactable component this message.    

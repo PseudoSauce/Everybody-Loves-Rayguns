@@ -19,26 +19,81 @@ using EventID = System.UInt32;
 
 public class Interactable : MonoBehaviour {
     // this class acts as the beacon for all events associated with the custom event manager.
+    // you can get access to the actual CustomEventManager through a property, but you
+    // should probably not do that unless you need to. The manager itself has some more functionality.
     protected sealed class CustomEventBeacon : ICustomEventInvoker, ICustomEventObserver
-    {    
+    {
+        // a log of recorded events by ID
+        private struct CustomEventLog
+        {
+            public List<EventID> SentLog
+            {
+                get { return m_sentLog; }
+            }
+
+            public List<EventID> ReceivedLog
+            {
+                get { return m_receivedLog; }
+            }
+
+            public List<EventID> ManagerLog
+            {
+                get { return m_sentLog; }
+            }
+
+            private List<EventID> m_sentLog;
+            private List<EventID> m_receivedLog;
+            private List<EventID> m_managerLog;
+        }
+
         private WeakReference m_customEventManager;
         private WeakReference m_interactable;
 
         private LinkedList<EventID> m_eventsSubscribedTo;
+        private CustomEventLog m_log;
 
         private bool m_isInitialized;
+        private bool m_logEvents;
 
-        internal CustomEventBeacon(Interactable eventReceiver, CustomEventManager eventManager)
+        internal CustomEventBeacon(Interactable eventReceiver, CustomEventManager eventManager, bool logEvents = false)
         {
             m_customEventManager = new WeakReference(eventManager);
             m_interactable = new WeakReference(eventReceiver);
             m_eventsSubscribedTo = new LinkedList<EventID>();
+            m_log = new CustomEventLog();
+
+            m_logEvents = logEvents;
 
             if (eventReceiver && eventManager)
             {
                 m_isInitialized = true;
             }
         }
+
+        // EventLogs are ordered. here for convenience.
+        #region Log Stuff 
+        public ICollection<EventID> EventReceivedLog
+        {
+            get { return m_log.ReceivedLog; }
+        }
+
+        public ICollection<EventID> EventSentLog
+        {
+            get { return m_log.SentLog; }
+        }
+
+        public ICollection<EventID> EventReceivedManagerLog
+        {
+            get { return m_log.ManagerLog; }
+        }
+
+        public void ClearLog()
+        {
+            m_log.ManagerLog.Clear();
+            m_log.SentLog.Clear();
+            m_log.ReceivedLog.Clear();
+        }
+        #endregion
 
         #region Event Stuff
         // request an event to occur using a handler defined with
@@ -47,15 +102,24 @@ public class Interactable : MonoBehaviour {
         // of the observers.
         // this does not necessarely suggest that the event was successful,
         // since the event requirements are defined individually.
-        public bool NotifyEvent(ICustomEventHandler customHandler)
+        public bool InvokeEvent(ICustomEventHandler customHandler)
         {
+            bool notifySuccessful = false;
+
             if (IsActive)
             {
-                var manager = (CustomEventManager)m_customEventManager.Target;
-                return manager.NotifyObservers(this, customHandler);
+                var manager = (CustomEventManager)m_customEventManager.Target;   
+
+                notifySuccessful = manager.NotifyObservers(this, customHandler);
+
+                // log the sent event if successful
+                if (m_logEvents && notifySuccessful)
+                {
+                    m_log.SentLog.Add(customHandler.EventID);
+                }
             }
 
-            return false;
+            return notifySuccessful;
         }
 
         // register to the events specified on the 
@@ -118,7 +182,32 @@ public class Interactable : MonoBehaviour {
                     manager.DeregisterFromEvent(this, customEvent);
                 }
             }
+
+            // perhaps your deregistering, regardless that this beacon
+            // is active... which will probably never make sense
+            foreach (var customEvent in requestedEvents)
+            {
+                m_eventsSubscribedTo.Remove(customEvent);
+            }
         }
+
+        // deregister the interactable from an event
+        public void DeregisterFromAllEvents()
+        {
+            // subscribe to events requested by the interactable
+            if (IsActive)
+            {
+                var manager = (CustomEventManager)m_customEventManager.Target;
+
+                foreach (var customEvent in m_eventsSubscribedTo)
+                {
+                    manager.DeregisterFromEvent(this, customEvent);
+                }
+            }
+
+            m_eventsSubscribedTo.Clear();
+        }
+
         #endregion
 
         #region internal
@@ -129,7 +218,34 @@ public class Interactable : MonoBehaviour {
             if (IsActive)
             {
                 Interactable interactable = (Interactable)m_interactable.Target;
-                interactable.ReceiveNotify(customEventPacket);
+
+                var handler = customEventPacket.Handler;
+
+                // manage the interactable and event beacon with messages from the manager
+                bool isManagerHandler = CustomEventManager.IsManagerHandler(handler);
+                
+                // could be from the manager itself... in his great honor
+                if (isManagerHandler)
+                {
+                    // log the event if set to
+                    if (m_logEvents)
+                    {
+                        m_log.ManagerLog.Add(customEventPacket.Handler.EventID);
+                    }
+                    // delegate to the interactable
+                    interactable.ReceiveManagerNotify((ICustomEventManagerHandler)handler);
+                }
+                else
+                {
+                    // log the event if set to
+                    if (m_logEvents)
+                    {
+                        m_log.ReceivedLog.Add(customEventPacket.Handler.EventID);
+                    }
+
+                    // delegate to the interactable
+                    interactable.ReceiveNotify(customEventPacket);
+                }                
             }
         }
         #endregion
@@ -174,7 +290,8 @@ public class Interactable : MonoBehaviour {
       
     protected delegate void CustomUpdate(float deltaTime);
     protected delegate void CustomStart();
-    protected delegate void CustomEventReceiveNotify(CustomEventPacket handler);
+    protected delegate void CustomEventReceiveNotify(CustomEventPacket handlerPacket);
+    protected delegate void CustomEventReceiveManagerNotify(ICustomEventManagerHandler handler);
 
     //---------------------------------------------------------  
     #region Internal Fields
@@ -186,6 +303,7 @@ public class Interactable : MonoBehaviour {
     private CustomStart m_CustomStart;
     // required to receive custom events from an event manager!
     private CustomEventReceiveNotify m_CustomEventNotify;
+    private CustomEventReceiveManagerNotify m_CustomEventManagerNotify;
 
     private bool m_Update;
     private bool m_Start;
@@ -202,8 +320,18 @@ public class Interactable : MonoBehaviour {
     #endregion
 
     #region Public Fields
-    [SerializeField, Header("Custom Event Stuff")]
-    private EventID[] m_associatedEvents;
+    [SerializeField, Header("Interactable Stuff")]
+    private bool m_IgnoreUpdate = false;
+    private bool m_IgnoreInteractions = false;
+
+    [Header("Custom Event Stuff")]
+    [SerializeField, Tooltip("Whether to keep a log of all received events, by their EventID. Stored as a continuous list.")]
+    private bool m_RecordEvents = true;
+    [SerializeField]
+    private bool m_IgnoreManagerEvents = false,
+                 m_IgnoreCustomEvents = false;
+    [SerializeField, Tooltip("Events to register during initialization. (not a requirement if are just invoking).")]
+    private EventID[] m_InitialEventsToRegisterTo;
     #endregion
 
     #region UnityAPI
@@ -222,7 +350,10 @@ public class Interactable : MonoBehaviour {
     
     private void Update()
     {
-        if (m_Update)
+        // seems ambiguous, but the m_update refers to
+        // whether it was registered, while ignore update
+        // is a toggle that can be changed whenever required
+        if (!m_IgnoreUpdate && m_Update)
         {
             m_CustomUpdate(Time.deltaTime);
         }
@@ -234,6 +365,7 @@ public class Interactable : MonoBehaviour {
     // calls the child's class init.
     private void Initialize()
     {
+        // create the event beacon
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         if (gameManager)
         {
@@ -246,7 +378,14 @@ public class Interactable : MonoBehaviour {
         }
 
         Init();
-        m_Initialized = true;        
+        m_Initialized = true;   
+        
+        // register initial events specified in the editor
+        // if this interactable was set to 
+        if (m_ListensToEvents)
+        {
+            m_EventBeacon.RegisterEvents(m_InitialEventsToRegisterTo);  
+        }
     }
     #endregion
 
@@ -255,47 +394,31 @@ public class Interactable : MonoBehaviour {
     // this function calls the user defined Commit function
     public void Interact(InteractMessage message)
     {
-        if (message.interaction == InteractionType)
+        if (!m_IgnoreInteractions && message.interaction == InteractionType)
+        {
             Commit(message);
-    }
-
-    // set whether this interactable will be updated each tick.    
-    public void SetUpdate(bool b)
-    {
-        m_Update = b;
+        }
     }
     #endregion
 
     #region Custom Event Stuff
+    // listens for invoker messages.
+    // use AssignReceiveNotify to subscribe.
     private void ReceiveNotify(CustomEventPacket customEventPacket)
     {
-        var handler = customEventPacket.Handler;
-        var eventID = customEventPacket.Handler.EventID;
-
-        // manage the interactable and event beacon with messages from the manager
-        bool isEventIDFromManager = CustomEventManager.IsEventIDReserved(handler.EventID);
-        if (isEventIDFromManager)
-        {
-            switch((ReservedEventID)eventID)
-            {
-                case ReservedEventID.DeregisteredEvent:
-                {
-                    
-                }
-                break;
-                case ReservedEventID.DeregisteredObserver:
-                {
-                    // nothing for now...
-                }
-                break;
-                default:
-                    break;
-            }
-        }
-
-        if (m_ListensToEvents)
+        if (!m_IgnoreCustomEvents && m_ListensToEvents)
         {
             m_CustomEventNotify(customEventPacket);
+        }
+    }
+
+    // listens for the event manager's messages
+    // use AssignReceiveNotify to subscribe.
+    private void ReceiveManagerNotify(ICustomEventManagerHandler handler)
+    {
+        if (!m_IgnoreManagerEvents && m_ListensToEvents)
+        {
+            m_CustomEventManagerNotify(handler);
         }
     }
     #endregion
@@ -317,39 +440,51 @@ public class Interactable : MonoBehaviour {
     // typically should be called during overrided init.
     // set your update to a name that is anything but "Update",
     // as it is reserved by Unity. ie. MyUpdate().
-    protected void AssignUpdate(CustomUpdate myUpdate)
+    protected bool AssignUpdate(CustomUpdate myUpdate)
     {
         if (myUpdate != null)
         {            
             m_Update = true;
             m_CustomUpdate = myUpdate;
+
+            return true;
         }
+
+        return false;
     }
 
     // this assign SHOULD be called during overrided init, or
     // it will never be called by unity.
     // set your start to a name that is anything but "Start",
     // as it is reserved by Unity. ie. MyStart().
-    protected void AssignStart(CustomStart myStart)
+    protected bool AssignStart(CustomStart myStart)
     {
         if (myStart != null)
         {            
             m_Start = true;
             m_CustomStart = myStart;
-        }
-    }
 
-    // this assign SHOULD be called during overrided init, or
-    // it will never be called by unity.
-    // set your start to a name that is anything but "Start",
-    // as it is reserved by Unity. ie. MyStart().
-    protected void AssignCustomEventReceiveNotify(CustomEventReceiveNotify myNotify)
+            return true;
+        }
+
+        return false;
+    }
+        
+    // set your two event listener functions.
+    // otherwise this interactable does not have access to custom events.
+    // it is the job of your interactable to define these functions to intercept events in the way you want.
+    protected bool AssignCustomEventReceiveNotify(CustomEventReceiveNotify myNotify, CustomEventReceiveManagerNotify myManagerNotify)
     {
-        if (myNotify != null)
+        if (myNotify != null && myManagerNotify != null)
         {            
             m_ListensToEvents = true;
             m_CustomEventNotify = myNotify;
+            m_CustomEventManagerNotify = myManagerNotify;
+
+            return true;
         }
+
+        return false;
     }
 
     // this function NEEDS to be called during your overrided init,
@@ -365,6 +500,12 @@ public class Interactable : MonoBehaviour {
     #endregion
 
     #region Getters/Setters
+    // use this beacon for registering custom events, etc.
+    protected CustomEventBeacon EventBeacon
+    {
+        get { return m_EventBeacon; }
+    }
+
     public Interaction InteractionType
     {
         get { return m_Interaction; }        
@@ -375,20 +516,40 @@ public class Interactable : MonoBehaviour {
         get { return m_Initialized; }        
     }
 
-    public bool IsUpdate
+    public bool IgnoreUpdate
     {
-        get
-        {
-            return m_Update;
-        }
+        get { return m_IgnoreUpdate; }
+        set { m_IgnoreUpdate = value; }
     }
 
+    public bool IgnoreInteractions
+    {
+        get { return m_IgnoreInteractions; }
+        set { m_IgnoreInteractions = value; }
+    }
+
+    public bool IgnoreManagerEvents
+    {
+        get { return m_IgnoreManagerEvents; }
+        set { m_IgnoreManagerEvents = value; }
+    }
+
+    public bool IgnoreCustomEvents
+    {
+        get { return m_IgnoreCustomEvents; }
+        set { m_IgnoreCustomEvents = value; }
+    }
+
+    // whether this interactable was initialized with an update
+    public bool IsUpdatable
+    {
+        get { return m_Update; }
+    }
+
+    // whether this interactable was initialized with a start
     public bool IsStart
     {
-        get
-        {
-            return m_Start;
-        }
+        get { return m_Start; }
     }
     #endregion
 }

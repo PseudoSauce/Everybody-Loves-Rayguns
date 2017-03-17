@@ -7,9 +7,9 @@ TagManager:
   - Sizeable
   - Teleportable
   - TeleportSurface
-  - ActionManager
   - DeathZone
   - SpawnPoint
+  - GameManager
   layers:
   - Default
   - TransparentFX

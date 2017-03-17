@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4353188694976222}
   - component: {fileID: 198158867695681522}
   - component: {fileID: 199593383280346398}
-  - component: {fileID: 114839211478653260}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -42,17 +41,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114839211478653260
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1615527849064260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3758e36126d1f8b4d85edc88b7cef837, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!198 &198158867695681522
 ParticleSystem:
   m_ObjectHideFlags: 1

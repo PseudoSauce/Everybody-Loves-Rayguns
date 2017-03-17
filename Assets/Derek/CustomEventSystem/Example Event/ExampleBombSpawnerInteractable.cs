@@ -34,7 +34,6 @@ public class ExampleBombSpawnerInteractable : Interactable {
     private void ReceiveCustomEvent(CustomEventPacket handlerPacket)
     {
         var eventID = handlerPacket.Handler.EventID;
-        print("dasfasf");
         // received the proper event, so triggers the spawn of a bomb,
         // once conditions are met (ie. all 3 switches pressed)
         if ((CustomEventExamples)eventID == CustomEventExamples.BombTriggerEvent)
@@ -50,6 +49,7 @@ public class ExampleBombSpawnerInteractable : Interactable {
             {
                 SpawnBomb();
             }
+            print(handler.switchNumber);
         }
     }
 
@@ -63,6 +63,8 @@ public class ExampleBombSpawnerInteractable : Interactable {
     ///////////////////////////////
     private void SpawnBomb()
     {
+        print("success");
         GameObject obj = Instantiate(bombPrefab, transform);
+        obj.transform.position = new Vector3(-23.04249f, 5.06f, 7.319503f);
     }
 }

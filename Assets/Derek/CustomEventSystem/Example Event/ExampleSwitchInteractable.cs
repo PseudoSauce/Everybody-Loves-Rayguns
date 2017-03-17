@@ -49,6 +49,6 @@ public class ExampleSwitchInteractable : Interactable {
         switchNumber++;
 
         // invoking the event
-        EventBeacon.InvokeEvent(new BombTriggerEvent());
+        EventBeacon.InvokeEvent(bombTrigger);
     }
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyTypes;
 
-public class ExampleSimpleEnemyObserver : Interactable {
+public class ExampleSimpleEnemy : Interactable {
     [SerializeField] Transform m_pointToMoveTo;
     [SerializeField] string m_messageToSayOnAlert;
-    
+
     private bool m_isTriggered;
 
     ////////////////////////////////
@@ -24,16 +24,16 @@ public class ExampleSimpleEnemyObserver : Interactable {
 
     private void MyStart()
     {
-
-    }
-
-    protected override void Commit(InteractMessage msg)
-    {
+        EventBeacon.RegisterEvents((uint)CustomEventExamples.EnemyAlertEvent);
     }
 
     private void MyUpdate(float deltaTime)
     {
-
+        if (m_isTriggered)
+        {
+            transform.position = Vector3.MoveTowards(gameObject.transform.position, m_pointToMoveTo.position, 0.5f);
+            print(m_messageToSayOnAlert);
+        }
     }
 
     ////////////////////////////////
@@ -41,7 +41,13 @@ public class ExampleSimpleEnemyObserver : Interactable {
     ///////////////////////////////
     private void ReceiveCustomEvent(CustomEventPacket handlerPacket)
     {
+        var handler = handlerPacket.Handler;
+        var eventID = handler.EventID;
 
+        if ((CustomEventExamples)eventID == CustomEventExamples.EnemyAlertEvent);
+        {
+            m_isTriggered = true;
+        }
     }
 
     private void ReceiveManagerEvent(ICustomEventManagerHandler handler)

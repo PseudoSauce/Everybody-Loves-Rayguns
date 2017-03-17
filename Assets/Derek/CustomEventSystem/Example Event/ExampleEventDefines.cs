@@ -26,7 +26,7 @@ struct BombTriggerEvent : ICustomEventHandler
 
     public uint EventID
     {
-        get { return (uint)CustomEventExamples.EnemyAlertEvent; }
+        get { return (uint)CustomEventExamples.BombTriggerEvent; }
     }
 }
 

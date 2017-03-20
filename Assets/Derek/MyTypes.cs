@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 namespace MyTypes
@@ -13,7 +13,9 @@ namespace MyTypes
         SCALING, TELEPORTING, MESSENGER, TRIGGER, DEATH,
 
         // examples used for customeventmanager demo
-        EXAMPLEENEMYOBSERVER, EXAMPLEBOMB, EXAMPLEDOOR
+        EXAMPLEENEMYOBSERVER, EXAMPLEBOMB, EXAMPLEDOOR,
+        DOOR, BRIDGE, SWITCH,
+
     }
 
     // send the interactable component this message.    

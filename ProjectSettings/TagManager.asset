@@ -11,6 +11,7 @@ TagManager:
   - DeathZone
   - SpawnPoint
   - CutScene
+  - GameManager
   layers:
   - Default
   - TransparentFX

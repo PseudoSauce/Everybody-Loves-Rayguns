@@ -7,6 +7,7 @@ using MyTypes;
 [AddComponentMenu("Custom Components/ScaleComponent")]
 [RequireComponent(typeof(Rigidbody))]
 public class ScaleComponent : Interactable {
+    bool isInter = false;
     private float origScaleFactor;
     private float scaleFactor = 0.05f;
     Vector3 localScaleOrig;
@@ -19,9 +20,12 @@ public class ScaleComponent : Interactable {
     [Tooltip("Layer to ignore for the beam")]
     private LayerMask beamMask;
     //init
-    bool growing;
-    bool shrinking;
+    private bool growing;
+    private bool shrinking;
+    private bool msg_grow;
+    private bool msg_shrink;
 
+    private bool isInputCheckRunning = false;
 
     public delegate void Scaler(GameObject param);
 
@@ -48,6 +52,7 @@ public class ScaleComponent : Interactable {
             scaleFactor = origScaleFactor;
         }
     }
+    //public void Update() { }
 
     void shrinkObject() {
         Rigidbody oRb = GetComponent<Rigidbody>();
@@ -63,6 +68,7 @@ public class ScaleComponent : Interactable {
                 oRb.mass -= scaleFactor;
             }
         }
+        shrinking = false;
     }
 
 
@@ -80,6 +86,7 @@ public class ScaleComponent : Interactable {
         } else {
             print("cant grow this object");
         }
+        growing = false;
     }
 
     float smallestVecIndice(float x, float y, float z) {
@@ -145,22 +152,18 @@ public class ScaleComponent : Interactable {
 
     // place your custom logic here for interaction
     protected override void Commit(InteractMessage msg) {
-        Debug.Log(this + ": " + msg);
+        msg_grow = false;
+        if (growing) {
+            growing = false;
+        }
 
+        Debug.Log(this + ": " + msg);
         switch (msg.msg) {
             case "GROW":
                 growing = true;
                 break;
-            case "STOPGROW":
-                growing = false;
-                break;
             case "SHRINK":
                 shrinking = true;
-                break;
-            case "STOPSHRINK":
-                shrinking = false;
-                break;
-            default:
                 break;
         }
     }

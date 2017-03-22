@@ -15,6 +15,6 @@ public class TurretBaseScript : MonoBehaviour {
 	}
 
     void OnCollisionEnter(Collision other) {
-        //Destroy(this.gameObject);
+        //Destroy(this.gameObject);dddddddw
     }
 }

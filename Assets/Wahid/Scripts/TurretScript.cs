@@ -103,9 +103,9 @@ public class TurretScript : MonoBehaviour {
             laserLine.SetPosition(0, gunEnd.position);
             laserLine.SetPosition(1, gunEnd.position);
             laserLine.enabled = false;
-            InteractMessage msg;
-            msg = new InteractMessage(Interaction.DEATH, "STOPHITS");
-            player.SendMessage("Interact", msg);
+            //InteractMessage msg;
+            //msg = new InteractMessage(Interaction.DEATH, "STOPHITS");
+            //player.SendMessage("Interact", msg);
         }
     }
 

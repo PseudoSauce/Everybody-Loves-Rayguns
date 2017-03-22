@@ -16,6 +16,7 @@ public class DeathComponent : Interactable {
     private bool beingHit = false;
     private bool quickDeath = false;
     private float nextFire = 0;
+    private float depletionRation = 0;
 
     [SerializeField]
     private Image m_healthBar;
@@ -81,14 +82,16 @@ public class DeathComponent : Interactable {
                 m_deathMessage.text = "";
             }
         }
+        beingHit = false;
     }
 
     void Heal() {
-        if (tempHitpoints < origHitpoints - 10) {
+        if (tempHitpoints < origHitpoints - depletionRation) {
             //ala COD, same ratio as ROF
             if (Time.time > nextFire) {
                 nextFire = Time.time + drainTimeStep;
                 tempHitpoints++;
+                depletionRation++;
                 m_healthBar.fillAmount = (float)tempHitpoints / (float)origHitpoints;
                 print("health: " + tempHitpoints);
             }
@@ -119,9 +122,6 @@ public class DeathComponent : Interactable {
         switch (msg.msg) {
             case "SENDHITS":
                 beingHit = true;
-                break;
-            case "STOPHITS":
-                beingHit = false;
                 break;
             case "INSTAKILL":
                 //short circuit death proc

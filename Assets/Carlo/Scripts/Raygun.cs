@@ -236,11 +236,6 @@ public class Raygun : MonoBehaviour {
             laserLine.enabled = false;
             if (stuck || !canFire)
             {
-                InteractMessage sendMsg = new InteractMessage(Interaction.SCALING, "STOPGROW");
-                currentHit.SendMessage("Interact", sendMsg);
-                sendMsg.msg = "STOPSHRINK";
-                currentHit.SendMessage("Interact", sendMsg);
-
                 currentHit.GetComponent<Renderer>().material.color = currentColor;
                 stuck = false;
                 currentHit = null;

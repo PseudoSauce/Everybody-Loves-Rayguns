@@ -5,17 +5,21 @@ using MyTypes;
 
 public class DoorInteractable : Interactable
 {
-    [Header("Door")]
-    [SerializeField]
+    [Header("------|| Door ||------")]
+    [SerializeField, Tooltip("This door's ID")]
     private uint m_DoorID;
-    [SerializeField]
+    [SerializeField, Tooltip("The Mesh of the door")]
     private GameObject m_doorObject;
-    [SerializeField]
+    [SerializeField, Tooltip("The open and closed position of the door")]
     private Transform m_openPosition, m_closePosition;
-    [SerializeField]
+    [SerializeField, Tooltip("Speed of the opening and closing the door")]
     private float m_doorSpeed = 2.0f;
+    [SerializeField, Tooltip("Should the door remain closed after opening?")]
+    private bool m_stayOpen = false;
 
+    // Can close the door
     private bool m_moveToClose = false;
+    // Can open the door
     private bool m_moveToOpen = false;
 
     ////////////////////////////////
@@ -51,6 +55,7 @@ public class DoorInteractable : Interactable
     {
         var eventID = handlerPacket.Handler.EventID;
 
+        // Signal to open the door
         if ((CustomSwitchEvent)eventID == CustomSwitchEvent.OpenDoor)
         {
             DoorOpenEventHandler handler = (DoorOpenEventHandler)handlerPacket.Handler;
@@ -61,13 +66,17 @@ public class DoorInteractable : Interactable
             }
         }
 
-        if ((CustomSwitchEvent)eventID == CustomSwitchEvent.CloseDoor)
+        if (!m_stayOpen)
         {
-            DoorOpenEventHandler handler = (DoorOpenEventHandler)handlerPacket.Handler;
-            if (handler.DoorID == m_DoorID)
+            // Signal to close the door
+            if ((CustomSwitchEvent)eventID == CustomSwitchEvent.CloseDoor)
             {
-                m_moveToOpen = false;
-                m_moveToClose = true;
+                DoorOpenEventHandler handler = (DoorOpenEventHandler)handlerPacket.Handler;
+                if (handler.DoorID == m_DoorID)
+                {
+                    m_moveToOpen = false;
+                    m_moveToClose = true;
+                }
             }
         }
     }

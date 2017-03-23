@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114489102039114866}
   - component: {fileID: 114929134559606862}
   - component: {fileID: 114715233744884964}
+  - component: {fileID: 114039235903241252}
   m_Layer: 0
   m_Name: Cube_Scalable_Teleportable
   m_TagString: Untagged
@@ -113,6 +114,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114039235903241252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1513369900805284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b3e12b1da62b3488e88d4e8f83d7f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tag: 1
 --- !u!114 &114489102039114866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -435,8 +448,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4752542b3dcc0745ab097bbb59b207e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateMinimumTick: 0.02
-  UseModifiedUpdate: 0
+  m_IgnoreUpdate: 0
+  m_RecordEvents: 1
+  m_IgnoreManagerEvents: 0
+  m_IgnoreCustomEvents: 0
+  m_InitialEventsToRegisterTo: 
 --- !u!114 &114929134559606862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -448,8 +464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f23bc5218415a40a103934dd6a3cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateMinimumTick: 0.02
-  UseModifiedUpdate: 0
+  m_IgnoreUpdate: 0
+  m_RecordEvents: 1
+  m_IgnoreManagerEvents: 0
+  m_IgnoreCustomEvents: 0
+  m_InitialEventsToRegisterTo: 
   beamMask:
     serializedVersion: 2
     m_Bits: 0

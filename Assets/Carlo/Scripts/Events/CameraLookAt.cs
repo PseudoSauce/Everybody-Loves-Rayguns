@@ -33,6 +33,7 @@ public class CameraLookAt : MonoBehaviour
     private Camera m_cutSceneCamera;
 
     // Store camera moves that will be done
+    [SerializeField]
     private CameraMove[] m_cameraMoves;
     // Current camera move
     private int m_currentMove = 0;
@@ -64,6 +65,8 @@ public class CameraLookAt : MonoBehaviour
                 {
                     // Set moves
                     SetCameraMoves(trigger.GetCameraMoves());
+                    // Shut off trigger object
+                    trigger.ShutoffObject();
                     if (m_cameraMoves.Length > 0)
                     {
                         // Start moves
@@ -81,6 +84,7 @@ public class CameraLookAt : MonoBehaviour
     // Copy the camera moves from the trigger
     private void SetCameraMoves(CameraMove[] moveArray)
     {
+        m_cameraMoves = new CameraMove[0];
         m_cameraMoves = moveArray;
         for (int i = 0; i < m_cameraMoves.Length; i++)
         {
@@ -147,7 +151,7 @@ public class CameraLookAt : MonoBehaviour
                 {
                     if(Mathf.Abs(m_cutSceneCamera.fieldOfView - m_cameraMoves[i].zoomFOV) < 2)
                     {
-                        Debug.Log(m_cutSceneCamera.fieldOfView);
+                        //Debug.Log(m_cutSceneCamera.fieldOfView);
                         m_cameraMoves[i].isMoveOver = true;
                     }
                 }
@@ -199,6 +203,8 @@ public class CameraLookAt : MonoBehaviour
                 m_playerCamera.SetActive(true);
                 m_playerController.enabled = true;
                 StopAllCoroutines();
+                // Reset moves to 0
+                m_currentMove = 0;
             }
         }
     }

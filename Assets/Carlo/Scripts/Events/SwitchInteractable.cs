@@ -6,8 +6,9 @@ using MyTypes;
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class SwitchInteractable : Interactable
 {
-    [SerializeField]
+    [SerializeField, Tooltip("ID's of the doors connected to this switch.")]
     private uint[] m_DoorID;
+    // Has the switch been triggered
     bool wasTriggered = false;
 
     ////////////////////////////////

@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 65817415037458202}
   - component: {fileID: 114651127563711330}
   - component: {fileID: 114214869187597694}
+  - component: {fileID: 114492659624182600}
   m_Layer: 0
   m_Name: Cube_Scalable
   m_TagString: Sizeable
@@ -123,11 +124,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f23bc5218415a40a103934dd6a3cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateMinimumTick: 0.02
-  UseModifiedUpdate: 0
+  m_IgnoreUpdate: 0
+  m_RecordEvents: 1
+  m_IgnoreManagerEvents: 0
+  m_IgnoreCustomEvents: 0
+  m_InitialEventsToRegisterTo: 
   beamMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &114492659624182600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1545660592400894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b3e12b1da62b3488e88d4e8f83d7f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tag: 1
 --- !u!114 &114651127563711330
 MonoBehaviour:
   m_ObjectHideFlags: 1

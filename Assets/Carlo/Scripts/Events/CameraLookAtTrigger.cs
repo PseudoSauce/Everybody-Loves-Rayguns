@@ -21,4 +21,10 @@ public class CameraLookAtTrigger : MonoBehaviour {
     {
         return m_isDone;
     }
+
+    // Deactivate object from play
+    public void ShutoffObject()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

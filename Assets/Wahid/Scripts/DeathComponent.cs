@@ -30,6 +30,7 @@ public class DeathComponent : Interactable {
     private string m_spawnPointTag = "SpawnPoint";
 
     private Transform m_lastSpawnPoint;
+    StoreTransform saveTrans;
     private bool m_respawning = false;
     private bool isDead = false;
 
@@ -40,13 +41,15 @@ public class DeathComponent : Interactable {
     }
 
     private void MyStart() {
+        saveTrans = this.gameObject.transform.Save().Position();
         m_lastSpawnPoint = null;
+        print("last spawn point" + m_lastSpawnPoint);
         Debug.Log("DeathComponent: Starting...");
         origHitpoints = tempHitpoints;
     }
 
     private void MyUpdate(float deltaTime) {
-        if (!isDead) {
+        if (!isDead && !m_respawning) {
             if (beingHit) {
                 StartDeath(true);
             } else if (quickDeath) {
@@ -56,28 +59,24 @@ public class DeathComponent : Interactable {
                 Heal();
             }
         }
-        if (!m_respawning) {
-            if (isDead) {
-                //print("respawning");
-                m_respawning = true;
-                StartCoroutine(Respawn());
-            }
-        }
     }
+
     void StartDeath(bool normalDeath) {
-        if (!normalDeath) {
+        if (!normalDeath && !m_respawning) {
+            m_healthBar.fillAmount = 0;
             m_deathMessage.text = "You Died!";
             isDead = true;
-        }
-        if (Time.time > nextFire) {
+            StartCoroutine(Respawn());
+        } else if (Time.time > nextFire && !m_respawning) {
             nextFire = Time.time + drainTimeStep;
             tempHitpoints--;
             m_healthBar.fillAmount = (float)tempHitpoints / (float)origHitpoints;
             print("health: " + tempHitpoints);
-            if (tempHitpoints < 0) {
-                //Destroy(this.gameObject);
+            if (tempHitpoints <= 0) {
+                m_healthBar.fillAmount = 0;
                 m_deathMessage.text = "You Died!";
                 isDead = true;
+                StartCoroutine(Respawn());
             } else {
                 m_deathMessage.text = "";
             }
@@ -86,7 +85,8 @@ public class DeathComponent : Interactable {
     }
 
     void Heal() {
-        if (tempHitpoints < origHitpoints - depletionRation) {
+        print("healing");
+        if (tempHitpoints <= origHitpoints - depletionRation) {
             //ala COD, same ratio as ROF
             if (Time.time > nextFire) {
                 nextFire = Time.time + drainTimeStep;
@@ -99,12 +99,11 @@ public class DeathComponent : Interactable {
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.CompareTag(m_deathTag))
-        {
+        if (other.CompareTag(m_deathTag) && !m_respawning) {
             print(this + ": NEED A FLAG HERE TO PREVENT THESE FROM CALLING TWICE (OR MORE)");
             quickDeath = true;
         }
-            
+
         if (other.CompareTag(m_spawnPointTag))
             m_lastSpawnPoint = other.gameObject.transform;
     }
@@ -117,8 +116,7 @@ public class DeathComponent : Interactable {
         //    if (objects[0].GetType() == typeof(float)) {
         //        drainTimeStep = (int)objects[0];
         //    }
-        if (msg.msg != "STOPHITS")
-            Debug.Log(this + ": " + msg.msg);
+        Debug.Log(this + ": " + msg.msg);
         switch (msg.msg) {
             case "SENDHITS":
                 beingHit = true;
@@ -130,20 +128,20 @@ public class DeathComponent : Interactable {
         }
     }
     private IEnumerator Respawn() {
-       // print("RESPAWNING");
-        
-        yield return new WaitForSeconds(2);        
-        if (m_lastSpawnPoint.position != null) {
+        print("RESPAWNING");
+        m_respawning = true;
+        yield return new WaitForSeconds(2);
+        if (m_lastSpawnPoint != null) {
             transform.position = m_lastSpawnPoint.position;
         } else {
-            print("no pos found so we destroy you");
-            Destroy(this.gameObject);
+            this.transform.Load(saveTrans).Position();
+            //transform.position;
         }
-
+        //reset everything
         isDead = false;
-        //transform.rotation = m_lastSpawnPoint.rotation;
-        m_respawning = false;
         tempHitpoints = origHitpoints;
-
+        m_deathMessage.text = "";
+        depletionRation = 0;
+        m_respawning = false;
     }
 }

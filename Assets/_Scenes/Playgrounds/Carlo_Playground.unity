@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.29936957, g: 0.29936957, b: 0.29936957, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1456,25 +1456,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_cameraMoves:
-  - rotateTo: 1
+  - useRotation: 1
     lookAtPosition: {fileID: 1597526742}
-    zoomIn: 1
+    useZoom: 1
     zoomFOV: 40
     moveSpeed: 2
-    waitTime: 2
+    waitTime: 0
     isMoveOver: 0
-  - rotateTo: 1
+  - useRotation: 1
     lookAtPosition: {fileID: 1307525577}
-    zoomIn: 0
+    useZoom: 0
     zoomFOV: 0
     moveSpeed: 2
-    waitTime: 2
+    waitTime: 0
     isMoveOver: 0
-  - rotateTo: 0
+  - useRotation: 0
     lookAtPosition: {fileID: 1307525577}
-    zoomIn: 1
+    useZoom: 1
     zoomFOV: 20
-    moveSpeed: 5
+    moveSpeed: 1
     waitTime: 0
     isMoveOver: 0
 --- !u!4 &281880590
@@ -1661,7 +1661,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1935344967}
+      objectReference: {fileID: 1241074922}
     - target: {fileID: 114514161101450994, guid: a61ef97ff165b074a986f551849b3a51,
         type: 2}
       propertyPath: m_Enabled
@@ -2495,28 +2495,6 @@ MonoBehaviour:
   m_openPosition: {fileID: 539700610}
   m_closePosition: {fileID: 539700609}
   m_doorSpeed: 2
---- !u!84 &584649158
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 551
-  m_Height: 310
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!43 &588966869
 Mesh:
   m_ObjectHideFlags: 0
@@ -10155,28 +10133,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_cutSceneTrigger: CutScene
   m_targetingDestination: {fileID: 1733161222}
-  m_cameraMoves:
-  - rotateTo: 1
-    lookAtPosition: {fileID: 1597526742}
-    zoomIn: 0
-    zoomFOV: 0
-    moveSpeed: 3
-    waitTime: 2
-    isMoveOver: 0
-  - rotateTo: 0
-    lookAtPosition: {fileID: 1597526742}
-    zoomIn: 1
-    zoomFOV: 40
-    moveSpeed: 3
-    waitTime: 2
-    isMoveOver: 0
-  - rotateTo: 0
-    lookAtPosition: {fileID: 1597526742}
-    zoomIn: 1
-    zoomFOV: 20
-    moveSpeed: 3
-    waitTime: 2
-    isMoveOver: 0
   m_cutSceneCamera: {fileID: 2115049628}
 --- !u!43 &1223469682
 Mesh:
@@ -10306,6 +10262,28 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
+--- !u!84 &1241074922
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 551
+  m_Height: 310
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!1 &1242505519
 GameObject:
   m_ObjectHideFlags: 0
@@ -12091,6 +12069,28 @@ Transform:
   m_Father: {fileID: 2114295035}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: 120, z: 0}
+--- !u!84 &1649183886
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 551
+  m_Height: 310
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!43 &1687166049
 Mesh:
   m_ObjectHideFlags: 0
@@ -12527,28 +12527,6 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!84 &1935344967
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 551
-  m_Height: 310
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!43 &1995477575
 Mesh:
   m_ObjectHideFlags: 0
@@ -15565,7 +15543,7 @@ GameObject:
   - component: {fileID: 2115049627}
   - component: {fileID: 2115049626}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: CutSceneCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

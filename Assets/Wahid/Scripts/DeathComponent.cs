@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Linq;
 
 using MyTypes;
 
@@ -12,6 +13,8 @@ public class DeathComponent : Interactable {
     public int tempHitpoints = 100;
     [Tooltip("This is how fast you heal or die")]
     public float drainTimeStep = 0.1f;
+    [Tooltip("This is how many points you lose in one hit")]
+    private int drainagePoints = 1;
     private int origHitpoints;
     private bool beingHit = false;
     private bool quickDeath = false;
@@ -33,6 +36,11 @@ public class DeathComponent : Interactable {
     StoreTransform saveTrans;
     private bool m_respawning = false;
     private bool isDead = false;
+
+    //handle multiple hits
+    ArrayList uniqueInvokers = new ArrayList();
+    private bool isFirstHit = true;
+    private static int concurrencyCount = 0;
 
     protected override void Init() {
         AssignInteractionType(Interaction.DEATH);
@@ -69,7 +77,7 @@ public class DeathComponent : Interactable {
             StartCoroutine(Respawn());
         } else if (Time.time > nextFire && !m_respawning) {
             nextFire = Time.time + drainTimeStep;
-            tempHitpoints--;
+            tempHitpoints -= drainagePoints;
             m_healthBar.fillAmount = (float)tempHitpoints / (float)origHitpoints;
             print("health: " + tempHitpoints);
             if (tempHitpoints <= 0) {
@@ -81,6 +89,7 @@ public class DeathComponent : Interactable {
                 m_deathMessage.text = "";
             }
         }
+        uniqueInvokers.Clear();
         beingHit = false;
     }
 
@@ -109,13 +118,35 @@ public class DeathComponent : Interactable {
     }
     // place your custom logic here for interaction
     protected override void Commit(InteractMessage msg) {
-        //optional time step for the beam hp drainage 
         //object[] objects = new object[msg.msgData.Count];
+        //poll unique invoker
+        foreach (object[] id in msg.msgData) {
+            int inID = (int)id[0];
+            if (!uniqueInvokers.Contains(inID)){
+                uniqueInvokers.Add(inID);
+            }
+        }
+        drainagePoints = uniqueInvokers.Count;
+        print(drainagePoints);
+        //int incomingmsgs = (int)((ArrayList)msg.msgData[0])[0]);
+        //for (int i = 0; i < msg.msgData.Count; i++) {
+        //    uniqueInvokers.Add msg.msgData[i];
+        //}
+
+        //int objectUID = (int)msg.msgData.FirstOrDefault<object>();
+        //int objectsUID = 
+        //print(objectUID);
+
         //msg.msgData.CopyTo(objects, 0);
+        //check if we have it 
+        //MULTIPLE; time step for the beam hp drainage 
+
+
         //if (objects.Length > 0)
-        //    if (objects[0].GetType() == typeof(float)) {
-        //        drainTimeStep = (int)objects[0];
-        //    }
+        //    print("invokers: ") + objects[isFirstHit];
+        //    //if (objects[0].GetType() == typeof(float)) {
+        //    //    drainTimeStep = (int)objects[0];
+        //    //}
         Debug.Log(this + ": " + msg.msg);
         switch (msg.msg) {
             case "SENDHITS":

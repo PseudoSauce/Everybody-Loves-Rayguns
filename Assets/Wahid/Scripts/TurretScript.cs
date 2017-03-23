@@ -94,7 +94,7 @@ public class TurretScript : MonoBehaviour {
                     laserLine.enabled = true;
 
                     InteractMessage msg;
-                    msg = new InteractMessage(Interaction.DEATH, "SENDHITS");
+                    msg = new InteractMessage(Interaction.DEATH, "SENDHITS", (object)new object[] { (object)GetInstanceID() });
                     player.SendMessage("Interact", msg);
                 }
             }

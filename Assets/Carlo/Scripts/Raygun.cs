@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 
 using MyTypes;
 using System;
@@ -23,6 +24,19 @@ public class Raygun : MonoBehaviour {
     public Beacon beaconProjectile = null;
     private Beacon beacon = null;
     private GameObject lastObject = null;
+
+    [SerializeField]
+    private GameObject m_cutsceneCam;
+    [SerializeField]
+    private Transform m_targetPos;
+    [SerializeField]
+    private Transform m_originalPos;
+    private float m_targetFOV = 25;
+    private float m_originalFOV = 60;
+    [SerializeField]
+    private float m_screenSpeed = 1.0f;
+    private bool m_isLooking = false;
+    private RigidbodyFirstPersonController m_playerController;
     // Teleport //
 
     // Sizer //
@@ -53,6 +67,8 @@ public class Raygun : MonoBehaviour {
     #region Monobehaviour
     void Start ()
     {
+        m_playerController = GetComponentInParent<RigidbodyFirstPersonController>();
+        //m_oldCamPos = Camera.main.transform.position;
         laserLine = GetComponent<LineRenderer>();
         fpsCam = GetComponentInParent<Camera>();
         if (!fpsCam) {
@@ -63,17 +79,22 @@ public class Raygun : MonoBehaviour {
 	void Update ()
     {
         ChangeGunMode();
+        MoveToScreen();
 
         if (displayText) {
             switch (m_currentGunMode) {
                 case GunMode.Teleporter:
                     TeleportBeamInput();
                     displayText.text = "Teleport-Beam";
+                    inst1.text = "Teleport object to beacon";
+                    inst2.text = "Deploy Beacon";
                     break;
                 case GunMode.Scaler:
                     ScalerBeamInput();
                     StopDisplayingHologram();
                     displayText.text = "Sizer-beam";
+                    inst1.text = "Grow object";
+                    inst2.text = "Shrink object";
                     break;
                 default:
                     Debug.LogWarning("Current Gun Mode not set properly.");
@@ -95,6 +116,7 @@ public class Raygun : MonoBehaviour {
                     ScalerBeamInput();
                     StopDisplayingHologram();
                     displayText.text = "Currently in: Scaler Mode";
+                    m_isLooking = false;
                     break;
                 default:
                     Debug.LogWarning("Current Gun Mode not set properly.");
@@ -110,6 +132,7 @@ public class Raygun : MonoBehaviour {
         {
             case GunMode.Teleporter:
                 TeleportBeam();
+                ToggleLookAtScreen();
                 break;
             case GunMode.Scaler:
 
@@ -156,31 +179,34 @@ public class Raygun : MonoBehaviour {
 
     private void TeleportBeam()
     {
-        RaycastHit hitInfo;
-        InteractMessage msg;
-
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hitInfo, weaponShootRange))
+        if (!m_isLooking)
         {
-            if (hitInfo.collider.GetComponent<Interactable>())
+            RaycastHit hitInfo;
+            InteractMessage msg;
+
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hitInfo, weaponShootRange))
             {
-                if (beacon != null)
+                if (hitInfo.collider.GetComponent<Interactable>())
                 {
-                    lastObject = hitInfo.collider.gameObject;
-                    msg = new InteractMessage(Interaction.TELEPORTING, "HitBegin", beacon);
-
-                    lastObject.SendMessage("Interact", msg);
-
-                    // Input
-                    if (Input.GetMouseButtonDown(0))
+                    if (beacon != null)
                     {
-                        msg = new InteractMessage(Interaction.TELEPORTING, "Teleport", beacon);
+                        lastObject = hitInfo.collider.gameObject;
+                        msg = new InteractMessage(Interaction.TELEPORTING, "HitBegin", beacon);
+
                         lastObject.SendMessage("Interact", msg);
+
+                        // Input
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            msg = new InteractMessage(Interaction.TELEPORTING, "Teleport", beacon);
+                            lastObject.SendMessage("Interact", msg);
+                        }
                     }
                 }
-            }
-            else
-            {
-                StopDisplayingHologram();
+                else
+                {
+                    StopDisplayingHologram();
+                }
             }
         }
     }
@@ -205,6 +231,51 @@ public class Raygun : MonoBehaviour {
         {
             Destroy(beacon.gameObject);
             beacon = null;
+        }
+    }
+
+    private void ToggleLookAtScreen()
+    {
+        if(Input.GetKey(KeyCode.LeftControl))
+        {
+            Debug.Log("LeftControl");
+            m_playerController.enabled = false;
+            m_isLooking = true;
+            m_cutsceneCam.SetActive(true);
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            m_playerController.enabled = true;
+            m_isLooking = false;
+            m_cutsceneCam.SetActive(false);
+        }
+    }
+
+    private void MoveToScreen()
+    {
+        if(m_isLooking)
+        {
+            if (Vector3.Distance(m_cutsceneCam.transform.position, m_targetPos.position) > 0.05f)
+            {
+                Vector3 newGunPos = Vector3.Lerp(m_cutsceneCam.transform.position, m_targetPos.position, m_screenSpeed * Time.deltaTime);
+                m_cutsceneCam.transform.position = newGunPos;
+                float newFOV = Mathf.Lerp(m_cutsceneCam.GetComponent<Camera>().fieldOfView, m_targetFOV, m_screenSpeed * Time.deltaTime);
+                m_cutsceneCam.GetComponent<Camera>().fieldOfView = newFOV;
+                Quaternion newRot = Quaternion.Lerp(m_cutsceneCam.transform.rotation, m_targetPos.rotation, m_screenSpeed * Time.deltaTime);
+                m_cutsceneCam.transform.rotation = newRot;
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(m_cutsceneCam.transform.position, m_originalPos.position) > 0.05f)
+            {
+                Vector3 newGunPos = Vector3.Lerp(m_cutsceneCam.transform.position, m_originalPos.position, m_screenSpeed * Time.deltaTime);
+                m_cutsceneCam.transform.position = newGunPos;
+                float newFOV = Mathf.Lerp(m_cutsceneCam.GetComponent<Camera>().fieldOfView, m_originalFOV, m_screenSpeed * Time.deltaTime);
+                m_cutsceneCam.GetComponent<Camera>().fieldOfView = newFOV;
+                Quaternion newRot = Quaternion.Lerp(m_cutsceneCam.transform.rotation, m_originalPos.rotation, m_screenSpeed * Time.deltaTime);
+                m_cutsceneCam.transform.rotation = newRot;
+            }
         }
     }
     #endregion Teleport Beam

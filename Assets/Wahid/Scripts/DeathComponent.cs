@@ -35,7 +35,7 @@ public class DeathComponent : Interactable {
     private Transform m_lastSpawnPoint;
     StoreTransform saveTrans;
     private bool m_respawning = false;
-    private bool isDead = false;
+    public bool isDead = false;
 
     //handle multiple hits
     ArrayList uniqueInvokers = new ArrayList();
@@ -74,6 +74,7 @@ public class DeathComponent : Interactable {
             m_healthBar.fillAmount = 0;
             m_deathMessage.text = "You Died!";
             isDead = true;
+
             StartCoroutine(Respawn());
         } else if (Time.time > nextFire && !m_respawning) {
             nextFire = Time.time + drainTimeStep;

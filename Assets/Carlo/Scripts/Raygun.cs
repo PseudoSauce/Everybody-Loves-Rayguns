@@ -62,12 +62,34 @@ public class Raygun : MonoBehaviour {
     public Text inst1 = null;
     public Text inst2 = null;
     // Debuging //
+
+	//death stuff//
+	private Transform parent;
+	private DeathComponent deathComp;
+	private StoreTransform savePosGun;
+	private StoreTransform saveRotGun;
+	private RigidbodyFirstPersonController rigController;
+	bool isDropGun = false;
+	bool isDying = false;
+
+	//faux death gun
+	GameObject tempGun = null;
+	//private gameObject 
+
+	private GameObject fauxGun;
     #endregion Variables
 
     #region Monobehaviour
     void Start ()
     {
+		fauxGun = Resources.Load ("RaygunFaux") as GameObject;
+		parent = transform.root;
+		rigController = parent.GetComponent<RigidbodyFirstPersonController> ();
+		deathComp = GetComponentInParent<DeathComponent> ();
         m_playerController = GetComponentInParent<RigidbodyFirstPersonController>();
+
+		savePosGun = gameObject.transform.Save().Position();
+		saveRotGun = gameObject.transform.Save().LocalRotation();
         //m_oldCamPos = Camera.main.transform.position;
         laserLine = GetComponent<LineRenderer>();
         fpsCam = GetComponentInParent<Camera>();
@@ -77,54 +99,81 @@ public class Raygun : MonoBehaviour {
     }
 	
 	void Update ()
-    {
-        ChangeGunMode();
-        MoveToScreen();
+	{
+		if (!deathComp.isDead) {
+			if (isDropGun) {
+				isDying = true;
+				Destroy (tempGun);
+				rigController.enabled = true;
+				gameObject.GetComponent<Renderer> ().enabled = true;
+				Renderer[] gunRends = gameObject.GetComponentsInChildren<Renderer> ();
+				foreach (Renderer rends in gunRends) {
+					rends.enabled = true;
+				}
+				isDropGun = false;
+			}
 
-        if (displayText) {
-            switch (m_currentGunMode) {
-                case GunMode.Teleporter:
-                    TeleportBeamInput();
-                    displayText.text = "Teleport-Beam";
-                    inst1.text = "Teleport object to beacon";
-                    inst2.text = "Deploy Beacon";
-                    break;
-                case GunMode.Scaler:
-                    ScalerBeamInput();
-                    StopDisplayingHologram();
-                    displayText.text = "Sizer-beam";
-                    inst1.text = "Grow object";
-                    inst2.text = "Shrink object";
-                    break;
-                default:
-                    Debug.LogWarning("Current Gun Mode not set properly.");
-                    displayText.text = "Current Gun Mode not set properly.";
-                    break;
-            }
-        } else {
-            var disText = new GameObject("DisplayText", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
-            disText.transform.SetParent(FindObjectOfType<Canvas>().transform);
-            disText.GetComponent<RectTransform>().anchoredPosition = Vector2.one;
-            displayText = disText.GetComponent<Text>();
+			ChangeGunMode ();
+			MoveToScreen ();
 
-            switch (m_currentGunMode) {
-                case GunMode.Teleporter:
-                    TeleportBeamInput();
-                    displayText.text = "Currently in: Teleport Mode";
-                    break;
-                case GunMode.Scaler:
-                    ScalerBeamInput();
-                    StopDisplayingHologram();
-                    displayText.text = "Currently in: Scaler Mode";
-                    m_isLooking = false;
-                    break;
-                default:
-                    Debug.LogWarning("Current Gun Mode not set properly.");
-                    displayText.text = "Current Gun Mode not set properly.";
-                    break;
-            }
-        }
-    }
+			if (displayText) {
+				switch (m_currentGunMode) {
+				case GunMode.Teleporter:
+					TeleportBeamInput ();
+					displayText.text = "Teleport-Beam";
+					inst1.text = "Teleport object to beacon";
+					inst2.text = "Deploy Beacon";
+					break;
+				case GunMode.Scaler:
+					ScalerBeamInput ();
+					StopDisplayingHologram ();
+					displayText.text = "Sizer-beam";
+					inst1.text = "Grow object";
+					inst2.text = "Shrink object";
+					break;
+				default:
+					Debug.LogWarning ("Current Gun Mode not set properly.");
+					displayText.text = "Current Gun Mode not set properly.";
+					break;
+				}
+			} else {
+				var disText = new GameObject ("DisplayText", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+				disText.transform.SetParent (FindObjectOfType<Canvas> ().transform);
+				disText.GetComponent<RectTransform> ().anchoredPosition = Vector2.one;
+				displayText = disText.GetComponent<Text> ();
+
+				switch (m_currentGunMode) {
+				case GunMode.Teleporter:
+					TeleportBeamInput ();
+					displayText.text = "Currently in: Teleport Mode";
+					break;
+				case GunMode.Scaler:
+					ScalerBeamInput ();
+					StopDisplayingHologram ();
+					displayText.text = "Currently in: Scaler Mode";
+					m_isLooking = false;
+					break;
+				default:
+					Debug.LogWarning ("Current Gun Mode not set properly.");
+					displayText.text = "Current Gun Mode not set properly.";
+					break;
+				}
+			}
+		} else {
+			if (isDying) {
+				tempGun = Instantiate (fauxGun, transform) as GameObject;
+				rigController.enabled = false;
+				gameObject.GetComponent<Renderer> ().enabled = false;
+				Renderer[] gunRends = gameObject.GetComponentsInChildren<Renderer> ();
+				foreach (Renderer rends in gunRends) {
+					rends.enabled = false;
+				}
+				//gameObject.getco
+				isDropGun = true;
+				isDying = false;
+			}
+		}
+	}
 
     void FixedUpdate()
     {
@@ -348,7 +397,8 @@ public class Raygun : MonoBehaviour {
             //if you are hooked to an object, draw line to that object
             endPos = currentHit.transform.GetComponent<Renderer>().bounds.center;
             laserLine.SetPosition(1, endPos);
-            this.transform.Rotate(new Vector3(0, 0, 60 * Time.deltaTime));
+			//TODO: MOVE THIS OUT
+            //this.transform.Rotate(new Vector3(0, 0, 60 * Time.deltaTime));
             Debug.DrawLine(rayOrigin, endPos, Color.green);
             if (Physics.Linecast(rayOrigin, endPos, out normalhit, beamMask.value))
             {

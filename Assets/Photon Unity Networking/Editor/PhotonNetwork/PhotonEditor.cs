@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // <copyright file="PhotonEditor.cs" company="Exit Games GmbH">
 //   PhotonNetwork Framework for Unity - Copyright (C) 2011 Exit Games GmbH
 // </copyright>
@@ -18,7 +18,8 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-public class PunWizardText {
+public class PunWizardText
+{
     public string WindowTitle = "PUN Wizard";
     public string SetupWizardWarningTitle = "Warning";
     public string SetupWizardWarningMessage = "You have not yet run the Photon setup wizard! Your game won't be able to connect. See Windows -> Photon Unity Networking.";
@@ -80,8 +81,9 @@ public class PunWizardText {
 
 
 [InitializeOnLoad]
-public class PhotonEditor : EditorWindow {
-    protected static Type WindowType = typeof(PhotonEditor);
+public class PhotonEditor : EditorWindow
+{
+    protected static Type WindowType = typeof (PhotonEditor);
 
     protected Vector2 scrollPos = Vector2.zero;
 
@@ -113,7 +115,8 @@ public class PhotonEditor : EditorWindow {
     protected static string UrlCloudDashboard = "https://www.photonengine.com/dashboard?email=";
 
 
-    private enum PhotonSetupStates {
+    private enum PhotonSetupStates
+    {
         MainUi,
 
         RegisterForPhotonCloud,
@@ -146,7 +149,8 @@ public class PhotonEditor : EditorWindow {
 
 
     // setup once on load
-    static PhotonEditor() {
+    static PhotonEditor()
+    {
         EditorApplication.projectWindowChanged += EditorUpdate;
         EditorApplication.hierarchyWindowChanged += EditorUpdate;
         EditorApplication.playmodeStateChanged += PlaymodeStateChanged;
@@ -157,24 +161,28 @@ public class PhotonEditor : EditorWindow {
     }
 
     // setup per window
-    public PhotonEditor() {
+    public PhotonEditor()
+    {
         minSize = this.preferredSize;
     }
 
     [MenuItem("Window/Photon Unity Networking/PUN Wizard &p", false, 0)]
-    protected static void MenuItemOpenWizard() {
+    protected static void MenuItemOpenWizard()
+    {
         PhotonEditor win = GetWindow(WindowType, false, CurrentLang.WindowTitle, true) as PhotonEditor;
         win.photonSetupState = PhotonSetupStates.MainUi;
         win.isSetupWizard = false;
     }
 
     [MenuItem("Window/Photon Unity Networking/Highlight Server Settings %#&p", false, 1)]
-    protected static void MenuItemHighlightSettings() {
+    protected static void MenuItemHighlightSettings()
+    {
         HighlightSettings();
     }
 
     /// <summary>Creates an Editor window, showing the cloud-registration wizard for Photon (entry point to setup PUN).</summary>
-    protected static void ShowRegistrationWizard() {
+    protected static void ShowRegistrationWizard()
+    {
         PhotonEditor win = GetWindow(WindowType, false, CurrentLang.WindowTitle, true) as PhotonEditor;
         win.photonSetupState = PhotonSetupStates.RegisterForPhotonCloud;
         win.isSetupWizard = true;
@@ -182,45 +190,55 @@ public class PhotonEditor : EditorWindow {
 
 
     // called 100 times / sec
-    private static void OnUpdate() {
+    private static void OnUpdate()
+    {
         // after a compile, check RPCs to create a cache-list
-        if (!postCompileActionsDone && !EditorApplication.isCompiling && !EditorApplication.isPlayingOrWillChangePlaymode && PhotonNetwork.PhotonServerSettings != null) {
-#if UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
-            if (EditorApplication.isUpdating) {
+        if (!postCompileActionsDone && !EditorApplication.isCompiling && !EditorApplication.isPlayingOrWillChangePlaymode && PhotonNetwork.PhotonServerSettings != null)
+        {
+            #if UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
+            if (EditorApplication.isUpdating)
+            {
                 return;
             }
-#endif
+            #endif
 
             PhotonEditor.UpdateRpcList();
             postCompileActionsDone = true; // on compile, this falls back to false (without actively doing anything)
 
-#if UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
+            #if UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
             PhotonEditor.ImportWin8Support();
-#endif
+            #endif
         }
     }
 
 
     // called in editor, opens wizard for initial setup, keeps scene PhotonViews up to date and closes connections when compiling (to avoid issues)
-    private static void EditorUpdate() {
-        if (PhotonNetwork.PhotonServerSettings == null) {
+    private static void EditorUpdate()
+    {
+        if (PhotonNetwork.PhotonServerSettings == null)
+        {
             PhotonNetwork.CreateSettings();
         }
-        if (PhotonNetwork.PhotonServerSettings == null) {
+        if (PhotonNetwork.PhotonServerSettings == null)
+        {
             return;
         }
 
         // serverSetting is null when the file gets deleted. otherwise, the wizard should only run once and only if hosting option is not (yet) set
-        if (!PhotonNetwork.PhotonServerSettings.DisableAutoOpenWizard && PhotonNetwork.PhotonServerSettings.HostType == ServerSettings.HostingOption.NotSet) {
+        if (!PhotonNetwork.PhotonServerSettings.DisableAutoOpenWizard && PhotonNetwork.PhotonServerSettings.HostType == ServerSettings.HostingOption.NotSet)
+        {
             ShowRegistrationWizard();
             PhotonNetwork.PhotonServerSettings.DisableAutoOpenWizard = true;
             PhotonEditor.SaveSettings();
         }
 
         // Workaround for TCP crash. Plus this surpresses any other recompile errors.
-        if (EditorApplication.isCompiling) {
-            if (PhotonNetwork.connected) {
-                if (lastWarning > EditorApplication.timeSinceStartup - 3) {
+        if (EditorApplication.isCompiling)
+        {
+            if (PhotonNetwork.connected)
+            {
+                if (lastWarning > EditorApplication.timeSinceStartup - 3)
+                {
                     // Prevent error spam
                     Debug.LogWarning(CurrentLang.WarningPhotonDisconnect);
                     lastWarning = EditorApplication.timeSinceStartup;
@@ -233,15 +251,16 @@ public class PhotonEditor : EditorWindow {
 
 
     // called in editor on change of play-mode (used to show a message popup that connection settings are incomplete)
-    private static void PlaymodeStateChanged() {
-        if (EditorApplication.isPlaying || !EditorApplication.isPlayingOrWillChangePlaymode) {
+    private static void PlaymodeStateChanged()
+    {
+        if (EditorApplication.isPlaying || !EditorApplication.isPlayingOrWillChangePlaymode)
+        {
             return;
         }
 
-        if (PhotonNetwork.PhotonServerSettings.HostType == ServerSettings.HostingOption.NotSet) {
-            Debug.Log("You have not yet run the Photon setup wizard! Your game won't be able to connect. See Windows -> Photon Unity Networking.");
-            //Squelch!
-            //EditorUtility.DisplayDialog(CurrentLang.SetupWizardWarningTitle, CurrentLang.SetupWizardWarningMessage, CurrentLang.OkButton);
+        if (PhotonNetwork.PhotonServerSettings.HostType == ServerSettings.HostingOption.NotSet)
+        {
+            EditorUtility.DisplayDialog(CurrentLang.SetupWizardWarningTitle, CurrentLang.SetupWizardWarningMessage, CurrentLang.OkButton);
         }
     }
 
@@ -249,14 +268,18 @@ public class PhotonEditor : EditorWindow {
     #region GUI and Wizard
 
     // Window Update() callback. On-demand, when Window is open
-    protected void Update() {
-        if (this.close) {
+    protected void Update()
+    {
+        if (this.close)
+        {
             Close();
         }
     }
 
-    protected virtual void OnGUI() {
-        if (BackgroundImage == null) {
+    protected virtual void OnGUI()
+    {
+        if (BackgroundImage == null)
+        {
             BackgroundImage = AssetDatabase.LoadAssetAtPath("Assets/Photon Unity Networking/Editor/PhotonNetwork/background.jpg", typeof(Texture2D)) as Texture2D;
         }
 
@@ -266,27 +289,34 @@ public class PhotonEditor : EditorWindow {
         this.scrollPos = GUILayout.BeginScrollView(this.scrollPos);
 
 
-        if (this.photonSetupState == PhotonSetupStates.MainUi) {
+        if (this.photonSetupState == PhotonSetupStates.MainUi)
+        {
             UiMainWizard();
-        } else {
+        }
+        else
+        {
             UiSetupApp();
         }
 
 
         GUILayout.EndScrollView();
 
-        if (oldGuiState != this.photonSetupState) {
+        if (oldGuiState != this.photonSetupState)
+        {
             GUI.FocusControl("");
         }
     }
 
 
-    protected virtual void UiSetupApp() {
+    protected virtual void UiSetupApp()
+    {
         GUI.skin.label.wordWrap = true;
-        if (!this.isSetupWizard) {
+        if (!this.isSetupWizard)
+        {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button(CurrentLang.MainMenuButton, GUILayout.ExpandWidth(false))) {
+            if (GUILayout.Button(CurrentLang.MainMenuButton, GUILayout.ExpandWidth(false)))
+            {
                 this.photonSetupState = PhotonSetupStates.MainUi;
             }
 
@@ -306,12 +336,15 @@ public class PhotonEditor : EditorWindow {
         GUILayout.Label(CurrentLang.EmailOrAppIdLabel);
         this.mailOrAppId = EditorGUILayout.TextField(this.mailOrAppId).Trim(); // note: we trim all input
 
-        if (this.mailOrAppId.Contains("@")) {
+        if (this.mailOrAppId.Contains("@"))
+        {
             // this should be a mail address
             this.minimumInput = (this.mailOrAppId.Length >= 5 && this.mailOrAppId.Contains("."));
             this.useMail = this.minimumInput;
             this.useAppId = false;
-        } else {
+        }
+        else
+        {
             // this should be an appId
             this.minimumInput = ServerSettings.IsAppId(this.mailOrAppId);
             this.useMail = false;
@@ -321,7 +354,8 @@ public class PhotonEditor : EditorWindow {
         // button to skip setup
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button(CurrentLang.SkipButton, GUILayout.Width(100))) {
+        if (GUILayout.Button(CurrentLang.SkipButton, GUILayout.Width(100)))
+        {
             this.photonSetupState = PhotonSetupStates.GoEditPhotonServerSettings;
             this.useSkip = true;
             this.useMail = false;
@@ -330,13 +364,16 @@ public class PhotonEditor : EditorWindow {
 
         // SETUP button
         EditorGUI.BeginDisabledGroup(!this.minimumInput);
-        if (GUILayout.Button(CurrentLang.SetupButton, GUILayout.Width(100))) {
+        if (GUILayout.Button(CurrentLang.SetupButton, GUILayout.Width(100)))
+        {
             this.useSkip = false;
             GUIUtility.keyboardControl = 0;
-            if (this.useMail) {
+            if (this.useMail)
+            {
                 RegisterWithEmail(this.mailOrAppId); // sets state
             }
-            if (this.useAppId) {
+            if (this.useAppId)
+            {
                 this.photonSetupState = PhotonSetupStates.GoEditPhotonServerSettings;
                 Undo.RecordObject(PhotonNetwork.PhotonServerSettings, "Update PhotonServerSettings for PUN");
                 PhotonNetwork.PhotonServerSettings.UseCloud(this.mailOrAppId);
@@ -349,7 +386,8 @@ public class PhotonEditor : EditorWindow {
 
 
         // existing account needs to fetch AppId online
-        if (this.photonSetupState == PhotonSetupStates.EmailAlreadyRegistered) {
+        if (this.photonSetupState == PhotonSetupStates.EmailAlreadyRegistered)
+        {
             // button to open dashboard and get the AppId
             GUILayout.Space(15);
             GUILayout.Label(CurrentLang.AlreadyRegisteredInfo);
@@ -357,8 +395,9 @@ public class PhotonEditor : EditorWindow {
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button(new GUIContent(CurrentLang.OpenCloudDashboardText, CurrentLang.OpenCloudDashboardTooltip), GUILayout.Width(205))) {
-                Application.OpenURL(UrlCloudDashboard + Uri.EscapeUriString(this.mailOrAppId));
+            if (GUILayout.Button(new GUIContent(CurrentLang.OpenCloudDashboardText, CurrentLang.OpenCloudDashboardTooltip), GUILayout.Width(205)))
+            {
+				Application.OpenURL(UrlCloudDashboard + Uri.EscapeUriString(this.mailOrAppId));
                 this.mailOrAppId = "";
             }
             GUILayout.FlexibleSpace();
@@ -366,18 +405,25 @@ public class PhotonEditor : EditorWindow {
         }
 
 
-        if (this.photonSetupState == PhotonSetupStates.GoEditPhotonServerSettings) {
-            if (!this.highlightedSettings) {
+        if (this.photonSetupState == PhotonSetupStates.GoEditPhotonServerSettings)
+        {
+            if (!this.highlightedSettings)
+            {
                 this.highlightedSettings = true;
                 HighlightSettings();
             }
 
             GUILayout.Space(15);
-            if (this.useSkip) {
+            if (this.useSkip)
+            {
                 GUILayout.Label(CurrentLang.SkipRegistrationInfo);
-            } else if (this.useMail) {
+            }
+            else if (this.useMail)
+            {
                 GUILayout.Label(CurrentLang.RegisteredNewAccountInfo);
-            } else if (this.useAppId) {
+            }
+            else if (this.useAppId)
+            {
                 GUILayout.Label(CurrentLang.AppliedToSettingsInfo);
             }
 
@@ -390,7 +436,8 @@ public class PhotonEditor : EditorWindow {
             // close window (done)
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button(CurrentLang.CloseWindowButton, GUILayout.Width(205))) {
+            if (GUILayout.Button(CurrentLang.CloseWindowButton, GUILayout.Width(205)))
+            {
                 this.close = true;
             }
             GUILayout.FlexibleSpace();
@@ -399,7 +446,8 @@ public class PhotonEditor : EditorWindow {
         GUI.skin.label.richText = false;
     }
 
-    private void UiTitleBox(string title, Texture2D bgIcon) {
+    private void UiTitleBox(string title, Texture2D bgIcon)
+    {
         GUIStyle bgStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
         bgStyle.normal.background = bgIcon;
         bgStyle.fontSize = 22;
@@ -412,10 +460,11 @@ public class PhotonEditor : EditorWindow {
         scale.height = 30;
 
         GUI.Label(scale, title, bgStyle);
-        GUILayout.Space(scale.height + 5);
+        GUILayout.Space(scale.height+5);
     }
 
-    protected virtual void UiMainWizard() {
+    protected virtual void UiMainWizard()
+    {
         GUILayout.Space(15);
 
         // title
@@ -427,7 +476,8 @@ public class PhotonEditor : EditorWindow {
 
 
         // pun+ info
-        if (isPunPlus) {
+        if (isPunPlus)
+        {
             GUILayout.Label(CurrentLang.MobilePunPlusExportNoteLabel);
             GUILayout.Space(15);
         }
@@ -443,13 +493,16 @@ public class PhotonEditor : EditorWindow {
         GUILayout.BeginHorizontal();
         GUILayout.Label(CurrentLang.SettingsButton, EditorStyles.boldLabel, GUILayout.Width(100));
         GUILayout.BeginVertical();
-        if (GUILayout.Button(new GUIContent(CurrentLang.LocateSettingsButton, CurrentLang.SettingsHighlightLabel))) {
+        if (GUILayout.Button(new GUIContent(CurrentLang.LocateSettingsButton, CurrentLang.SettingsHighlightLabel)))
+        {
             HighlightSettings();
         }
-        if (GUILayout.Button(new GUIContent(CurrentLang.OpenCloudDashboardText, CurrentLang.OpenCloudDashboardTooltip))) {
+        if (GUILayout.Button(new GUIContent(CurrentLang.OpenCloudDashboardText, CurrentLang.OpenCloudDashboardTooltip)))
+        {
             Application.OpenURL(UrlCloudDashboard + Uri.EscapeUriString(this.mailOrAppId));
         }
-        if (GUILayout.Button(new GUIContent(CurrentLang.SetupButton, CurrentLang.SetupServerCloudLabel))) {
+        if (GUILayout.Button(new GUIContent(CurrentLang.SetupButton, CurrentLang.SetupServerCloudLabel)))
+        {
             this.photonSetupState = PhotonSetupStates.RegisterForPhotonCloud;
         }
         GUILayout.EndVertical();
@@ -460,7 +513,8 @@ public class PhotonEditor : EditorWindow {
         // converter
         GUILayout.BeginHorizontal();
         GUILayout.Label(CurrentLang.ConverterLabel, EditorStyles.boldLabel, GUILayout.Width(100));
-        if (GUILayout.Button(new GUIContent(CurrentLang.StartButton, CurrentLang.UNtoPUNLabel))) {
+        if (GUILayout.Button(new GUIContent(CurrentLang.StartButton, CurrentLang.UNtoPUNLabel)))
+        {
             PhotonConverter.RunConversion();
         }
 
@@ -472,23 +526,27 @@ public class PhotonEditor : EditorWindow {
         GUILayout.BeginHorizontal();
         GUILayout.Label(CurrentLang.DocumentationLabel, EditorStyles.boldLabel, GUILayout.Width(100));
         GUILayout.BeginVertical();
-        if (GUILayout.Button(new GUIContent(CurrentLang.OpenPDFText, CurrentLang.OpenPDFTooltip))) {
+        if (GUILayout.Button(new GUIContent(CurrentLang.OpenPDFText, CurrentLang.OpenPDFTooltip)))
+        {
             EditorUtility.OpenWithDefaultApp(DocumentationLocation);
         }
 
-        if (GUILayout.Button(new GUIContent(CurrentLang.OpenDevNetText, CurrentLang.OpenDevNetTooltip))) {
+        if (GUILayout.Button(new GUIContent(CurrentLang.OpenDevNetText, CurrentLang.OpenDevNetTooltip)))
+        {
             Application.OpenURL(UrlDevNet);
         }
 
         GUI.skin.label.wordWrap = true;
         GUILayout.Label(CurrentLang.OwnHostCloudCompareLabel);
-        if (GUILayout.Button(CurrentLang.ComparisonPageButton)) {
+        if (GUILayout.Button(CurrentLang.ComparisonPageButton))
+        {
             Application.OpenURL(UrlCompare);
         }
 
 
-        if (GUILayout.Button(new GUIContent(CurrentLang.OpenForumText, CurrentLang.OpenForumTooltip))) {
-            Application.OpenURL(UrlForum);
+        if (GUILayout.Button(new GUIContent(CurrentLang.OpenForumText, CurrentLang.OpenForumTooltip)))
+        {
+			Application.OpenURL(UrlForum);
         }
 
         GUILayout.EndVertical();
@@ -498,35 +556,42 @@ public class PhotonEditor : EditorWindow {
     #endregion
 
 
-    protected virtual void RegisterWithEmail(string email) {
+    protected virtual void RegisterWithEmail(string email)
+    {
         EditorUtility.DisplayProgressBar(CurrentLang.ConnectionTitle, CurrentLang.ConnectionInfo, 0.5f);
 
         string accountServiceType = string.Empty;
-#if PHOTON_VOICE
+        #if PHOTON_VOICE
         accountServiceType = "voice";
-#endif
+        #endif
 
         AccountService client = new AccountService();
         client.RegisterByEmail(email, RegisterOrigin, accountServiceType); // this is the synchronous variant using the static RegisterOrigin. "result" is in the client
 
         EditorUtility.ClearProgressBar();
-        if (client.ReturnCode == 0) {
+        if (client.ReturnCode == 0)
+        {
             this.mailOrAppId = client.AppId;
             PhotonNetwork.PhotonServerSettings.UseCloud(this.mailOrAppId, 0);
-#if PHOTON_VOICE
+            #if PHOTON_VOICE
             PhotonNetwork.PhotonServerSettings.VoiceAppID = client.AppId2;
-#endif
+            #endif
             PhotonEditor.SaveSettings();
 
             this.photonSetupState = PhotonSetupStates.GoEditPhotonServerSettings;
-        } else {
+        }
+        else
+        {
             PhotonNetwork.PhotonServerSettings.HostType = ServerSettings.HostingOption.PhotonCloud;
             PhotonEditor.SaveSettings();
 
             Debug.LogWarning(client.Message + " ReturnCode: " + client.ReturnCode);
-            if (client.Message.Contains("registered")) {
+            if (client.Message.Contains("registered"))
+            {
                 this.photonSetupState = PhotonSetupStates.EmailAlreadyRegistered;
-            } else {
+            }
+            else
+            {
                 EditorUtility.DisplayDialog(CurrentLang.ErrorTextTitle, client.Message, CurrentLang.OkButton);
                 this.photonSetupState = PhotonSetupStates.RegisterForPhotonCloud;
             }
@@ -534,9 +599,10 @@ public class PhotonEditor : EditorWindow {
     }
 
 
-    protected internal static bool CheckPunPlus() {
-        androidLibExists = File.Exists("Assets/Plugins/Android/armeabi-v7a/libPhotonSocketPlugin.so") &&
-                            File.Exists("Assets/Plugins/Android/x86/libPhotonSocketPlugin.so");
+    protected internal static bool CheckPunPlus()
+    {
+		androidLibExists = 	File.Exists("Assets/Plugins/Android/armeabi-v7a/libPhotonSocketPlugin.so") &&
+							File.Exists("Assets/Plugins/Android/x86/libPhotonSocketPlugin.so");
 
 
         iphoneLibExists = File.Exists("Assets/Plugins/IOS/libPhotonSocketPlugin.a");
@@ -546,24 +612,28 @@ public class PhotonEditor : EditorWindow {
     }
 
 
-    private static void ImportWin8Support() {
-        if (EditorApplication.isCompiling || EditorApplication.isPlayingOrWillChangePlaymode) {
+    private static void ImportWin8Support()
+    {
+        if (EditorApplication.isCompiling || EditorApplication.isPlayingOrWillChangePlaymode)
+        {
             return; // don't import while compiling
         }
 
-#if UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
+        #if UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
         const string win8Package = "Assets/Plugins/Photon3Unity3D-Win8.unitypackage";
 
         bool win8LibsExist = File.Exists("Assets/Plugins/WP8/Photon3Unity3D.dll") && File.Exists("Assets/Plugins/Metro/Photon3Unity3D.dll");
-        if (!win8LibsExist && File.Exists(win8Package)) {
+        if (!win8LibsExist && File.Exists(win8Package))
+        {
             AssetDatabase.ImportPackage(win8Package, false);
         }
-#endif
+        #endif
     }
 
 
     // Pings PhotonServerSettings and makes it selected (show in Inspector)
-    private static void HighlightSettings() {
+    private static void HighlightSettings()
+    {
         Selection.objects = new UnityEngine.Object[] { PhotonNetwork.PhotonServerSettings };
         EditorGUIUtility.PingObject(PhotonNetwork.PhotonServerSettings);
     }
@@ -571,55 +641,70 @@ public class PhotonEditor : EditorWindow {
 
     // Marks settings object as dirty, so it gets saved.
     // unity 5.3 changes the usecase for SetDirty(). but here we don't modify a scene object! so it's ok to use
-    private static void SaveSettings() {
+    private static void SaveSettings()
+    {
         EditorUtility.SetDirty(PhotonNetwork.PhotonServerSettings);
     }
 
 
     #region RPC List Handling
 
-    public static void UpdateRpcList() {
+    public static void UpdateRpcList()
+    {
         List<string> additionalRpcs = new List<string>();
         HashSet<string> currentRpcs = new HashSet<string>();
 
         var types = GetAllSubTypesInScripts(typeof(MonoBehaviour));
 
         int countOldRpcs = 0;
-        foreach (var mono in types) {
+        foreach (var mono in types)
+        {
             MethodInfo[] methods = mono.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            foreach (MethodInfo method in methods) {
+            foreach (MethodInfo method in methods)
+            {
                 bool isOldRpc = false;
-#pragma warning disable 618
+                #pragma warning disable 618
                 // we let the Editor check for outdated RPC attributes in code. that should not cause a compile warning
-                if (method.IsDefined(typeof(RPC), false)) {
+                if (method.IsDefined(typeof (RPC), false))
+                {
                     countOldRpcs++;
                     isOldRpc = true;
                 }
-#pragma warning restore 618
+                #pragma warning restore 618
 
-                if (isOldRpc || method.IsDefined(typeof(PunRPC), false)) {
+                if (isOldRpc || method.IsDefined(typeof(PunRPC), false))
+                {
                     currentRpcs.Add(method.Name);
 
-                    if (!additionalRpcs.Contains(method.Name) && !PhotonNetwork.PhotonServerSettings.RpcList.Contains(method.Name)) {
+                    if (!additionalRpcs.Contains(method.Name) && !PhotonNetwork.PhotonServerSettings.RpcList.Contains(method.Name))
+                    {
                         additionalRpcs.Add(method.Name);
                     }
                 }
             }
         }
 
-        if (additionalRpcs.Count > 0) {
+        if (additionalRpcs.Count > 0)
+        {
             // LIMITS RPC COUNT
-            if (additionalRpcs.Count + PhotonNetwork.PhotonServerSettings.RpcList.Count >= byte.MaxValue) {
-                if (currentRpcs.Count <= byte.MaxValue) {
+            if (additionalRpcs.Count + PhotonNetwork.PhotonServerSettings.RpcList.Count >= byte.MaxValue)
+            {
+                if (currentRpcs.Count <= byte.MaxValue)
+                {
                     bool clearList = EditorUtility.DisplayDialog(CurrentLang.IncorrectRPCListTitle, CurrentLang.IncorrectRPCListLabel, CurrentLang.RemoveOutdatedRPCsLabel, CurrentLang.CancelButton);
-                    if (clearList) {
+                    if (clearList)
+                    {
                         PhotonNetwork.PhotonServerSettings.RpcList.Clear();
                         PhotonNetwork.PhotonServerSettings.RpcList.AddRange(currentRpcs);
-                    } else {
+                    }
+                    else
+                    {
                         return;
                     }
-                } else {
+                }
+                else
+                {
                     EditorUtility.DisplayDialog(CurrentLang.FullRPCListTitle, CurrentLang.FullRPCListLabel, CurrentLang.SkipRPCListUpdateLabel);
                     return;
                 }
@@ -631,36 +716,45 @@ public class PhotonEditor : EditorWindow {
             PhotonEditor.SaveSettings();
         }
 
-        if (countOldRpcs > 0) {
+        if (countOldRpcs > 0)
+        {
             bool convertRPCs = EditorUtility.DisplayDialog(CurrentLang.RpcFoundDialogTitle, CurrentLang.RpcFoundMessage, CurrentLang.RpcReplaceButton, CurrentLang.RpcSkipReplace);
-            if (convertRPCs) {
+            if (convertRPCs)
+            {
                 PhotonConverter.ConvertRpcAttribute("");
             }
         }
     }
 
-    public static void ClearRpcList() {
+    public static void ClearRpcList()
+    {
         bool clearList = EditorUtility.DisplayDialog(CurrentLang.PUNNameReplaceTitle, CurrentLang.PUNNameReplaceLabel, CurrentLang.RPCListCleared, CurrentLang.CancelButton);
-        if (clearList) {
+        if (clearList)
+        {
             PhotonNetwork.PhotonServerSettings.RpcList.Clear();
             Debug.LogWarning(CurrentLang.ServerSettingsCleanedWarning);
         }
     }
 
-    public static System.Type[] GetAllSubTypesInScripts(System.Type aBaseClass) {
+    public static System.Type[] GetAllSubTypesInScripts(System.Type aBaseClass)
+    {
         var result = new System.Collections.Generic.List<System.Type>();
         System.Reflection.Assembly[] AS = System.AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var A in AS) {
+        foreach (var A in AS)
+        {
             // this skips all but the Unity-scripted assemblies for RPC-list creation. You could remove this to search all assemblies in project
-            if (!A.FullName.StartsWith("Assembly-")) {
+            if (!A.FullName.StartsWith("Assembly-"))
+            {
                 // Debug.Log("Skipping Assembly: " + A);
                 continue;
             }
 
             //Debug.Log("Assembly: " + A.FullName);
             System.Type[] types = A.GetTypes();
-            foreach (var T in types) {
-                if (T.IsSubclassOf(aBaseClass)) {
+            foreach (var T in types)
+            {
+                if (T.IsSubclassOf(aBaseClass))
+                {
                     result.Add(T);
                 }
             }

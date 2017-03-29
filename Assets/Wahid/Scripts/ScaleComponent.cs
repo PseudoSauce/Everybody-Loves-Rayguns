@@ -118,7 +118,7 @@ public class ScaleComponent : Interactable {
             // Regular rayast check
             RaycastHit hit;
             //ignore layer 10: Floor
-            if (Physics.Raycast(ray, out hit, extents[i], beamMask)) {
+            if (Physics.Raycast(ray, out hit, extents[i], beamMask.value)) {
                 print(hit.collider.gameObject.name);
                 //if you hit, we assume you cannot fit conditionally
                 canIFit = false;

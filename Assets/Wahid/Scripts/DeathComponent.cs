@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 
 using MyTypes;
-
+//TODO: this is now too specific to the player, make generic compo later
 [AddComponentMenu("Custom Components/DeathComponent")]
 [RequireComponent(typeof(Rigidbody))]
 public class DeathComponent : Interactable {
@@ -42,6 +42,10 @@ public class DeathComponent : Interactable {
     private bool isFirstHit = true;
     private static int concurrencyCount = 0;
 
+    //quick shader effect only applicable to player
+    //add animation curve later
+    Vingette deathVig;
+
     protected override void Init() {
         AssignInteractionType(Interaction.DEATH);
         AssignStart(MyStart);
@@ -49,6 +53,7 @@ public class DeathComponent : Interactable {
     }
 
     private void MyStart() {
+        deathVig = Camera.main.gameObject.GetComponent<Vingette>();
         saveTrans = this.gameObject.transform.Save().Position();
         m_lastSpawnPoint = null;
         print("last spawn point" + m_lastSpawnPoint);
@@ -77,6 +82,7 @@ public class DeathComponent : Interactable {
 
             StartCoroutine(Respawn());
         } else if (Time.time > nextFire && !m_respawning) {
+            SwitchVignette(true);
             nextFire = Time.time + drainTimeStep;
             tempHitpoints -= drainagePoints;
             m_healthBar.fillAmount = (float)tempHitpoints / (float)origHitpoints;
@@ -95,10 +101,10 @@ public class DeathComponent : Interactable {
     }
 
     void Heal() {
-        print("healing");
         if (tempHitpoints <= origHitpoints - depletionRation) {
             //ala COD, same ratio as ROF
             if (Time.time > nextFire) {
+                SwitchVignette(false);
                 nextFire = Time.time + drainTimeStep;
                 tempHitpoints++;
                 depletionRation++;
@@ -123,7 +129,7 @@ public class DeathComponent : Interactable {
         //poll unique invoker
         foreach (object[] id in msg.msgData) {
             int inID = (int)id[0];
-            if (!uniqueInvokers.Contains(inID)){
+            if (!uniqueInvokers.Contains(inID)) {
                 uniqueInvokers.Add(inID);
             }
         }
@@ -175,5 +181,18 @@ public class DeathComponent : Interactable {
         m_deathMessage.text = "";
         depletionRation = 0;
         m_respawning = false;
+        deathVig.ResetVignette();
+    }
+
+    void SwitchVignette(bool switcher) {
+        if (tempHitpoints < origHitpoints / 2) {
+            float normalVigDeplete = Remap(drainagePoints, 0, origHitpoints / 2, 0, 1);
+            deathVig.ConvergeVignette(switcher, normalVigDeplete);
+        }
+    }
+
+    // TODO add this to a universal extension method...
+    float Remap(float value, float from1, float to1, float from2, float to2) {
+        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 }

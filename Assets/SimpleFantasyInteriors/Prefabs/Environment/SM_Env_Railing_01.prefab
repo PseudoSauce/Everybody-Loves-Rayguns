@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 493168}
   - component: {fileID: 3351336}
   - component: {fileID: 2353734}
+  - component: {fileID: 65970768021072634}
   m_Layer: 0
   m_Name: SM_Env_Railing_01
   m_TagString: Untagged
@@ -79,3 +80,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 147500}
   m_IsPrefabParent: 1
+--- !u!65 &65970768021072634
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147500}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 1.2957292, z: 0.57614136}
+  m_Center: {x: 0, y: 0.6478646, z: 0}

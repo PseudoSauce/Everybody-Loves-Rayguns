@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 493956}
   - component: {fileID: 3358584}
   - component: {fileID: 2334244}
+  - component: {fileID: 65856336561489644}
   m_Layer: 0
   m_Name: SM_Env_WallBeam_01
   m_TagString: Untagged
@@ -79,3 +80,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 143336}
   m_IsPrefabParent: 1
+--- !u!65 &65856336561489644
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 143336}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 0.823712, z: 0.36687794}
+  m_Center: {x: -2.5, y: 0, z: 0.18343897}

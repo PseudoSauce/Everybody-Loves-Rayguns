@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 412290}
   - component: {fileID: 3315896}
   - component: {fileID: 2314066}
+  - component: {fileID: 65805236718093216}
   m_Layer: 0
   m_Name: SM_Env_Wall_Angle_01
   m_TagString: Untagged
@@ -79,3 +80,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 125140}
   m_IsPrefabParent: 1
+--- !u!65 &65805236718093216
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125140}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.15839, y: 5.025054, z: 5.1531234}
+  m_Center: {x: -2.4323912, y: 2.512527, z: 2.5765617}

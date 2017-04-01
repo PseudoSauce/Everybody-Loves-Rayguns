@@ -133,6 +133,7 @@ public class StreamingInteractable : Interactable {
     {
         m_operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
         m_loadingScene = true;
+        Debug.Log("dasoifjasd");
     }
 
     void StreamUnload(int scene)

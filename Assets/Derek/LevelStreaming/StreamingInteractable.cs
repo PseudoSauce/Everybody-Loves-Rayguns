@@ -52,7 +52,7 @@ public class StreamingInteractable : Interactable {
     string m_currentRoomConnectorName;
     Transform m_currentRoomConnectorPoint;
 
-    Scene m_hubScene;
+    bool m_sceneCurrentlyLoaded = false;
 
     protected override void Init()
     {
@@ -66,8 +66,6 @@ public class StreamingInteractable : Interactable {
     void MyCustomStart()
     {
         EventBeacon.RegisterEvents((uint)RoomStreamID.RoomStreamEvent);
-
-        m_hubScene = SceneManager.GetActiveScene();
     }
 
     void MyCustomUpdate(float deltaTime)
@@ -96,7 +94,6 @@ public class StreamingInteractable : Interactable {
             handler.loadedResponse = RoomResponseLoaded.LOADED;
             handler.roomNumber = m_currentRoomIndex;
 
-            Debug.Log(handler.roomNumber);
             EventBeacon.InvokeEvent(handler);            
         }
     }
@@ -110,7 +107,7 @@ public class StreamingInteractable : Interactable {
             var handlerCasted = (RoomStreamHandler)handlerPacket.Handler;
             var loadOrUnload = (handlerCasted).RoomStreamingID;
 
-            if (loadOrUnload == RoomStreamID.LOAD)
+            if (loadOrUnload == RoomStreamID.LOAD && !m_sceneCurrentlyLoaded)
             {
                 m_currentRoomIndex = handlerCasted.roomNumber;
                 m_currentRoomConnectorName = handlerCasted.connectorObjectName;
@@ -118,9 +115,9 @@ public class StreamingInteractable : Interactable {
 
                 StreamLoad(handlerCasted.roomNumber);
             }
-            else if (loadOrUnload == RoomStreamID.UNLOAD)
+            else if (loadOrUnload == RoomStreamID.UNLOAD && m_sceneCurrentlyLoaded)
             {
-
+                StreamUnload(handlerCasted.roomNumber);
             }
         }
     }
@@ -133,12 +130,11 @@ public class StreamingInteractable : Interactable {
     {
         m_operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
         m_loadingScene = true;
-        Debug.Log("dasoifjasd");
     }
 
     void StreamUnload(int scene)
     {
-        SceneManager.UnloadSceneAsync(m_currentRoomIndex);
+        SceneManager.UnloadSceneAsync(scene);
         m_currentRoomIndex = -1;
         m_currentRoomConnectorPoint = null;
         m_currentRoomConnectorName = "";

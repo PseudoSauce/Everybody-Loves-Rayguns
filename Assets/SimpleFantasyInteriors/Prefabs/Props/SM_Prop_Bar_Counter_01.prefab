@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 431194}
   - component: {fileID: 3368952}
   - component: {fileID: 2343162}
+  - component: {fileID: 65836728752651800}
   m_Layer: 0
   m_Name: SM_Prop_Bar_Counter_01
   m_TagString: Untagged
@@ -79,3 +80,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 165270}
   m_IsPrefabParent: 1
+--- !u!65 &65836728752651800
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165270}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.377367, y: 1.3916302, z: 1.3488557}
+  m_Center: {x: 0, y: 0.6958151, z: 0}

@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 428146}
   - component: {fileID: 3351008}
   - component: {fileID: 2377680}
+  - component: {fileID: 65730557174391704}
   m_Layer: 0
   m_Name: SM_Env_Window_05
   m_TagString: Untagged
@@ -79,3 +80,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 144088}
   m_IsPrefabParent: 1
+--- !u!65 &65730557174391704
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 144088}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6435372, y: 2.5161462, z: 0.3229434}
+  m_Center: {x: 0, y: 1.0503817, z: 0.1614717}

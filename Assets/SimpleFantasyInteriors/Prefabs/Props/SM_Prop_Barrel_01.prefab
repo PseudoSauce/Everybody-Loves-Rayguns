@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 479956}
   - component: {fileID: 3397374}
   - component: {fileID: 2392102}
+  - component: {fileID: 136157765551252236}
   m_Layer: 0
   m_Name: SM_Prop_Barrel_01
   m_TagString: Untagged
@@ -79,3 +80,16 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 169508}
   m_IsPrefabParent: 1
+--- !u!136 &136157765551252236
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 169508}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.6750808
+  m_Height: 1.7414075
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0.87070376, z: -0.000000029802322}

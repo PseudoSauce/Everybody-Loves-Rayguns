@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 457506}
   - component: {fileID: 3317642}
   - component: {fileID: 2354224}
+  - component: {fileID: 65749990395461136}
   m_Layer: 0
   m_Name: SM_Prop_Chest_01
   m_TagString: Untagged
@@ -148,3 +149,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 159608}
   m_IsPrefabParent: 1
+--- !u!65 &65749990395461136
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 159608}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.781047, y: 0.5792312, z: 1}
+  m_Center: {x: 0, y: 0.2896156, z: 0}

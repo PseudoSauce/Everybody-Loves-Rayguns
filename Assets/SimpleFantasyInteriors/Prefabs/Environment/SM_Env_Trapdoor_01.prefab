@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 494338}
   - component: {fileID: 3346330}
   - component: {fileID: 2314108}
+  - component: {fileID: 64946650908858056}
   m_Layer: 0
   m_Name: SM_Env_Trapdoor_Hinge_01
   m_TagString: Untagged
@@ -27,6 +28,7 @@ GameObject:
   - component: {fileID: 461726}
   - component: {fileID: 3352114}
   - component: {fileID: 2387060}
+  - component: {fileID: 64301725204710766}
   m_Layer: 0
   m_Name: SM_Env_Trapdoor_01
   m_TagString: Untagged
@@ -41,7 +43,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121682}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.80768156, y: -1.7441337, z: 12.14826}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 494338}
@@ -148,3 +150,31 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 121682}
   m_IsPrefabParent: 1
+--- !u!64 &64301725204710766
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121682}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 9bdf6e1e73e5c1b47b1a9ed6b87f3c1a, type: 3}
+--- !u!64 &64946650908858056
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105916}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300002, guid: 9bdf6e1e73e5c1b47b1a9ed6b87f3c1a, type: 3}

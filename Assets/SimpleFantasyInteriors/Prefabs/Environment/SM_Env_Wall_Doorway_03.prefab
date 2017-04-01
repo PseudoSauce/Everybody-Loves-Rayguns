@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 444178}
   - component: {fileID: 3378040}
   - component: {fileID: 2334098}
+  - component: {fileID: 64342051290630264}
   m_Layer: 0
   m_Name: SM_Env_Wall_Doorway_03
   m_TagString: Untagged
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 165678}
   m_IsPrefabParent: 1
+--- !u!64 &64342051290630264
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165678}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 498f60463edaeb2428432c9d02697dfa, type: 3}

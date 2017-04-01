@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 440792}
   - component: {fileID: 3340484}
   - component: {fileID: 2321146}
+  - component: {fileID: 64235240908026752}
   m_Layer: 0
   m_Name: SM_Env_Floor_Half_03
   m_TagString: Untagged
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 130404}
   m_IsPrefabParent: 1
+--- !u!64 &64235240908026752
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 130404}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 21b0328bc4b59bb4eb33a801ffad6926, type: 3}

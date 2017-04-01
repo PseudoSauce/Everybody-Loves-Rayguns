@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 424680}
   - component: {fileID: 3378440}
   - component: {fileID: 2396754}
+  - component: {fileID: 64261544709718624}
   m_Layer: 0
   m_Name: SM_Env_ThronePlatform_01
   m_TagString: Untagged
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 128082}
   m_IsPrefabParent: 1
+--- !u!64 &64261544709718624
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128082}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 1
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: c6f8135e33e2b5540989df5f8a75fa20, type: 3}

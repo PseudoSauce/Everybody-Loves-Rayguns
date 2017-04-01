@@ -13,7 +13,7 @@ public class NetworkStates : PunBehaviour {
     }
 
     // TODO: Change this state using UI to select which state to be in
-    private _NetworkState currentState = _NetworkState.Multi;     // Testing purpose
+    public _NetworkState currentState = _NetworkState.Multi;     // Testing purpose
     private byte maxPlayers = 2;
     private new PhotonView photonView;
 

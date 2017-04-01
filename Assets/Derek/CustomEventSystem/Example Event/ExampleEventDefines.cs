@@ -13,7 +13,7 @@ public enum CustomEventExamples
 }
 
 struct ExampleEnemyAlertEventHandler : ICustomEventHandler
-{
+{    
     public uint EventID
     {
         get { return (uint)CustomEventExamples.EnemyAlertEvent; }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon;
 using UnityStandardAssets.Characters.FirstPerson;
 
@@ -13,18 +14,19 @@ public class NetworkStates : PunBehaviour {
     }
 
     // TODO: Change this state using UI to select which state to be in
-    private _NetworkState currentState = _NetworkState.Multi;     // Testing purpose
+    private _NetworkState currentState = _NetworkState.Single;     // Testing purpose
     private byte maxPlayers = 2;
     private new PhotonView photonView;
+    private RoomInfo[] rooms;
 
     private void Start()
     {
         PhotonNetwork.ConnectUsingSettings("0.1");
     }
 
-    private void OnGUI()
+    private void Update()
     {
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+
     }
 
     private void OnPhotonRandomJoinFailed()
@@ -37,10 +39,15 @@ public class NetworkStates : PunBehaviour {
         }
     }
 
+    public void JoinRoom(string name)
+    {
+        PhotonNetwork.JoinRoom(name);
+    }
+
     public override void OnJoinedLobby()
     {
         // Testing purpose just join a random room
-        PhotonNetwork.JoinRandomRoom();
+        //PhotonNetwork.JoinRandomRoom();
     }
 
     public override void OnJoinedRoom()

@@ -14,7 +14,7 @@ namespace MyTypes
 
         // examples used for customeventmanager demo
         EXAMPLEENEMYOBSERVER, EXAMPLEBOMB, EXAMPLEDOOR,
-        DOOR, BRIDGE, SWITCH,
+        DOOR, BRIDGE, SWITCH, STREAMING, STREAMDOOR
 
     }
 

@@ -340,6 +340,23 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
         return observersWereNotified;
     }
 
+    // returns 0 to indicate that the invoker was not found.
+    // 0 will never be assign as an invoker ID.
+    public InvokerID GetInvokerID(ICustomEventInvoker invoker)
+    {
+        InvokerID id = 0;
+
+        foreach (var i in m_invokerIDList.Keys)
+        {
+            if (i.IsAlive && i.Target == invoker)
+            {
+                id = m_invokerIDList[i];
+            }
+        }
+
+        return id;
+    }
+
     #region internal
     // notify all observers of a particular system event
     private void NotifyAllObservers(ICustomEventManagerHandler handler)
@@ -385,7 +402,7 @@ public sealed class CustomEventManager : MonoBehaviour, ICustomEventInvoker {
         // "list"
         if (!containsInvoker)
         {
-            int invokerCount = m_invokerIDList.Count;      
+            int invokerCount = (m_invokerIDList.Count)+1;      
             invokerID = (InvokerID)invokerCount;
             m_invokerIDList.Add(new InvokerRef(invoker), invokerID);
         }

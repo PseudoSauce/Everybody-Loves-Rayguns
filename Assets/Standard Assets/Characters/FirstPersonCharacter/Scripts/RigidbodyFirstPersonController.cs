@@ -118,7 +118,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
         public bool isControllable = false;
-
         private void Start()
         {
             m_RigidBody = GetComponent<Rigidbody>();

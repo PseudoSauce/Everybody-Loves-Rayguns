@@ -11,7 +11,6 @@ public class Raygun : MonoBehaviour {
     #region Variables
     // Raygun //
     private GunMode m_currentGunMode = GunMode.Scaler;
-
     [Tooltip("How far the weapon should shoot")]
     public float weaponShootRange = 25;
     [Tooltip("The end of the gun [Empty gameobject]")]

@@ -12,6 +12,7 @@ TagManager:
   - SpawnPoint
   - CutScene
   - GameManager
+  - connector
   layers:
   - Default
   - TransparentFX

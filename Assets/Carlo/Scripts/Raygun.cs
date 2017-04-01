@@ -79,6 +79,8 @@ public class Raygun : MonoBehaviour {
     //private gameObject 
 
     private GameObject fauxGun;
+
+    private Animator m_animator;
     #endregion Variables
 
     #region Monobehaviour
@@ -101,6 +103,8 @@ public class Raygun : MonoBehaviour {
         if (!fpsCam) {
             fpsCam = FindObjectOfType<Camera>();
         }
+
+        m_animator = GetComponentInChildren<Animator>();
     }
 
     void Update() {
@@ -380,11 +384,13 @@ public class Raygun : MonoBehaviour {
     private void ChangeGunMode() {
         if (Input.GetKeyDown(KeyCode.Alpha1)) {
             m_currentGunMode = GunMode.Teleporter;
+            m_animator.SetTrigger("OpenScreen");
             scaling = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2)) {
             m_currentGunMode = GunMode.Scaler;
+            m_animator.SetTrigger("CloseScreen");
         }
 
         if (Input.GetKeyDown(KeyCode.Tab)) {
@@ -395,8 +401,13 @@ public class Raygun : MonoBehaviour {
             }
 
             if (m_currentGunMode == GunMode.Teleporter) {
+                m_animator.SetTrigger("OpenScreen");
                 if (canFire && currentHit != null)
                     scaling = false;
+            }
+            else
+            {
+                m_animator.SetTrigger("CloseScreen");
             }
         }
     }

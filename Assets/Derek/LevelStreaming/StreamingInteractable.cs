@@ -109,11 +109,7 @@ public class StreamingInteractable : Interactable {
 
             if (loadOrUnload == RoomStreamID.LOAD && !m_sceneCurrentlyLoaded)
             {
-                m_currentRoomIndex = handlerCasted.roomNumber;
-                m_currentRoomConnectorName = handlerCasted.connectorObjectName;
-                m_currentRoomConnectorPoint = handlerCasted.loadLocation;
-
-                StreamLoad(handlerCasted.roomNumber);
+                StreamLoad(handlerCasted);
             }
             else if (loadOrUnload == RoomStreamID.UNLOAD && m_sceneCurrentlyLoaded)
             {
@@ -126,9 +122,22 @@ public class StreamingInteractable : Interactable {
 
     }
 
-    void StreamLoad(int sceneIndex)
+    void StreamLoad(RoomStreamHandler handler)
     {
-        m_operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+        m_operation = SceneManager.LoadSceneAsync(handler.roomNumber, LoadSceneMode.Additive);
+
+        if (SceneManager.sceneCount > 1)
+        {
+            m_sceneCurrentlyLoaded = true;
+            m_currentRoomIndex = handler.roomNumber;
+            m_currentRoomConnectorName = handler.connectorObjectName;
+            m_currentRoomConnectorPoint = handler.loadLocation;
+        }
+        else
+        {
+            Debug.Log("Failure to load scene: Build Setting: " + handler.roomNumber);
+        }
+
         m_loadingScene = true;
     }
 
@@ -140,5 +149,7 @@ public class StreamingInteractable : Interactable {
         m_currentRoomConnectorName = "";
         m_loadingScene = false;
         m_operation = null;
+
+        m_sceneCurrentlyLoaded = false;
     }
 }

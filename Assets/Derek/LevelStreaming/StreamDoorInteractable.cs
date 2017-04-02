@@ -43,15 +43,21 @@ public class StreamDoorInteractable : Interactable {
 
     void MyCustomUpdate(float deltaTime)
     {
-        if (!isTriggered && Input.GetKeyDown(KeyCode.F))
+        if (!isTriggered && Input.GetKeyDown(KeyCode.F) && m_doorState != DoorState.OPENING && m_doorState != DoorState.CLOSING)
         {
-            isTriggered = true;
-
             RoomStreamHandler handler = new RoomStreamHandler();
             handler.connectorObjectName = "connector";
             handler.RoomStreamingID = RoomStreamID.LOAD;
             handler.roomNumber = m_roomNumber;
             handler.loadLocation = gameObject.transform;
+
+            EventBeacon.InvokeEvent(handler);
+        }
+        else if (!isTriggered && Input.GetKeyDown(KeyCode.G) && m_doorState != DoorState.OPENING && m_doorState != DoorState.CLOSING)
+        {
+            RoomStreamHandler handler = new RoomStreamHandler();
+            handler.RoomStreamingID = RoomStreamID.UNLOAD;
+            handler.roomNumber = m_roomNumber;
 
             EventBeacon.InvokeEvent(handler);
         }
@@ -89,6 +95,7 @@ public class StreamDoorInteractable : Interactable {
         if (handler is RoomResponseLoadedHandler)
         {
             var handlerCasted = (RoomResponseLoadedHandler)handler;
+            isTriggered = false;
 
             if (handlerCasted.roomNumber == m_roomNumber && 
                 handlerCasted.loadedResponse == RoomResponseLoaded.LOADED)

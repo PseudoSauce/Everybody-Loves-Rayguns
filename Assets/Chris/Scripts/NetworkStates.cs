@@ -14,7 +14,7 @@ public class NetworkStates : PunBehaviour {
     }
 
     // TODO: Change this state using UI to select which state to be in
-    private _NetworkState currentState = _NetworkState.Single;     // Testing purpose
+    public _NetworkState currentState = _NetworkState.Single;     // Testing purpose
     private byte maxPlayers = 2;
     private new PhotonView photonView;
     private RoomInfo[] rooms;
@@ -42,6 +42,11 @@ public class NetworkStates : PunBehaviour {
     public void JoinRoom(string name)
     {
         PhotonNetwork.JoinRoom(name);
+    }
+
+    public void CreateRoom(string name)
+    {
+        PhotonNetwork.CreateRoom(name, new RoomOptions() { MaxPlayers = maxPlayers }, null);
     }
 
     public override void OnJoinedLobby()

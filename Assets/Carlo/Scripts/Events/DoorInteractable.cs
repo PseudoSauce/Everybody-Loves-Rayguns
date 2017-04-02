@@ -25,6 +25,7 @@ public class DoorInteractable : Interactable
     ////////////////////////////////
     //     Interactable Stuff 
     ///////////////////////////////
+
     protected override void Init()
     {
         AssignInteractionType(Interaction.DOOR);

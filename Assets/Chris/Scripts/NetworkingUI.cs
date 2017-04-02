@@ -23,6 +23,7 @@ public class NetworkingUI : MonoBehaviour
     public GameObject m_buttonPrefab;
     public GameObject m_inputField;
     public GameObject m_cancelPrefab;
+    public GameObject m_confirmPrefab;
 
     private NetworkStates m_states;
     private RoomInfo[] rooms;
@@ -136,7 +137,7 @@ public class NetworkingUI : MonoBehaviour
         input.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
         input.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         m_input = input.GetComponent<InputField>();
-        GameObject enter = Instantiate(m_buttonPrefab);
+        GameObject enter = Instantiate(m_confirmPrefab);
         enter.transform.parent = bottomCanvas.transform;
         enter.GetComponentInChildren<Text>().text = "Create";
         GameObject cancel = Instantiate(m_cancelPrefab);
@@ -152,8 +153,17 @@ public class NetworkingUI : MonoBehaviour
         
     }
 
-    public void ConfirmRoom(string name)
+    public void ConfirmRoom()
     {
+        string name = "";
+        foreach(GameObject obj in m_createInput)
+        {
+            if (obj.GetComponent<InputField>() != null)
+            {
+                name = obj.GetComponent<InputField>().text;
+                break;
+            }
+        }
         m_states.CreateRoom(name);
     }
 

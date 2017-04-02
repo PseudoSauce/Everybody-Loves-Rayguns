@@ -55,6 +55,15 @@ public class StreamDoorInteractable : Interactable {
 
             EventBeacon.InvokeEvent(handler);
         }
+        else if (!isTriggered && Input.GetKeyDown(KeyCode.G))
+        {
+            RoomStreamHandler handler = new RoomStreamHandler();
+            handler.RoomStreamingID = RoomStreamID.UNLOAD;
+            handler.roomNumber = m_roomNumber;
+
+            print("hello world");
+            EventBeacon.InvokeEvent(handler);
+        }
 
         if (m_doorState == DoorState.OPENING)
         {
@@ -89,6 +98,7 @@ public class StreamDoorInteractable : Interactable {
         if (handler is RoomResponseLoadedHandler)
         {
             var handlerCasted = (RoomResponseLoadedHandler)handler;
+            isTriggered = false;
 
             if (handlerCasted.roomNumber == m_roomNumber && 
                 handlerCasted.loadedResponse == RoomResponseLoaded.LOADED)

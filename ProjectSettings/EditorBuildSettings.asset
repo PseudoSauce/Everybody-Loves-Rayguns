@@ -59,3 +59,7 @@ EditorBuildSettings:
     path: Assets/_Scenes/Hub.unity
   - enabled: 1
     path: Assets/_Scenes/Puzzle1.unity
+  - enabled: 1
+    path: Assets/Derek/LevelStreaming/LevelStreaming1.unity
+  - enabled: 1
+    path: Assets/Derek/LevelStreaming/LevelStreaming2.unity

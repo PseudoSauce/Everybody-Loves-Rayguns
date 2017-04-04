@@ -80,6 +80,7 @@ public class Raygun : MonoBehaviour {
     private GameObject fauxGun;
 
     private Animator m_animator;
+    private StaffAnimation m_staffAnimator;
     #endregion Variables
 
     #region Monobehaviour
@@ -104,6 +105,7 @@ public class Raygun : MonoBehaviour {
         }
 
         m_animator = GetComponentInChildren<Animator>();
+        m_staffAnimator = transform.parent.GetComponentInChildren<StaffAnimation>();
     }
 
     void Update() {
@@ -204,12 +206,13 @@ public class Raygun : MonoBehaviour {
     #region Teleport Beam
     private void TeleportBeamInput() {
         if (Input.GetMouseButtonDown(1)) {
+            m_staffAnimator.ThrowBeacon();
             // TODO: NEEDS TO BE OBJECT POOLED!!!
             if (beacon != null) {
                 Destroy(beacon.gameObject);    // Create cool destruction animation call that before destruction
             }
 
-            beacon = Instantiate(beaconProjectile, fpsCam.transform.position, fpsCam.transform.rotation) as Beacon;
+            beacon = Instantiate(beaconProjectile, gunEnd.transform.position/*fpsCam.transform.position*/, fpsCam.transform.rotation) as Beacon;
         }
 
         if (Input.GetKeyDown(KeyCode.Q)) {
@@ -225,7 +228,6 @@ public class Raygun : MonoBehaviour {
         if (!m_isLooking) {
             RaycastHit hitInfo;
             InteractMessage msg;
-
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hitInfo, weaponShootRange)) {
                 if (hitInfo.collider.GetComponent<Interactable>()) {
                     if (beacon != null) {
@@ -236,6 +238,7 @@ public class Raygun : MonoBehaviour {
 
                         // Input
                         if (Input.GetMouseButtonDown(0)) {
+                            m_staffAnimator.Teleport();
                             msg = new InteractMessage(Interaction.TELEPORTING, "Teleport", beacon);
                             lastObject.SendMessage("Interact", msg);
                         }
@@ -311,15 +314,19 @@ public class Raygun : MonoBehaviour {
                 scaling = false;
 
             if (Input.GetButton("Fire1")) {
+                m_staffAnimator.Grow(true);
                 if (scaling)
                     shootRay("growing");
             }
             if (Input.GetButton("Fire2")) {
+                m_staffAnimator.Shrink(true);
                 if (scaling)
                     shootRay("shrinking");
             }
         }
         if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2") || !canFire || !scaling) {
+            m_staffAnimator.Grow(false);
+            m_staffAnimator.Shrink(false);
             laserLine.enabled = false;
             if (stuck || !canFire) {
                 currentHit.GetComponent<Renderer>().material.color = currentColor;
@@ -385,11 +392,13 @@ public class Raygun : MonoBehaviour {
             m_currentGunMode = GunMode.Teleporter;
             m_animator.SetTrigger("OpenScreen");
             scaling = false;
+            m_staffAnimator.SwitchToMode(m_currentGunMode);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2)) {
             m_currentGunMode = GunMode.Scaler;
             m_animator.SetTrigger("CloseScreen");
+            m_staffAnimator.SwitchToMode(m_currentGunMode);
         }
 
         if (Input.GetKeyDown(KeyCode.Tab)) {
@@ -408,6 +417,7 @@ public class Raygun : MonoBehaviour {
             {
                 m_animator.SetTrigger("CloseScreen");
             }
+            m_staffAnimator.SwitchToMode(m_currentGunMode);
         }
     }
 

@@ -19,7 +19,7 @@ public class Beacon : MonoBehaviour {
     private LineRenderer m_lineRenderer = null;
 
     [SerializeField, Tooltip("Minimum distance from the beacon to spawn the object.")]
-    private float m_minDistToBeacon = 5.0f;
+    private float m_minDistToBeacon = 2.5f;
     private BeaconTestObject m_spawnedTestObject = null;
     private Mesh m_lastMesh = null;
     private Rigidbody m_rb = null;

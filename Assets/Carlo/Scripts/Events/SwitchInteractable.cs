@@ -10,7 +10,8 @@ public class SwitchInteractable : Interactable
     [SerializeField, Tooltip("ID's of the doors connected to this switch.")]
     private uint[] m_DoorID;
     // Has the switch been triggered
-    bool wasTriggered = false;
+    private bool wasTriggered = false;
+    private Animator m_animator;
 
     ////////////////////////////////
     //     Interactable Stuff 
@@ -18,9 +19,14 @@ public class SwitchInteractable : Interactable
     protected override void Init()
     {
         AssignInteractionType(Interaction.DOOR);
-
+        AssignStart(MyStart);
         // assigns required for this particular interactable
         AssignCustomEventReceiveNotify(ReceiveCustomEvent, ReceiveManagerEvent);
+    }
+
+    private void MyStart()
+    {
+        m_animator = GetComponent<Animator>();
     }
 
     ////////////////////////////////
@@ -46,6 +52,7 @@ public class SwitchInteractable : Interactable
             if (!wasTriggered && otherObject.objectTag == ObjectTags.Cube)
             {
                 TriggerSwitch();
+                m_animator.SetBool("Pressed", true);
             }
         }
     }
@@ -58,6 +65,7 @@ public class SwitchInteractable : Interactable
             if (!wasTriggered && otherObject.objectTag == ObjectTags.Cube)
             {
                 UnTriggerSwitch();
+                m_animator.SetBool("Pressed", false);
             }
         }
     }

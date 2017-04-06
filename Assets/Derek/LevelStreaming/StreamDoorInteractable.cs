@@ -101,6 +101,11 @@ public class StreamDoorInteractable : Interactable {
             {
                 m_doorState = DoorState.CLOSING;
             }
+            else if (handlerCasted.roomNumber == m_roomNumber &&
+                handlerCasted.loadedResponse == RoomResponseLoaded.BUSY)
+            {
+                print("Busy dial tone... : " + handlerCasted.loadingStreamState);
+            }
             else
             {
                 Debug.Log("Not the appropriate door number. Am looking for: " + m_roomNumber);

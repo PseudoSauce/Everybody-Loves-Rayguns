@@ -1198,12 +1198,9 @@ MonoBehaviour:
   m_IgnoreManagerEvents: 0
   m_IgnoreCustomEvents: 0
   m_InitialEventsToRegisterTo: 
-  m_doorOpenDelay: 1.5
-  m_doorCloseDelay: 0
   m_initTelePoint: {fileID: 734211445}
-  m_closedPos: {fileID: 0}
-  m_openPos: {fileID: 1299556393}
-  m_doorOpeningPadding: 0.5
+  m_doorOpenAngle: 90
+  openCloseDist: 4
   m_roomNumber: 3
 --- !u!1001 &381639329
 Prefab:
@@ -1476,7 +1473,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 2119961217}
+      objectReference: {fileID: 1147809546}
     - target: {fileID: 224910125913831504, guid: b522e7d7102a92b4c8b5799fd73e4b7a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -1944,6 +1941,28 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3b7674afb9052743a95ff497d5d30b8, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &589003352
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 1920
+  m_Height: 1080
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!4 &602875366 stripped
 Transform:
   m_PrefabParentObject: {fileID: 478936, guid: bff826145516ec247b5cd231a40468c7, type: 2}
@@ -3798,6 +3817,28 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c034a0679cf68ef4a94786f35f9d3f56, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &1147809546
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 550
+  m_Height: 333
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!4 &1162782930 stripped
 Transform:
   m_PrefabParentObject: {fileID: 432538, guid: 8d7e6e06e064a7b41a440fb89fe4e7e7, type: 2}
@@ -4907,28 +4948,6 @@ Transform:
   m_Father: {fileID: 1808914743}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1403139472
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 1920
-  m_Height: 1080
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!4 &1411855377 stripped
 Transform:
   m_PrefabParentObject: {fileID: 489388, guid: 52ad1c9e2229e314bb47ca67eb3adb91, type: 2}
@@ -5462,7 +5481,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1569949312}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bd320becbfedc64d86f0f177559f511, type: 3}
   m_Name: 
@@ -5472,12 +5491,9 @@ MonoBehaviour:
   m_IgnoreManagerEvents: 0
   m_IgnoreCustomEvents: 0
   m_InitialEventsToRegisterTo: 
-  m_doorOpenDelay: 1.5
-  m_doorCloseDelay: 1.5
   m_initTelePoint: {fileID: 1082519247}
-  m_closedPos: {fileID: 670174583}
-  m_openPos: {fileID: 670174583}
-  m_doorOpeningPadding: 0.5
+  m_doorOpenAngle: 90
+  openCloseDist: 4
   m_roomNumber: 2
 --- !u!1001 &1571191021
 Prefab:
@@ -7322,25 +7338,3 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 407444, guid: 37e6c76424f31634abacb7b0d3e826a2, type: 2}
   m_PrefabInternal: {fileID: 1542367223}
---- !u!84 &2119961217
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 1920
-  m_Height: 1080
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1

@@ -8,12 +8,12 @@ using MyTypes;
 
 public enum RoomResponseLoaded
 {
-    UNLOADED, LOADED = 1, BUSY, FAILED, RoomResponseLoadedEvent = 234842
+    UNLOADED, LOADED = 1, BUSY, FAILED, INFO, RoomResponseLoadedEvent = 234842
 }
 
 public enum RoomStreamID
 {
-    UNLOAD = 0, LOAD = 1, RoomStreamEvent = 9942
+    UNLOAD = 0, LOAD = 1, QueryInfo, RoomStreamEvent = 9942
 }
 
 // a response event handler to loading/unloading a scene
@@ -29,12 +29,27 @@ public struct RoomResponseLoadedHandler : ICustomEventHandler
     }
 }
 
+public struct RoomResponseInfoHandler : ICustomEventHandler
+{
+    public RoomResponseLoaded loadedResponse;
+    public StreamingInteractable.StreamState loadingStreamState;
+    public RoomStreamID purposeOfQuery;
+    public int currentLoadedRoom;
+
+    public uint EventID
+    {
+        get { return (uint)RoomResponseLoaded.RoomResponseLoadedEvent; }
+    }
+}
+
 // send this through the EventManager as a request for loading/unloading a scene.
 // will response with a RoomResponseHandler
 public struct RoomStreamHandler : ICustomEventHandler
 {
     public RoomStreamID RoomStreamingID;
     public int roomNumber;
+
+    public bool unloadCurrentRoom; // override room number
 
     public Transform loadLocation;
     public string connectorObjectName;
@@ -68,9 +83,11 @@ public class StreamingInteractable : Interactable {
     StreamState m_streamState = StreamState.FREE;
 
     AsyncOperation m_operation;
-    int m_currentRoomIndex;
+    int m_currentRoomIndex = -1;
     string m_currentRoomConnectorName;
     Transform m_currentRoomConnectorPoint;
+
+    bool isWaitingToLoad = false;
 
 
     protected override void Init()
@@ -143,13 +160,34 @@ public class StreamingInteractable : Interactable {
             var handlerCasted = (RoomStreamHandler)handlerPacket.Handler;
             var loadOrUnload = (handlerCasted).RoomStreamingID;
 
-            if (loadOrUnload == RoomStreamID.LOAD && m_streamState == StreamState.FREE)
+            if (loadOrUnload == RoomStreamID.LOAD && (m_streamState == StreamState.FREE || handlerCasted.unloadCurrentRoom))
             {
-                StreamLoad(handlerCasted);
+                if (handlerCasted.unloadCurrentRoom && m_currentRoomIndex >= 0 && m_currentRoomIndex != handlerCasted.roomNumber)
+                {
+                    StreamUnload(m_currentRoomIndex);
+
+                    isWaitingToLoad = true;
+                    StartCoroutine(loadIfFree(handlerCasted));
+                    return;
+                }
+                if (m_currentRoomIndex != handlerCasted.roomNumber)
+                    StreamLoad(handlerCasted);
             }
-            else if (loadOrUnload == RoomStreamID.UNLOAD && m_streamState == StreamState.SCENELOADED)
+            else if (loadOrUnload == RoomStreamID.LOAD && !isWaitingToLoad && m_streamState == StreamState.UNLOADING)
+            {
+                isWaitingToLoad = true;
+                StartCoroutine(loadIfFree(handlerCasted));
+            }
+            else if (loadOrUnload == RoomStreamID.UNLOAD && m_streamState == StreamState.SCENELOADED && m_currentRoomIndex != handlerCasted.roomNumber)
             {
                 StreamUnload(handlerCasted.roomNumber);
+            }
+            else if (loadOrUnload == RoomStreamID.QueryInfo)
+            {
+                RoomResponseInfoHandler info;
+                info.currentLoadedRoom = m_currentRoomIndex;
+                info.loadedResponse = RoomResponseLoaded.INFO;
+                info.loadingStreamState = m_streamState;                
             }
             else
             {
@@ -171,6 +209,21 @@ public class StreamingInteractable : Interactable {
 
     }
 
+    IEnumerator loadIfFree(RoomStreamHandler handler)
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (m_streamState == StreamState.FREE)
+        {
+            isWaitingToLoad = false;
+            StreamLoad(handler);
+        }
+        else
+        {
+            StartCoroutine(loadIfFree(handler));
+        }
+    }
+
     void StreamLoad(RoomStreamHandler handler)
     {
         m_operation = SceneManager.LoadSceneAsync(handler.roomNumber, LoadSceneMode.Additive);
@@ -190,6 +243,7 @@ public class StreamingInteractable : Interactable {
 
     void StreamUnload(int scene)
     {
-        SceneManager.UnloadSceneAsync(scene);
+        m_streamState = StreamState.UNLOADING;
+        m_operation = SceneManager.UnloadSceneAsync(scene);
     }
 }

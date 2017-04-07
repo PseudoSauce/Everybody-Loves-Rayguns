@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyTypes;
 
+public enum SceneLoadDirection
+{
+    NONE, LEFT, UP, RIGHT, DOWN
+}
+
 public class StreamDoorInteractable : Interactable {
     enum DoorState {
         CLOSED, OPENING, CLOSING, OPEN
@@ -15,9 +20,11 @@ public class StreamDoorInteractable : Interactable {
     //[SerializeField]
     Transform m_initTelePoint;
     //private float m_doorOpeningPadding = 0.5f;
-    //[SerializeField]
+    [SerializeField]
+    private SceneLoadDirection m_directionOfPlayerToLoadScene;
+    [SerializeField]
     private float m_doorOpenAngle = 90.0f;
-    //[SerializeField]
+    [SerializeField]
     private float openCloseDist = 4.0f;
     private DoorState m_doorState = DoorState.CLOSED;
 
@@ -64,16 +71,23 @@ public class StreamDoorInteractable : Interactable {
     void MyCustomUpdate(float deltaTime) {
         CheckerInside();
 
-        if (!isTriggered && hasEntered) {
+        if (!isTriggered && hasEntered) {            
             isTriggered = true;
+
             RoomStreamHandler handler = new RoomStreamHandler();
+
+            // load new room
             handler.connectorObjectName = "connector";
             handler.RoomStreamingID = RoomStreamID.LOAD;
             handler.roomNumber = m_roomNumber;
+            handler.unloadCurrentRoom = true;
             handler.loadLocation = m_initTelePoint;
             EventBeacon.InvokeEvent(handler);
-        } else if (m_doorState == DoorState.OPEN && !hasEntered) {
+        } else if (isTriggered && !hasEntered && m_doorState != DoorState.CLOSED) {
             m_doorState = DoorState.CLOSING;
+        } else if (isTriggered && hasEntered && (m_doorState != DoorState.OPEN || m_doorState != DoorState.OPENING))
+        {
+            m_doorState = DoorState.OPENING;
         }
 
         if (m_doorState == DoorState.OPENING) {
@@ -87,18 +101,22 @@ public class StreamDoorInteractable : Interactable {
         Quaternion target = Quaternion.Euler(0, m_doorOpenAngle, 0);
         if (isOpening) {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * 2.0f);
-            float finalAngOpen = Quaternion.Angle(transform.rotation, target);
-            if (finalAngOpen < m_doorOpenAngle / 2 + 1.0f) {
+            float finalAngOpen = Quaternion.Angle(transform.localRotation, target);
+            print(transform.localRotation + " " + finalAngOpen);
+            if (Mathf.Abs(finalAngOpen) < Mathf.Abs(m_doorOpenAngle) / 2 + 1.0f) {
+                //print("open");
                 m_doorState = DoorState.OPEN;
-                print("Door now Open");
             }
         } else {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * 2.0f);
-            float finalAngClose = Quaternion.Angle(transform.rotation, Quaternion.identity);
+            float finalAngClose = Quaternion.Angle(transform.localRotation, Quaternion.identity);
+
+            //print(transform.localRotation + " " + finalAngClose);
             if (finalAngClose > m_doorOpenAngle / 2 - 1.0f) {
                 m_doorState = DoorState.CLOSED;
+                //print("closed");
+
                 isTriggered = false;
-                print("Door now Closed");
             }
         }
     }
@@ -117,9 +135,7 @@ public class StreamDoorInteractable : Interactable {
                 m_doorState = DoorState.CLOSING;
             } else if (handlerCasted.roomNumber == m_roomNumber &&
                   handlerCasted.loadedResponse == RoomResponseLoaded.BUSY) {
-                print("Busy dial tone... : " + handlerCasted.loadingStreamState);
-            } else {
-                Debug.Log("Not the appropriate door number. Am looking for: " + m_roomNumber);
+                //print("Busy dial tone... : " + handlerCasted.loadingStreamState);
             }
         }
     }

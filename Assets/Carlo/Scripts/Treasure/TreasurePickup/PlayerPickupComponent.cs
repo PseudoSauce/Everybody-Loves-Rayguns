@@ -10,6 +10,10 @@ public class PlayerPickupComponent : MonoBehaviour {
     private bool m_isHolding = false;
     private bool m_mousePressed = false;
 
+    [SerializeField]
+    private LayerMask m_layerMask;
+    public Transform m_raycaster;
+
 	void Update ()
     {
         if (Input.GetMouseButtonDown(0))
@@ -23,11 +27,13 @@ public class PlayerPickupComponent : MonoBehaviour {
         if (m_mousePressed)
         {
             Debug.Log("pressed button");
+            Debug.Log(m_isHolding);
             if (!m_isHolding)
             {
                 RaycastHit hitInfo;
-                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo))
+                if (Physics.Raycast(m_raycaster.position, m_raycaster.forward, out hitInfo))
                 {
+                    Debug.Log(hitInfo.collider.name);
                     if (hitInfo.collider.GetComponent<TreasurePickup>())
                     {
                         Debug.Log("Pickup");

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114423451711486022}
   - component: {fileID: 65065912912748520}
   - component: {fileID: 54743481638095946}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: SM_Prop_Crystals_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}

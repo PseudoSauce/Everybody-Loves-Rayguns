@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24252, g: 0.2436403, b: 0.4600699, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1432,7 +1432,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1885248401}
+      objectReference: {fileID: 1402169236}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
   m_IsPrefabParent: 0
@@ -4883,6 +4883,28 @@ Transform:
   m_Father: {fileID: 1808914743}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &1402169236
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 294
+  m_Height: 731
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!4 &1411855377 stripped
 Transform:
   m_PrefabParentObject: {fileID: 489388, guid: 52ad1c9e2229e314bb47ca67eb3adb91, type: 2}
@@ -5384,12 +5406,7 @@ MonoBehaviour:
   m_IgnoreManagerEvents: 0
   m_IgnoreCustomEvents: 0
   m_InitialEventsToRegisterTo: 
-  m_doorOpenDelay: 1.5
-  m_doorCloseDelay: 1.5
   m_initTelePoint: {fileID: 1082519247}
-  m_closedPos: {fileID: 670174583}
-  m_openPos: {fileID: 670174583}
-  m_doorOpeningPadding: 0.5
   m_roomNumber: 2
 --- !u!1001 &1571191021
 Prefab:
@@ -6983,28 +7000,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 478936, guid: bff826145516ec247b5cd231a40468c7, type: 2}
   m_PrefabInternal: {fileID: 1184510076}
---- !u!84 &1885248401
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 736
-  m_Height: 572
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!4 &1885833681 stripped
 Transform:
   m_PrefabParentObject: {fileID: 402814, guid: 7a0af351a21158641be1a1ef634f0a82, type: 2}

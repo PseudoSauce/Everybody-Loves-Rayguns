@@ -17,6 +17,7 @@ public class NetworkingUI : MonoBehaviour
         public GameObject join;
     }
 
+    public GameObject m_LobbyUI;
     public GameObject m_RoomCanvas;
     public GameObject m_Selection;
     public GameObject m_textPrefab;
@@ -165,6 +166,9 @@ public class NetworkingUI : MonoBehaviour
             }
         }
         m_states.CreateRoom(name);
+
+        Destroy(m_LobbyUI);     // Replace with something else, most likely just load a new scene when joining
+        Destroy(GameObject.Find("CreateGameCanvas"));
     }
 
     public void cancel()

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using Photon;
 using UnityStandardAssets.Characters.FirstPerson;
 
+// Note: Make sure client settings is set on Auto-Join Lobby ON
 public class NetworkStates : PunBehaviour {
 
     public enum _NetworkState

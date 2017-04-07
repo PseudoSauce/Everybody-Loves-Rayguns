@@ -97,6 +97,7 @@ public class StreamDoorInteractable : Interactable {
             float finalAngClose = Quaternion.Angle(transform.rotation, Quaternion.identity);
             if (finalAngClose > m_doorOpenAngle / 2 - 1.0f) {
                 m_doorState = DoorState.CLOSED;
+                isTriggered = false;
                 print("Door now Closed");
             }
         }

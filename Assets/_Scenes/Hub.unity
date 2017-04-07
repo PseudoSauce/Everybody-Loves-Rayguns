@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.24252, g: 0.2436403, b: 0.4600699, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1432,7 +1432,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1791238491}
+      objectReference: {fileID: 1885248401}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
   m_IsPrefabParent: 0
@@ -6679,28 +6679,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 465876, guid: 6391d0758f4f45140a50db5df903916a, type: 2}
   m_PrefabInternal: {fileID: 1284837970}
---- !u!84 &1791238491
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 294
-  m_Height: 731
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!4 &1798717081 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4459337069225386, guid: 2495dcc0fdbfea246b2ae97746a4031d,
@@ -7005,6 +6983,28 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 478936, guid: bff826145516ec247b5cd231a40468c7, type: 2}
   m_PrefabInternal: {fileID: 1184510076}
+--- !u!84 &1885248401
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 736
+  m_Height: 572
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!4 &1885833681 stripped
 Transform:
   m_PrefabParentObject: {fileID: 402814, guid: 7a0af351a21158641be1a1ef634f0a82, type: 2}

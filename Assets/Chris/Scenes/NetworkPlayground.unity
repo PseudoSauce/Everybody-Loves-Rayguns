@@ -12031,12 +12031,12 @@ Prefab:
     - target: {fileID: 224826835023333414, guid: a3a63537d6be50a468b9fa69cee80671,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 299.5
+      value: 292.5
       objectReference: {fileID: 0}
     - target: {fileID: 224826835023333414, guid: a3a63537d6be50a468b9fa69cee80671,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -342.5
+      value: -337.5
       objectReference: {fileID: 0}
     - target: {fileID: 224826835023333414, guid: a3a63537d6be50a468b9fa69cee80671,
         type: 2}
@@ -12061,12 +12061,12 @@ Prefab:
     - target: {fileID: 224626746387734860, guid: a3a63537d6be50a468b9fa69cee80671,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 849.5
+      value: 842.5
       objectReference: {fileID: 0}
     - target: {fileID: 224626746387734860, guid: a3a63537d6be50a468b9fa69cee80671,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -342.5
+      value: -337.5
       objectReference: {fileID: 0}
     - target: {fileID: 224626746387734860, guid: a3a63537d6be50a468b9fa69cee80671,
         type: 2}
@@ -12077,6 +12077,21 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 114410519062154838, guid: a3a63537d6be50a468b9fa69cee80671,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2092670598}
+    - target: {fileID: 114410519062154838, guid: a3a63537d6be50a468b9fa69cee80671,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySinglePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 114410519062154838, guid: a3a63537d6be50a468b9fa69cee80671,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a3a63537d6be50a468b9fa69cee80671, type: 2}
@@ -21390,6 +21405,7 @@ GameObject:
   - component: {fileID: 2092670597}
   - component: {fileID: 2092670596}
   - component: {fileID: 2092670598}
+  - component: {fileID: 2092670599}
   m_Layer: 0
   m_Name: NetworkingManager
   m_TagString: Untagged
@@ -21441,6 +21457,17 @@ MonoBehaviour:
   m_inputField: {fileID: 1464623445}
   m_cancelPrefab: {fileID: 1071994981}
   m_confirmPrefab: {fileID: 1821194985}
+--- !u!114 &2092670599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2092670595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d8d55b01472d84497978ac9fb3a1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &2099797039
 Mesh:
   m_ObjectHideFlags: 0

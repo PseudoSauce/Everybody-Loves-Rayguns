@@ -183,6 +183,12 @@ public class NetworkingUI : MonoBehaviour
         }
     }
 
+    public void PlaySinglePlayer() {
+        SinglePlayer();
+        m_states.DisableNetworkUI();
+        SceneManager.LoadScene(1);
+    }
+
     public void JoinGame(GameObject button)
     {
         m_states.JoinRoom(button.name);

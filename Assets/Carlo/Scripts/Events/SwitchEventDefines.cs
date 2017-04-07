@@ -13,6 +13,11 @@ public enum CustomSwitchEvent
     SpawnNewObject = 7004, DestroyOldObject = 7005
 }
 
+public enum CustomChestEvent
+{
+    OpenChest = 8000, CloseChest = 8001, PickupTreasure = 8002
+}
+
 struct DoorOpenEventHandler : ICustomEventHandler
 {
     public uint DoorID;
@@ -28,6 +33,16 @@ struct DoorCloseEventHandler : ICustomEventHandler
     public uint EventID
     {
         get { return (uint)CustomSwitchEvent.CloseDoor; }
+    }
+}
+
+struct ChestEventHandler : ICustomEventHandler
+{
+    public uint ChestID;
+    public CustomChestEvent chestEvent;
+    public uint EventID
+    {
+        get { return (uint)chestEvent; }
     }
 }
 

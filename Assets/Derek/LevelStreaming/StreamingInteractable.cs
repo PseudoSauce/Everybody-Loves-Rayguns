@@ -8,7 +8,7 @@ using MyTypes;
 
 public enum RoomResponseLoaded
 {
-    UNLOADED, LOADED = 1, RoomResponseLoadedEvent = 234842
+    UNLOADED, LOADED = 1, BUSY, FAILED, RoomResponseLoadedEvent = 234842
 }
 
 public enum RoomStreamID
@@ -16,9 +16,11 @@ public enum RoomStreamID
     UNLOAD = 0, LOAD = 1, RoomStreamEvent = 9942
 }
 
+// a response event handler to loading/unloading a scene
 public struct RoomResponseLoadedHandler : ICustomEventHandler
 {
     public RoomResponseLoaded loadedResponse;
+    public StreamingInteractable.StreamState loadingStreamState;
     public int roomNumber;      
 
     public uint EventID
@@ -27,6 +29,8 @@ public struct RoomResponseLoadedHandler : ICustomEventHandler
     }
 }
 
+// send this through the EventManager as a request for loading/unloading a scene.
+// will response with a RoomResponseHandler
 public struct RoomStreamHandler : ICustomEventHandler
 {
     public RoomStreamID RoomStreamingID;
@@ -41,18 +45,33 @@ public struct RoomStreamHandler : ICustomEventHandler
     }
 }
 
+// loads the requested scene and "snaps it" to the location provided by the invoker,
+// using the RoomStreamHandler for information.
+// will respond with an appropriate message using the RoomResponseLoadedHandler.
+//
+// **
+// explicitly can only handle one scene loaded at time. if you try to load another,
+// it simply will not work, unless you unload the current scene.
+// **
+//
+// this requires an active EventManager in the scene!
+//
 public class StreamingInteractable : Interactable {
+    public enum StreamState
+    {
+        FREE, UNLOADING, LOADING, SCENELOADED
+    }
+
     [SerializeField]
     GameObject m_player;
 
-    bool m_loadingScene = false;
+    StreamState m_streamState = StreamState.FREE;
 
     AsyncOperation m_operation;
     int m_currentRoomIndex;
     string m_currentRoomConnectorName;
     Transform m_currentRoomConnectorPoint;
 
-    bool m_sceneCurrentlyLoaded = false;
 
     protected override void Init()
     {
@@ -70,9 +89,9 @@ public class StreamingInteractable : Interactable {
 
     void MyCustomUpdate(float deltaTime)
     {
-        if (m_loadingScene && m_operation.progress > 0.9f)
+        if (m_streamState == StreamState.LOADING && m_operation.progress > 0.9f)
         {
-            m_loadingScene = false;
+            m_streamState = StreamState.SCENELOADED; 
 
             // send event back to the invoker through event system
             GameObject connector = null;
@@ -90,11 +109,28 @@ public class StreamingInteractable : Interactable {
             connector.transform.rotation = m_currentRoomConnectorPoint.rotation;
             connector.transform.localScale = m_currentRoomConnectorPoint.localScale;
 
-            RoomResponseLoadedHandler handler = new RoomResponseLoadedHandler();
-            handler.loadedResponse = RoomResponseLoaded.LOADED;
-            handler.roomNumber = m_currentRoomIndex;
+            RoomResponseLoadedHandler loadResponse = new RoomResponseLoadedHandler();
+            loadResponse.loadedResponse = RoomResponseLoaded.LOADED;
+            loadResponse.loadingStreamState = StreamState.SCENELOADED;
+            loadResponse.roomNumber = m_currentRoomIndex;
 
-            EventBeacon.InvokeEvent(handler);            
+            EventBeacon.InvokeEvent(loadResponse);            
+        }
+        else if (m_streamState == StreamState.UNLOADING && m_operation.progress > 0.9f)
+        {
+            m_streamState = StreamState.FREE;
+
+            RoomResponseLoadedHandler unloadResponse;
+            unloadResponse.loadedResponse = RoomResponseLoaded.UNLOADED;
+            unloadResponse.roomNumber = m_currentRoomIndex;
+            unloadResponse.loadingStreamState = StreamState.FREE;
+
+            EventBeacon.InvokeEvent(unloadResponse);
+
+            m_currentRoomIndex = -1;
+            m_currentRoomConnectorPoint = null;
+            m_currentRoomConnectorName = "";
+            m_operation = null;
         }
     }
 
@@ -107,16 +143,29 @@ public class StreamingInteractable : Interactable {
             var handlerCasted = (RoomStreamHandler)handlerPacket.Handler;
             var loadOrUnload = (handlerCasted).RoomStreamingID;
 
-            if (loadOrUnload == RoomStreamID.LOAD && !m_sceneCurrentlyLoaded)
+            if (loadOrUnload == RoomStreamID.LOAD && m_streamState == StreamState.FREE)
             {
                 StreamLoad(handlerCasted);
             }
-            else if (loadOrUnload == RoomStreamID.UNLOAD && m_sceneCurrentlyLoaded)
+            else if (loadOrUnload == RoomStreamID.UNLOAD && m_streamState == StreamState.SCENELOADED)
             {
                 StreamUnload(handlerCasted.roomNumber);
             }
+            else
+            {
+                // generally signifies that this stream is either in a loading/unloading state,
+                // or a scene is currently already loaded or unloaded.
+                // check the loadingStreamState sent by this response handler, to know for sure.
+                RoomResponseLoadedHandler busyResponse;
+                busyResponse.loadedResponse = RoomResponseLoaded.BUSY;
+                busyResponse.loadingStreamState = m_streamState;
+                busyResponse.roomNumber = handlerCasted.roomNumber;
+
+                EventBeacon.InvokeEvent(busyResponse);
+            }
         }
     }
+
     void MyCustomEventReceiveManagerNotify(ICustomEventManagerHandler handler)
     {
 
@@ -128,7 +177,7 @@ public class StreamingInteractable : Interactable {
 
         if (SceneManager.sceneCount > 1)
         {
-            m_sceneCurrentlyLoaded = true;
+            m_streamState = StreamState.LOADING;
             m_currentRoomIndex = handler.roomNumber;
             m_currentRoomConnectorName = handler.connectorObjectName;
             m_currentRoomConnectorPoint = handler.loadLocation;
@@ -137,19 +186,10 @@ public class StreamingInteractable : Interactable {
         {
             Debug.Log("Failure to load scene: Build Setting: " + handler.roomNumber);
         }
-
-        m_loadingScene = true;
     }
 
     void StreamUnload(int scene)
     {
         SceneManager.UnloadSceneAsync(scene);
-        m_currentRoomIndex = -1;
-        m_currentRoomConnectorPoint = null;
-        m_currentRoomConnectorName = "";
-        m_loadingScene = false;
-        m_operation = null;
-
-        m_sceneCurrentlyLoaded = false;
     }
 }

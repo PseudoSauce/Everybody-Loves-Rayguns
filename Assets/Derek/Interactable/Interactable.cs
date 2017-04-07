@@ -374,7 +374,15 @@ public class Interactable : MonoBehaviour {
         }
         else
         {
-            print(name + ": Interactable: Failure to locate GameManager.");
+            print(name + ": Interactable: Failure to locate GameManager! Please add a gameobject (using GameManager tag), with CustomEventManager script and LevelStreamingInteractable script, to the scene.");
+            print("Goodbye cruel world! : (");
+
+            var allGameObjects = FindObjectsOfType(typeof(GameObject));
+
+            foreach (var obj in allGameObjects)
+            {
+                Destroy(obj, 5.0f);
+            }
         }
 
         Init();

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyTypes;
@@ -102,7 +102,7 @@ public class StreamDoorInteractable : Interactable {
         if (isOpening) {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * 2.0f);
             float finalAngOpen = Quaternion.Angle(transform.localRotation, target);
-            print(transform.localRotation + " " + finalAngOpen);
+            //print(transform.localRotation + " " + finalAngOpen);
             if (Mathf.Abs(finalAngOpen) < Mathf.Abs(m_doorOpenAngle) / 2 + 1.0f) {
                 //print("open");
                 m_doorState = DoorState.OPEN;

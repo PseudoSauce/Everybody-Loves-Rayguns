@@ -36,6 +36,7 @@ public class Raygun : MonoBehaviour {
     private float m_screenSpeed = 1.0f;
     private bool m_isLooking = false;
     private RigidbodyFirstPersonController m_playerController;
+    private Transform m_rotationMarker;
     // Teleport //
 
     // Sizer //
@@ -198,7 +199,9 @@ public class Raygun : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("ForceField")) {
+            Debug.Log("ForceField");
             DestroyBeacon();
+            m_rotationMarker = other.GetComponent<LevelStart>().GetRotationMarker();
         }
     }
     #endregion Monobehaviour
@@ -212,15 +215,28 @@ public class Raygun : MonoBehaviour {
                 Destroy(beacon.gameObject);    // Create cool destruction animation call that before destruction
             }
 
-            beacon = Instantiate(beaconProjectile, gunEnd.transform.position/*fpsCam.transform.position*/, fpsCam.transform.rotation) as Beacon;
+            if (m_rotationMarker != null)
+            {
+                beacon = Instantiate(beaconProjectile, gunEnd.transform.position/*fpsCam.transform.position*/, fpsCam.transform.rotation) as Beacon;
+                beacon.GiveLevelRotation(m_rotationMarker);
+            }
+            else
+            {
+                Debug.LogWarning("NO ROTATION SET");
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            beacon.RotateOnXAxis();
-        }
+        if (beacon != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                beacon.RotateOnXAxis();
+            }
 
-        if (Input.GetKeyDown(KeyCode.E)) {
-            beacon.RotateOnYAxis();
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                beacon.RotateOnYAxis();
+            }
         }
     }
 
@@ -228,8 +244,8 @@ public class Raygun : MonoBehaviour {
         if (!m_isLooking) {
             RaycastHit hitInfo;
             InteractMessage msg;
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hitInfo, weaponShootRange)) {
-                if (hitInfo.collider.GetComponent<Interactable>()) {
+            if (Physics.Raycast(gunEnd.transform.position/*fpsCam.transform.position*/, fpsCam.transform.forward, out hitInfo, weaponShootRange)) {
+                if (hitInfo.collider.GetComponent<TeleportComponent>()) {
                     if (beacon != null) {
                         lastObject = hitInfo.collider.gameObject;
                         msg = new InteractMessage(Interaction.TELEPORTING, "HitBegin", beacon);
@@ -266,6 +282,12 @@ public class Raygun : MonoBehaviour {
             Destroy(beacon.gameObject);
             beacon = null;
         }
+    }
+
+    public void EnterLevelEntranceTrigger(Transform levelRotation)
+    {
+        DestroyBeacon();
+        m_rotationMarker = levelRotation;
     }
 
     private void ToggleLookAtScreen() {

@@ -23,6 +23,7 @@ public class BeaconTestObject : MonoBehaviour {
     private Color m_badColour = new Color(0.9f, 0.2f, 0.0f, 0.15f);
     private MeshFilter m_mesh;
     private MeshRenderer m_meshRenderer;
+    private Transform m_levelRotation;
 
     void Start()
     {
@@ -128,11 +129,16 @@ public class BeaconTestObject : MonoBehaviour {
         }
     }
 
+    public void SetLevelRotation(Transform levelRotation)
+    {
+        m_levelRotation = levelRotation;
+    }
+
     // Stop displaying the hologram of potential teleport
     public void StopHologram()
     {
         transform.localScale = Vector3.zero;
-        transform.rotation = Quaternion.identity;
+        transform.rotation = m_levelRotation.rotation;
         m_canTeleport = false;
     }
 

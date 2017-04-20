@@ -23,6 +23,7 @@ public class Beacon : MonoBehaviour {
     private BeaconTestObject m_spawnedTestObject = null;
     private Mesh m_lastMesh = null;
     private Rigidbody m_rb = null;
+    private Transform m_levelRotation = null;
 
     public Beacon GetBeacon { get { return this; } }
 
@@ -63,21 +64,25 @@ public class Beacon : MonoBehaviour {
 
             m_rb.isKinematic = true;
             transform.parent = col.collider.gameObject.transform;
-            transform.rotation = Quaternion.identity;
+            var q = Quaternion.FromToRotation(transform.forward, col.contacts[0].normal);
+            transform.rotation = q * transform.rotation;//Quaternion.identity;
             m_rotationAngle = Vector3.Angle(transform.forward, col.contacts[0].normal);
 
-            if (Mathf.Abs(col.contacts[0].normal.y) > 0)
-            {
-                transform.Rotate(Vector3.right, -col.contacts[0].normal.y * m_rotationAngle);
-            }
-            else if(col.contacts[0].normal.x < 0)
-            {
-                transform.Rotate(Vector3.up, col.contacts[0].normal.x * m_rotationAngle);
-            }
-            else
-            {
-                transform.Rotate(Vector3.up, m_rotationAngle);
-            }
+            // Changed all the transform.right/up/forward from VEctor3.right/up/forward
+            //if (Mathf.Abs(col.contacts[0].normal.y) > 0)
+            //{
+            //    transform.Rotate(transform.right, -col.contacts[0].normal.y * m_rotationAngle);
+            //}
+            //else if(col.contacts[0].normal.x < 0)
+            //{
+            //    transform.Rotate(transform.up, col.contacts[0].normal.x * m_rotationAngle);
+            //}
+            //else
+            //{
+            //    transform.Rotate(transform.up, m_rotationAngle);
+            //}
+
+
 
             GetComponent<LineRenderer>().SetPosition(1, Vector3.forward * 10);
             m_hasHit = true;
@@ -128,7 +133,9 @@ public class Beacon : MonoBehaviour {
             m_spawnedTestObject = Instantiate(m_testObject, transform.position, Quaternion.identity) as BeaconTestObject;
             m_spawnedTestObject.transform.position = transform.position + (transform.forward * (extent.magnitude + extent.magnitude * 0.15f));
             m_spawnedTestObject.transform.parent = transform;
+            m_spawnedTestObject.transform.rotation = m_levelRotation.rotation;
             m_spawnedTestObject.ShowHologram(hologramMesh, extent, scale, objectToTeleport);
+            m_spawnedTestObject.SetLevelRotation(m_levelRotation);
         }
     }
 
@@ -139,6 +146,11 @@ public class Beacon : MonoBehaviour {
         {
             m_spawnedTestObject.StopHologram();
         }
+    }
+
+    public void GiveLevelRotation(Transform levelRotationMarker)
+    {
+        m_levelRotation = levelRotationMarker;
     }
 
     // Returns the teleport position
@@ -172,7 +184,7 @@ public class Beacon : MonoBehaviour {
     {
         if (m_spawnedTestObject != null)
         {
-            m_spawnedTestObject.transform.Rotate(Vector3.right, 90.0f);
+            m_spawnedTestObject.transform.Rotate(m_levelRotation.right, 90.0f);
         }
     }
 
@@ -181,7 +193,7 @@ public class Beacon : MonoBehaviour {
     {
         if (m_spawnedTestObject != null)
         {
-            m_spawnedTestObject.transform.Rotate(Vector3.up, 90.0f);
+            m_spawnedTestObject.transform.Rotate(m_levelRotation.up, 90.0f);
         }
     }
 

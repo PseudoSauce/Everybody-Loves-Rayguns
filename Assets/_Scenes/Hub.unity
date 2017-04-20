@@ -2243,10 +2243,10 @@ MonoBehaviour:
   m_IgnoreCustomEvents: 0
   m_InitialEventsToRegisterTo: 
   m_initTelePoint: {fileID: 1120516387}
-  m_directionOfPlayerToLoadScene: 3
+  m_directionOfPlayerToLoadScene: 2
   m_doorOpenAngle: 90
   openCloseDist: 4
-  m_roomNumber: 3
+  m_roomNumber: 2
 --- !u!1001 &737142128
 Prefab:
   m_ObjectHideFlags: 0
@@ -2430,6 +2430,28 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 355d701057103bc4bb7ed0f45567937c, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &809393601
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 420
+  m_Height: 236
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!1 &810857431
 GameObject:
   m_ObjectHideFlags: 0

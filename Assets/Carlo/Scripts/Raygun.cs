@@ -197,13 +197,13 @@ public class Raygun : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("ForceField")) {
-            Debug.Log("ForceField");
-            DestroyBeacon();
-            m_rotationMarker = other.GetComponent<LevelStart>().GetRotationMarker();
-        }
-    }
+    //void OnTriggerEnter(Collider other) {
+    //    if (other.CompareTag("ForceField")) {
+    //        Debug.Log("ForceField");
+    //        DestroyBeacon();
+    //        m_rotationMarker = other.GetComponent<LevelStart>().GetRotationMarker();
+    //    }
+    //}
     #endregion Monobehaviour
 
     #region Teleport Beam

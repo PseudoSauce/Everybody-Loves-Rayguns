@@ -3928,7 +3928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isMainMenu: 0
   m_hubIndex: 1
-  m_mainMenuIndex: 5
+  m_mainMenuIndex: 6
   m_Instructions: {fileID: 1061342714184286}
 --- !u!114 &114912091487946150
 MonoBehaviour:

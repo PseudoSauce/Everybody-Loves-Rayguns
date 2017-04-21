@@ -22,7 +22,7 @@ public class DemoBuildShortcuts : MonoBehaviour {
         }
         else
         {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 // Reset Game
                 SceneManager.LoadScene(m_mainMenuIndex);
@@ -45,7 +45,7 @@ public class DemoBuildShortcuts : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             // Quit Game
             Debug.Log("Quitting...");

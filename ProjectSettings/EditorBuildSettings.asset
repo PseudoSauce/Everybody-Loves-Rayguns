@@ -65,3 +65,5 @@ EditorBuildSettings:
     path: Assets/_Scenes/Puzzle4.unity
   - enabled: 1
     path: Assets/_Scenes/Puzzle3.unity
+  - enabled: 1
+    path: Assets/_Scenes/MainMenu.unity

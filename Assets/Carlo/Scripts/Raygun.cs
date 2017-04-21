@@ -342,7 +342,7 @@ public class Raygun : MonoBehaviour {
         if (canFire) {
             if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2"))
             {
-                audioManager.PlaySoundConcurrent(shrinkAndGrowSound, true);
+                audioManager.PlaySoundConcurrent(shrinkAndGrowSound, true, 1.0f);
                 scaling = true;
             }
             if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2"))

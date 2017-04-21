@@ -48,7 +48,7 @@ public class AudioManager : MonoBehaviour {
         }
     }
 
-	public void PlaySound(string soundName, bool loop)
+	public void PlaySound(string soundName, bool loop, float volume = 1.0f)
     {
         AudioClip clip = null;
 
@@ -58,15 +58,14 @@ public class AudioManager : MonoBehaviour {
             {            
             }
 
-            m_MainSource.clip = clip;  
-            
-            m_MainSource.loop = loop;
-             
+            m_MainSource.clip = clip;            
+            m_MainSource.loop = loop;            
+            m_MainSource.volume = volume;
             m_MainSource.Play();         
         }
     }
 
-    public bool PlaySoundConcurrent(string soundName, bool loop, bool layerSound = false)
+    public bool PlaySoundConcurrent(string soundName, bool loop, float volume, bool layerSound = false)
     {
         AudioClip clip = null;
 
@@ -100,6 +99,7 @@ public class AudioManager : MonoBehaviour {
                 m_Playing.Add(source);
             }
 
+            source.volume = volume;
             source.loop = loop;
             source.clip = clip;
             source.Play();

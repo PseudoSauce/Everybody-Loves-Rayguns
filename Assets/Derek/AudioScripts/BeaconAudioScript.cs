@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BeaconAudioScript : MonoBehaviour {
+    [SerializeField, Range(0.0f, 1.0f)]
+    private float m_Volume = 1.0f;
+
     private AudioManager m_AudioManager;
     private List<string> m_BeaconNotes;
 
@@ -25,7 +28,7 @@ public class BeaconAudioScript : MonoBehaviour {
     {
         if (m_BeaconNotes.Count > 0)
         {
-            m_HasPlayedNote = m_AudioManager.PlaySoundConcurrent(m_BeaconNotes[m_NoteIndex], false);
+            m_HasPlayedNote = m_AudioManager.PlaySoundConcurrent(m_BeaconNotes[m_NoteIndex], false, m_Volume);
             m_NoteIndex = m_HasPlayedNote ? m_NoteIndex + 1 : m_NoteIndex;
 
             if (m_NoteIndex >= m_BeaconNotes.Count)

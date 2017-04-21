@@ -22,7 +22,7 @@ public class TestAudioTrigger : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Space))
         {
-            manager.PlaySoundConcurrent(phaserSoundName, false);
+            manager.PlaySoundConcurrent(phaserSoundName, false, 1.0f);
         }
 	}
 }

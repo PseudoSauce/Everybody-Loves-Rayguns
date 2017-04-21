@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 54743481638095946}
   m_Layer: 13
   m_Name: SM_Prop_Crystals_04
-  m_TagString: Untagged
+  m_TagString: PickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

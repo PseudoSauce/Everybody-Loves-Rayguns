@@ -426,7 +426,7 @@ Transform:
   m_PrefabInternal: {fileID: 1069888755}
 --- !u!1 &120668061 stripped
 GameObject:
-  m_PrefabParentObject: {fileID: 1324969627549878, guid: 762b42897d63a78409dedba9e6e4cd93,
+  m_PrefabParentObject: {fileID: 1784109808214940, guid: b522e7d7102a92b4c8b5799fd73e4b7a,
     type: 2}
   m_PrefabInternal: {fileID: 453630755}
 --- !u!4 &135259713 stripped
@@ -1206,28 +1206,6 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 491288, guid: 8af94885318d538418292732485a4bd3, type: 2}
   m_PrefabInternal: {fileID: 1843564537}
---- !u!84 &443457135
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 420
-  m_Height: 236
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!1001 &453630755
 Prefab:
   m_ObjectHideFlags: 0
@@ -1235,59 +1213,59 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalPosition.x
       value: -31.363556
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalPosition.y
       value: 1.108
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalPosition.z
       value: 50.595955
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_LocalRotation.w
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4127017761643438, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+    - target: {fileID: 4321628319637190, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 20659452395648478, guid: 762b42897d63a78409dedba9e6e4cd93,
+    - target: {fileID: 20273951219383438, guid: b522e7d7102a92b4c8b5799fd73e4b7a,
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 443457135}
-    - target: {fileID: 114596807124129368, guid: 762b42897d63a78409dedba9e6e4cd93,
+      objectReference: {fileID: 1861321432}
+    - target: {fileID: 114047709529203550, guid: b522e7d7102a92b4c8b5799fd73e4b7a,
         type: 2}
       propertyPath: viewIdField
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114596807124129368, guid: 762b42897d63a78409dedba9e6e4cd93,
+    - target: {fileID: 114047709529203550, guid: b522e7d7102a92b4c8b5799fd73e4b7a,
         type: 2}
       propertyPath: instantiationId
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 762b42897d63a78409dedba9e6e4cd93, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: b522e7d7102a92b4c8b5799fd73e4b7a, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &453630756 stripped
 GameObject:
-  m_PrefabParentObject: {fileID: 1710321244580300, guid: 762b42897d63a78409dedba9e6e4cd93,
+  m_PrefabParentObject: {fileID: 1787916833871456, guid: b522e7d7102a92b4c8b5799fd73e4b7a,
     type: 2}
   m_PrefabInternal: {fileID: 453630755}
 --- !u!4 &460456692 stripped
@@ -5593,28 +5571,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2495dcc0fdbfea246b2ae97746a4031d, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &1571945488
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 734
-  m_Height: 411
-  m_AntiAliasing: 2
-  m_DepthFormat: 2
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapMode: 1
 --- !u!1001 &1573558977
 Prefab:
   m_ObjectHideFlags: 0
@@ -7089,6 +7045,28 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 478936, guid: bff826145516ec247b5cd231a40468c7, type: 2}
   m_PrefabInternal: {fileID: 1184510076}
+--- !u!84 &1861321432
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 800
+  m_Height: 399
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!4 &1885833681 stripped
 Transform:
   m_PrefabParentObject: {fileID: 402814, guid: 7a0af351a21158641be1a1ef634f0a82, type: 2}

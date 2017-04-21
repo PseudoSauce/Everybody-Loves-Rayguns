@@ -42,6 +42,7 @@ public class PlayerPickupComponent : MonoBehaviour {
                         hitInfo.collider.transform.position = m_holdPosition.position;
                         hitInfo.collider.transform.rotation = m_holdPosition.rotation;
                         m_treasure.SetKinematic();
+                        m_treasure.tag = "Holden";
                         hitInfo.collider.transform.parent = m_holdPosition;
                         m_isHolding = true;
                     }
@@ -53,6 +54,7 @@ public class PlayerPickupComponent : MonoBehaviour {
                 m_treasure.transform.parent = null;
                 m_treasure.GetComponent<Collider>().isTrigger = false;
                 m_treasure.Throw();
+                m_treasure.tag = "PickUp";
                 m_isHolding = false;
             }
             m_mousePressed = false;

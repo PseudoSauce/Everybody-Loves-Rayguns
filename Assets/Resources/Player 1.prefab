@@ -151,7 +151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1062903291565618
 GameObject:
   m_ObjectHideFlags: 1
@@ -932,6 +932,7 @@ GameObject:
   - component: {fileID: 114949181395357544}
   - component: {fileID: 114596807124129368}
   - component: {fileID: 114035629306003124}
+  - component: {fileID: 114890973459157148}
   m_Layer: 9
   m_Name: Player 1
   m_TagString: Player
@@ -1216,7 +1217,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1710321244580300}
-  m_LocalRotation: {x: -0, y: 0.024228537, z: -0, w: 0.99970645}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -31.363556, y: 1.108, z: 50.595955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3647,8 +3648,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 4127017761643438}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114632468332828058
@@ -3914,6 +3915,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Health:'
+--- !u!114 &114890973459157148
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1710321244580300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d6cac47ecbc2f048869e7c63e4efb44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isMainMenu: 0
+  m_hubIndex: 1
+  m_mainMenuIndex: 5
+  m_Instructions: {fileID: 1061342714184286}
 --- !u!114 &114912091487946150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7431,7 +7447,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.093231365}
   m_AnchorMax: {x: 0.6691207, y: 0.28385088}
-  m_AnchoredPosition: {x: 2.5, y: -2.499981}
+  m_AnchoredPosition: {x: 2.5, y: -2.499977}
   m_SizeDelta: {x: -5, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224999544993168828

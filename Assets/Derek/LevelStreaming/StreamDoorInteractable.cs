@@ -34,6 +34,12 @@ public class StreamDoorInteractable : Interactable {
     [SerializeField]
     private int m_roomNumber = 0;
 
+    private Network.NetworkManager m_networkManager;
+
+    void Awake() {
+        m_networkManager = FindObjectOfType<Network.NetworkManager>();
+    }
+    
     GameObject g_player;
     protected override void Init() {
         AssignInteractionType(MyTypes.Interaction.STREAMING);
@@ -43,7 +49,12 @@ public class StreamDoorInteractable : Interactable {
 
     }
     void MyCustomStart() {
-        g_player = GameObject.FindGameObjectWithTag("Player");
+        if (m_networkManager.currentState == Network.NetworkManager._NetworkState.Single) {
+            g_player = GameObject.FindGameObjectWithTag("Player");
+        } else {
+            g_player = GameObject.Find("Host");
+        }
+        
         EventBeacon.RegisterEvents((uint)RoomResponseLoaded.RoomResponseLoadedEvent);
     }
 

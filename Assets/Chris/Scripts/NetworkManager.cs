@@ -59,6 +59,11 @@ namespace Network {
 
         public override void OnJoinedRoom() {
             GameObject player = PhotonNetwork.Instantiate("Player 1", GameObject.Find("SpawnPoint").transform.position, Quaternion.identity, 0);
+            if (PhotonNetwork.player.ID == 1) {
+                player.name = "Host";
+            } else {
+                player.name = "Player";
+            }
             RigidbodyFirstPersonController controller = player.GetComponent<RigidbodyFirstPersonController>();
             GameObject[] camera = GameObject.FindGameObjectsWithTag("MainCamera");
             foreach (GameObject cams in camera) {

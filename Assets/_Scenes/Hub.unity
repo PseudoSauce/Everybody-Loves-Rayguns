@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.24252, g: 0.2436403, b: 0.4600699, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -424,6 +424,11 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 493846, guid: 6f2d37b7f33fa5e4997d15b277912fb3, type: 2}
   m_PrefabInternal: {fileID: 1069888755}
+--- !u!1 &120668061 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1324969627549878, guid: 762b42897d63a78409dedba9e6e4cd93,
+    type: 2}
+  m_PrefabInternal: {fileID: 453630755}
 --- !u!4 &135259713 stripped
 Transform:
   m_PrefabParentObject: {fileID: 468018, guid: ba60da5dc8ddb54408fd0384cb9dd894, type: 2}
@@ -2377,9 +2382,31 @@ Prefab:
       propertyPath: m_RootOrder
       value: 43
       objectReference: {fileID: 0}
-    - target: {fileID: 2327156, guid: f44b9d6c65e79034cbcd7cead71f63c0, type: 2}
-      propertyPath: m_CastShadows
-      value: 2
+    - target: {fileID: 114942503473144964, guid: f44b9d6c65e79034cbcd7cead71f63c0,
+        type: 2}
+      propertyPath: bob
+      value: 
+      objectReference: {fileID: 120668061}
+    - target: {fileID: 65401848318773240, guid: f44b9d6c65e79034cbcd7cead71f63c0,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983287833621390, guid: f44b9d6c65e79034cbcd7cead71f63c0, type: 2}
+      propertyPath: m_TagString
+      value: Particle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692265401392518, guid: f44b9d6c65e79034cbcd7cead71f63c0, type: 2}
+      propertyPath: m_TagString
+      value: Particle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311202864806720, guid: f44b9d6c65e79034cbcd7cead71f63c0, type: 2}
+      propertyPath: m_TagString
+      value: Particle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525503830223788, guid: f44b9d6c65e79034cbcd7cead71f63c0, type: 2}
+      propertyPath: m_TagString
+      value: Particle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f44b9d6c65e79034cbcd7cead71f63c0, type: 2}
@@ -5566,6 +5593,28 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2495dcc0fdbfea246b2ae97746a4031d, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &1571945488
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 734
+  m_Height: 411
+  m_AntiAliasing: 2
+  m_DepthFormat: 2
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapMode: 1
 --- !u!1001 &1573558977
 Prefab:
   m_ObjectHideFlags: 0

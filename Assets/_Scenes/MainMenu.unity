@@ -426,6 +426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isMainMenu: 1
   m_hubIndex: 1
+  m_mainMenuIndex: 0
+  m_Instructions: {fileID: 0}
 --- !u!114 &790605358
 MonoBehaviour:
   m_ObjectHideFlags: 0

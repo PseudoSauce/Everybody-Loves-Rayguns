@@ -931,6 +931,7 @@ GameObject:
   - component: {fileID: 114047709529203550}
   - component: {fileID: 114816143731191292}
   - component: {fileID: 114214035117292102}
+  - component: {fileID: 114176281826451926}
   m_Layer: 9
   m_Name: Player 1
   m_TagString: Player
@@ -1318,7 +1319,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1787916833871456}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -32.900024, y: 0.79, z: 40.205383}
+  m_LocalPosition: {x: -31.363556, y: 1.108, z: 50.595955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4320818911128972}
@@ -3298,6 +3299,7 @@ MonoBehaviour:
   displayText: {fileID: 114668381373223722}
   inst1: {fileID: 114885696225039202}
   inst2: {fileID: 114597440194649672}
+  shrinkAndGrowSound: laser_long1
 --- !u!114 &114029126297520788
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3500,6 +3502,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114176281826451926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1787916833871456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7562ac12decaa49973b3cf6029f8c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114186364054903476
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7411,7 +7424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.093231365}
   m_AnchorMax: {x: 0.6691207, y: 0.28385088}
-  m_AnchoredPosition: {x: 2.5, y: -2.499977}
+  m_AnchoredPosition: {x: 2.5, y: -2.4999695}
   m_SizeDelta: {x: -5, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224427054021323020

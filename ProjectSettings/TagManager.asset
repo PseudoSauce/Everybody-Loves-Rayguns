@@ -17,6 +17,7 @@ TagManager:
   - PickUp
   - Particle
   - Holden
+  - Audio
   layers:
   - Default
   - TransparentFX

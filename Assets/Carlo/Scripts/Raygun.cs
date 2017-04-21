@@ -78,6 +78,11 @@ public class Raygun : MonoBehaviour {
     GameObject tempGun = null;
     //private gameObject 
 
+    // Audio
+    [SerializeField]
+    private string shrinkAndGrowSound;
+    private AudioManager audioManager;
+
     private GameObject fauxGun;
 
     private Animator m_animator;
@@ -89,6 +94,7 @@ public class Raygun : MonoBehaviour {
         fauxGun = Resources.Load("RaygunFaux") as GameObject;
         cartridgeRenderer = gameObject.GetComponent<Renderer>();
         gunPartsRenderers = gameObject.GetComponentsInChildren<Renderer>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
     void Start() {
         parent = transform.root;
@@ -210,6 +216,10 @@ public class Raygun : MonoBehaviour {
     private void TeleportBeamInput() {
         if (Input.GetMouseButtonDown(1)) {
             m_staffAnimator.ThrowBeacon();
+
+            // play the next note in the sequence, while throwing the beacon
+            gameObject.transform.root.SendMessage("PlayNextNote");
+
             // TODO: NEEDS TO BE OBJECT POOLED!!!
             if (beacon != null) {
                 Destroy(beacon.gameObject);    // Create cool destruction animation call that before destruction
@@ -331,9 +341,15 @@ public class Raygun : MonoBehaviour {
     private void ScalerBeamInput() {
         if (canFire) {
             if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2"))
+            {
+                audioManager.PlaySoundConcurrent(shrinkAndGrowSound, true);
                 scaling = true;
+            }
             if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2"))
+            {
+                audioManager.StopSoundsConcurrent(shrinkAndGrowSound);
                 scaling = false;
+            }
 
             if (Input.GetButton("Fire1")) {
                 m_staffAnimator.Grow(true);

@@ -29,6 +29,7 @@ GameObject:
   - component: {fileID: 114462677894554616}
   - component: {fileID: 114982791629471444}
   - component: {fileID: 64157500286320320}
+  - component: {fileID: 114688279093679258}
   m_Layer: 0
   m_Name: Ramp_Scalable_Teleportable
   m_TagString: Untagged
@@ -151,11 +152,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f23bc5218415a40a103934dd6a3cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateMinimumTick: 0.02
-  UseModifiedUpdate: 0
+  m_IgnoreUpdate: 0
+  m_RecordEvents: 1
+  m_IgnoreManagerEvents: 0
+  m_IgnoreCustomEvents: 0
+  m_InitialEventsToRegisterTo: 
   beamMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &114688279093679258
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1429881895229446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 4
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 4629142427682500}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &114748645238868300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -468,5 +498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4752542b3dcc0745ab097bbb59b207e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateMinimumTick: 0.02
-  UseModifiedUpdate: 0
+  m_IgnoreUpdate: 0
+  m_RecordEvents: 1
+  m_IgnoreManagerEvents: 0
+  m_IgnoreCustomEvents: 0
+  m_InitialEventsToRegisterTo: 

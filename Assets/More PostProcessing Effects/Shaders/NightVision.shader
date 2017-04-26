@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Author : Maxime JUMELLE
 // Project : More Post-Processing Effects Package
 // If you have any suggestion or comment, you can write me at webmaster[at]hardgames3d.com
@@ -27,7 +29,7 @@ Shader "MorePPEffects/NightVision" {
 	v2f vert( appdata_img v ) 
 	{
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.uv = v.texcoord.xy;
 		return o;
 	} 

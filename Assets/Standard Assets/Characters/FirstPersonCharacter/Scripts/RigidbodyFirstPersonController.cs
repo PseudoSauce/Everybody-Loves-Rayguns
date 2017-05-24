@@ -89,7 +89,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 
-
         public Vector3 Velocity
         {
             get { return m_RigidBody.velocity; }

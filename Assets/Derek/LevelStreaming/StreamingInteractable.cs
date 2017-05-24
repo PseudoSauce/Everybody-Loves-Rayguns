@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
@@ -223,11 +223,13 @@ public class StreamingInteractable : Interactable {
             StartCoroutine(loadIfFree(handler));
         }
     }
-
+    
+    //[PunRPC]
     void StreamLoad(RoomStreamHandler handler)
     {
         m_operation = SceneManager.LoadSceneAsync(handler.roomNumber, LoadSceneMode.Additive);
-
+        //PhotonNetwork.LoadLevel(handler.roomNumber);
+        
         if (SceneManager.sceneCount > 1)
         {
             m_streamState = StreamState.LOADING;

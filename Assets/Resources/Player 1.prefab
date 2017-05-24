@@ -3958,6 +3958,7 @@ MonoBehaviour:
   displayText: {fileID: 114915457738054108}
   inst1: {fileID: 114230252121555584}
   inst2: {fileID: 114756604685142412}
+  shrinkAndGrowSound: 
 --- !u!114 &114915457738054108
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4046,7 +4047,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1710321244580300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81c9795a96c094f4cbde4d65546aa9b2, type: 3}
   m_Name: 
@@ -4099,7 +4100,7 @@ MonoBehaviour:
     slowDownRate: 20
     airControl: 1
     shellOffset: 0
-  isControllable: 1
+  isControllable: 0
 --- !u!114 &114992253335708694
 MonoBehaviour:
   m_ObjectHideFlags: 1

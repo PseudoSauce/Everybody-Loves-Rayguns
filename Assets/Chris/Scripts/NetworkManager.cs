@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,8 +19,6 @@ namespace Network {
         }
 
         private NetworkingUI m_networkUI;
-
-        // TODO: Change this state using UI to select which state to be in
         public _NetworkState currentState = _NetworkState.Single;     // Testing purpose
         private byte maxPlayers = 2;
         private new PhotonView photonView;
@@ -72,9 +70,17 @@ namespace Network {
                     cams.SetActive(false);
                 }
             }
+            foreach(RigidbodyFirstPersonController i in GameObject.FindObjectsOfType<RigidbodyFirstPersonController>())
+            {
+                if (i.gameObject != player)
+                {
+                    i.enabled = false;
+                }
+            }
             controller.enabled = true;
             controller.cam.gameObject.SetActive(true);
             controller.cam.tag = "MainCamera";
+            controller.isControllable = true;
         }
 
         public void DisableNetworkUI() {
